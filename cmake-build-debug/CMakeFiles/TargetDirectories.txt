@@ -1,0 +1,3 @@
+D:/Projects/GitHub/MinecraftClone/cmake-build-debug/CMakeFiles/MinecraftClone.dir
+D:/Projects/GitHub/MinecraftClone/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/Projects/GitHub/MinecraftClone/cmake-build-debug/CMakeFiles/rebuild_cache.dir
