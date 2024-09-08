@@ -1,5 +1,5 @@
-#include "Scene.h"
-#include "Config.h"
+#include "Headers/Scene.h"
+#include "Headers/Config.h"
 
 #include <utility>
 
@@ -50,12 +50,25 @@ void MenuScene::onClick(sf::Vector2f position) {
 
 void MenuScene::onResize(unsigned int width, unsigned int height) {}
 
-GameScene::GameScene(std::function<void(Scene*)> sceneChanger) : Scene(std::move(sceneChanger)) {}
+GameScene::GameScene(std::function<void(Scene*)> sceneChanger) : Scene(std::move(sceneChanger)) {
+    cubes.emplace_back(50);
+    cubes.emplace_back(50);
+    cubes[1].setPosition({400, 200});
+}
 
-void GameScene::update(float& deltaTime) {}
+void GameScene::update(float& deltaTime) {
+    for (auto& cube : cubes) {
+        cube.rotate(0.01, 0.01, 0.01);
+        cube.update(deltaTime);
+    }
+}
 
 void GameScene::render(sf::RenderWindow& window) const {
-    window.clear(sf::Color::Green);
+    window.clear(sf::Color::Black);
+
+    for (const auto& cube : cubes) {
+        cube.render(window);
+    }
 }
 
 void GameScene::onResize(unsigned int width, unsigned int height) {}

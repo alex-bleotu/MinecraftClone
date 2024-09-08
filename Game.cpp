@@ -1,5 +1,5 @@
-#include "Game.h"
-#include "Config.h"
+#include "Headers/Game.h"
+#include "Headers/Config.h"
 
 Game::Game() : window(sf::VideoMode(Config::Window::WIDTH, Config::Window::HEIGHT), Config::Window::TITLE) {
     window.setFramerateLimit(Config::Window::FPS);

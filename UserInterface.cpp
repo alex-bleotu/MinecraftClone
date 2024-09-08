@@ -1,5 +1,5 @@
-#include "UserInterface.h"
-#include "Config.h"
+#include "Headers/UserInterface.h"
+#include "Headers/Config.h"
 
 sf::Vector2f UI::Widget::getPosition() const {
     return position;

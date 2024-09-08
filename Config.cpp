@@ -1,4 +1,4 @@
-#include "Config.h"
+#include "Headers/Config.h"
 #include <iostream>
 
 namespace Config {
