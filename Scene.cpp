@@ -15,18 +15,18 @@ MenuScene::MenuScene(std::function<void(Scene *)> sceneChanger)
     float width = Config::Window::WIDTH;
 
     auto* label = new UI::Label("Minecraft Clone");
-    label->setFontSize(60);
-    label->setPosition({width / 2 - 205, 100});
+    label->setFontSize(Config::Widgets::TITLE_FONT_SIZE);
+    label->setPosition({width / 2 - 370, 100});
 
     auto* startButton = new UI::Button("Play");
-    startButton->setFontSize(20);
-    startButton->setSize({200, 50});
-    startButton->setPosition({width / 2 - 100, height / 2});
+    startButton->setFontSize(Config::Widgets::FONT_SIZE);
+    startButton->setSize({Config::Widgets::BUTTON_WIDTH, Config::Widgets::BUTTON_HEIGHT});
+    startButton->setPosition({width / 2 - Config::Widgets::BUTTON_WIDTH / 2, height / 2 - 100});
 
     auto* exitButton = new UI::Button("Exit");
-    exitButton->setFontSize(20);
-    exitButton->setSize({200, 50});
-    exitButton->setPosition({width / 2 - 100, height / 2 + 75});
+    exitButton->setFontSize(Config::Widgets::FONT_SIZE);
+    exitButton->setSize({Config::Widgets::BUTTON_WIDTH, Config::Widgets::BUTTON_HEIGHT});
+    exitButton->setPosition({width / 2 - Config::Widgets::BUTTON_WIDTH / 2, height / 2 + Config::Widgets::BUTTON_HEIGHT - 50});
 
     layout.addWidget(label);
     layout.addWidget(startButton);
@@ -51,8 +51,8 @@ void MenuScene::onClick(sf::Vector2f position) {
 void MenuScene::onResize(unsigned int width, unsigned int height) {}
 
 GameScene::GameScene(std::function<void(Scene*)> sceneChanger) : Scene(std::move(sceneChanger)) {
-    cubes.emplace_back(50);
-    cubes.emplace_back(50);
+    cubes.emplace_back(200);
+    cubes.emplace_back(200);
     cubes[1].setPosition({400, 200});
 }
 

@@ -10,11 +10,20 @@ namespace Config {
     static std::string executablePath;
 
     namespace Window {
-        const unsigned int WIDTH = 800;
-        const unsigned int HEIGHT = 600;
+        const unsigned int WIDTH = 1920;
+        const unsigned int HEIGHT = 1080;
         const std::string TITLE = "Minecraft Clone";
 
         const unsigned int FPS = 60;
+    }
+
+    namespace Widgets {
+        const unsigned int TITLE_FONT_SIZE = 100;
+
+        const unsigned int BUTTON_WIDTH = 300;
+        const unsigned int BUTTON_HEIGHT = 125;
+
+        const unsigned int FONT_SIZE = 50;
     }
 
     class Assets {
