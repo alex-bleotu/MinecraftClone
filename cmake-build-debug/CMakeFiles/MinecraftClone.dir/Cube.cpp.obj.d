@@ -83,15 +83,7 @@ CMakeFiles/MinecraftClone.dir/Cube.cpp.obj: \
  C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/gslice_array.h \
  C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/mask_array.h \
  C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/indirect_array.h \
- C:\Users\alexb\Projects\MinecraftClone\Headers/Cube.h \
- C:/PROGRA~1/SFML-2~1.1/include/SFML/Graphics.hpp \
- C:/PROGRA~1/SFML-2~1.1/include/SFML/Window.hpp \
- C:/PROGRA~1/SFML-2~1.1/include/SFML/System.hpp \
- C:/PROGRA~1/SFML-2~1.1/include/SFML/Config.hpp \
- C:/PROGRA~1/SFML-2~1.1/include/SFML/System/Clock.hpp \
- C:/PROGRA~1/SFML-2~1.1/include/SFML/System/Export.hpp \
- C:/PROGRA~1/SFML-2~1.1/include/SFML/System/Time.hpp \
- C:/PROGRA~1/SFML-2~1.1/include/SFML/System/Err.hpp \
+ C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/iostream \
  C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/ostream \
  C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/ios \
  C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/iosfwd \
@@ -184,6 +176,17 @@ CMakeFiles/MinecraftClone.dir/Cube.cpp.obj: \
  C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/locale_facets.tcc \
  C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/basic_ios.tcc \
  C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/ostream.tcc \
+ C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/istream \
+ C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/istream.tcc \
+ C:\Users\alexb\Projects\MinecraftClone\Headers/Cube.h \
+ C:/PROGRA~1/SFML-2~1.1/include/SFML/Graphics.hpp \
+ C:/PROGRA~1/SFML-2~1.1/include/SFML/Window.hpp \
+ C:/PROGRA~1/SFML-2~1.1/include/SFML/System.hpp \
+ C:/PROGRA~1/SFML-2~1.1/include/SFML/Config.hpp \
+ C:/PROGRA~1/SFML-2~1.1/include/SFML/System/Clock.hpp \
+ C:/PROGRA~1/SFML-2~1.1/include/SFML/System/Export.hpp \
+ C:/PROGRA~1/SFML-2~1.1/include/SFML/System/Time.hpp \
+ C:/PROGRA~1/SFML-2~1.1/include/SFML/System/Err.hpp \
  C:/PROGRA~1/SFML-2~1.1/include/SFML/System/FileInputStream.hpp \
  C:/PROGRA~1/SFML-2~1.1/include/SFML/System/InputStream.hpp \
  C:/PROGRA~1/SFML-2~1.1/include/SFML/System/NonCopyable.hpp \

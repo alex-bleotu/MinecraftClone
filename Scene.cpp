@@ -53,12 +53,14 @@ void MenuScene::onResize(unsigned int width, unsigned int height) {}
 GameScene::GameScene(std::function<void(Scene*)> sceneChanger) : Scene(std::move(sceneChanger)) {
     cubes.emplace_back(200);
     cubes.emplace_back(200);
+    cubes.emplace_back(200);
     cubes[1].setPosition({400, 200});
+    cubes[2].setPosition({600, 200});
 }
 
 void GameScene::update(float& deltaTime) {
     for (auto& cube : cubes) {
-        cube.rotate(0.01, 0.01, 0.01);
+        cube.rotate(0.01, 0, 0);
         cube.update(deltaTime);
     }
 }

@@ -1,5 +1,6 @@
 #include <utility>
 #include <valarray>
+#include <iostream>
 
 #include "Headers/Cube.h"
 
@@ -44,7 +45,7 @@ void Cube::render(sf::RenderWindow &window) const {
 
     // Sort faces using Painter's Algorithm based on the average depth (z-value) of the face
     std::vector<std::pair<int, float>> faceDepths;
-    for (int i = 0; i < faces.size(); ++i) {
+    for (int i = 0; i < faces.size(); i++) {
         float depth = computeFaceDepth(faces[i], transformedVertices); // Compute depth using 3D z-values
         faceDepths.push_back({i, depth});
     }
@@ -54,21 +55,23 @@ void Cube::render(sf::RenderWindow &window) const {
         return a.second > b.second; // Sort by z-depth in descending order
     });
 
-    // Project and render faces in sorted order
+    // Project the vertices after transformation
     std::vector<sf::Vector2f> projectedVertices(8);
     projectVertices(transformedVertices, projectedVertices);
 
-    for (const auto& pair : faceDepths) {
-        int faceIndex = pair.first;
+    // Render only the closest 3 faces
+    for (int i = 3; i < 6; i++) {
+        int faceIndex = faceDepths[i].first;
         renderFace(window, projectedVertices, faces[faceIndex], colors[faceIndex]);
     }
 }
+
 
 void Cube::renderFace(sf::RenderWindow &window, const std::vector<sf::Vector2f>& projectedVertices, const std::array<int, 4>& face, const sf::Color color) const {
     sf::ConvexShape shape;
     shape.setPointCount(4);
 
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < 4; i++) {
         shape.setPoint(i, projectedVertices[face[i]]);
     }
 
@@ -78,7 +81,7 @@ void Cube::renderFace(sf::RenderWindow &window, const std::vector<sf::Vector2f>&
 }
 
 void Cube::applyRotation(std::vector<sf::Vector3f>& transformedVertices, float angleX, float angleY, float angleZ) const {
-    for (int i = 0; i < vertices.size(); ++i) {
+    for (int i = 0; i < vertices.size(); i++) {
         float x = vertices[i].x;
         float y = vertices[i].y;
         float z = vertices[i].z;
@@ -106,14 +109,14 @@ void Cube::applyRotation(std::vector<sf::Vector3f>& transformedVertices, float a
 
 float Cube::computeFaceDepth(const std::array<int, 4>& face, const std::vector<sf::Vector3f>& transformedVertices) const {
     float depth = 0.0f;
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < 4; i++) {
         depth += transformedVertices[face[i]].z; // Use the z-value of the 3D vertex
     }
     return depth / 4.0f; // Return the average z-value (depth) of the face
 }
 
 void Cube::projectVertices(const std::vector<sf::Vector3f>& transformedVertices, std::vector<sf::Vector2f>& projectedVertices) const {
-    for (int i = 0; i < transformedVertices.size(); ++i) {
+    for (int i = 0; i < transformedVertices.size(); i++) {
         projectedVertices[i] = projectPoint(transformedVertices[i]);
     }
 }
