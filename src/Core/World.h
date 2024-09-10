@@ -17,10 +17,12 @@ public:
     void update(float deltaTime);
 
     // Render all blocks in the world
-    void render() const;
+    void render(sf::RenderWindow& window) const;
 
 private:
     std::vector<Block> blocks;  // List of blocks in the world
+
+    const sf::Color skyColor = sf::Color(120, 167, 255);
 };
 
 

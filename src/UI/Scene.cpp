@@ -74,8 +74,6 @@ void GameScene::update(float& deltaTime) {
 }
 
 void GameScene::render() const {
-    window.clear(sf::Color::Cyan);
-
     // Clear buffers
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -86,7 +84,7 @@ void GameScene::render() const {
     camera.apply();
 
     // Render the world
-    world.render();
+    world.render(window);
 
     // Disable depth testing
     glDisable(GL_DEPTH_TEST);

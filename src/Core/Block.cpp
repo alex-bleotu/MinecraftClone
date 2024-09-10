@@ -34,11 +34,12 @@ const GLfloat Block::textureCoords[48] = {
         0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,
         // Top face (vertices: 2, 3, 7, 6)
         0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,
-        // Left face (vertices: 0, 3, 7, 4)
-        0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,
-        // Right face (vertices: 1, 2, 6, 5)
-        0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,
+        // Left face (vertices: 0, 3, 7, 4) - Flipped by 90 degrees
+        1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,  0.0f, 0.0f,
+        // Right face (vertices: 1, 2, 6, 5) - Flipped by 90 degrees
+        1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,  0.0f, 0.0f
 };
+
 
 // Constructor to initialize block with type and position
 Block::Block(BlockType type, const sf::Vector3i& position)

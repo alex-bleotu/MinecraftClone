@@ -44,7 +44,9 @@ void World::update(float deltaTime) {
     // Currently empty, could update blocks in the future
 }
 
-void World::render() const {
+void World::render(sf::RenderWindow& window) const {
+    window.clear(skyColor);
+
     // Render each block in the world
     for (const auto& block : blocks) {
         block.render();
