@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "src/Config.h"
 #include "src/Utils/Math.h"
+#include "src/Utils/Texture.h"
 
 Game::Game() {
     sf::ContextSettings settings;
@@ -14,6 +15,8 @@ Game::Game() {
 }
 
 void Game::run() {
+    Texture::loadTextures();
+
     // Setup OpenGL perspective matrix
     float fov = 45.f;
     float aspectRatio = static_cast<float>(Config::Window::WIDTH) / static_cast<float>(Config::Window::HEIGHT);

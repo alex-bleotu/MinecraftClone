@@ -121,6 +121,14 @@ build CMakeFiles/MinecraftClone.dir/src/Rendering/Camera.cpp.obj: CXX_COMPILER__
   OBJECT_DIR = CMakeFiles\MinecraftClone.dir
   OBJECT_FILE_DIR = CMakeFiles\MinecraftClone.dir\src\Rendering
 
+build CMakeFiles/MinecraftClone.dir/src/Utils/Texture.cpp.obj: CXX_COMPILER__MinecraftClone_unscanned_Debug D$:/Projects/GitHub/MinecraftClone/src/Utils/Texture.cpp || cmake_object_order_depends_target_MinecraftClone
+  DEFINES = -DSFML_STATIC
+  DEP_FILE = CMakeFiles\MinecraftClone.dir\src\Utils\Texture.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -I"C:/Program Files/SFML-2.6.1/include/SFML" -isystem "C:/Program Files/SFML-2.6.1/include"
+  OBJECT_DIR = CMakeFiles\MinecraftClone.dir
+  OBJECT_FILE_DIR = CMakeFiles\MinecraftClone.dir\src\Utils
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target MinecraftClone
@@ -129,7 +137,7 @@ build CMakeFiles/MinecraftClone.dir/src/Rendering/Camera.cpp.obj: CXX_COMPILER__
 #############################################
 # Link the executable MinecraftClone.exe
 
-build MinecraftClone.exe: CXX_EXECUTABLE_LINKER__MinecraftClone_Debug CMakeFiles/MinecraftClone.dir/main.cpp.obj CMakeFiles/MinecraftClone.dir/Game.cpp.obj CMakeFiles/MinecraftClone.dir/src/UI/Scene.cpp.obj CMakeFiles/MinecraftClone.dir/src/UI/UserInterface.cpp.obj CMakeFiles/MinecraftClone.dir/src/Config.cpp.obj CMakeFiles/MinecraftClone.dir/src/Core/Block.cpp.obj CMakeFiles/MinecraftClone.dir/src/Utils/Math.cpp.obj CMakeFiles/MinecraftClone.dir/src/Core/World.cpp.obj CMakeFiles/MinecraftClone.dir/src/Rendering/Camera.cpp.obj | C$:/Program$ Files/SFML-2.6.1/lib/libsfml-system-s-d.a C$:/Program$ Files/SFML-2.6.1/lib/libsfml-window-s-d.a C$:/Program$ Files/SFML-2.6.1/lib/libsfml-graphics-s-d.a C$:/Program$ Files/SFML-2.6.1/lib/libsfml-audio-s-d.a C$:/Program$ Files/SFML-2.6.1/lib/libsfml-window-s-d.a C$:/Program$ Files/SFML-2.6.1/lib/libfreetype.a C$:/Program$ Files/SFML-2.6.1/lib/libsfml-system-s-d.a C$:/Program$ Files/SFML-2.6.1/lib/libopenal32.a C$:/Program$ Files/SFML-2.6.1/lib/libvorbisfile.a C$:/Program$ Files/SFML-2.6.1/lib/libvorbisenc.a C$:/Program$ Files/SFML-2.6.1/lib/libvorbis.a C$:/Program$ Files/SFML-2.6.1/lib/libogg.a C$:/Program$ Files/SFML-2.6.1/lib/libFLAC.a
+build MinecraftClone.exe: CXX_EXECUTABLE_LINKER__MinecraftClone_Debug CMakeFiles/MinecraftClone.dir/main.cpp.obj CMakeFiles/MinecraftClone.dir/Game.cpp.obj CMakeFiles/MinecraftClone.dir/src/UI/Scene.cpp.obj CMakeFiles/MinecraftClone.dir/src/UI/UserInterface.cpp.obj CMakeFiles/MinecraftClone.dir/src/Config.cpp.obj CMakeFiles/MinecraftClone.dir/src/Core/Block.cpp.obj CMakeFiles/MinecraftClone.dir/src/Utils/Math.cpp.obj CMakeFiles/MinecraftClone.dir/src/Core/World.cpp.obj CMakeFiles/MinecraftClone.dir/src/Rendering/Camera.cpp.obj CMakeFiles/MinecraftClone.dir/src/Utils/Texture.cpp.obj | C$:/Program$ Files/SFML-2.6.1/lib/libsfml-system-s-d.a C$:/Program$ Files/SFML-2.6.1/lib/libsfml-window-s-d.a C$:/Program$ Files/SFML-2.6.1/lib/libsfml-graphics-s-d.a C$:/Program$ Files/SFML-2.6.1/lib/libsfml-audio-s-d.a C$:/Program$ Files/SFML-2.6.1/lib/libsfml-window-s-d.a C$:/Program$ Files/SFML-2.6.1/lib/libfreetype.a C$:/Program$ Files/SFML-2.6.1/lib/libsfml-system-s-d.a C$:/Program$ Files/SFML-2.6.1/lib/libopenal32.a C$:/Program$ Files/SFML-2.6.1/lib/libvorbisfile.a C$:/Program$ Files/SFML-2.6.1/lib/libvorbisenc.a C$:/Program$ Files/SFML-2.6.1/lib/libvorbis.a C$:/Program$ Files/SFML-2.6.1/lib/libogg.a C$:/Program$ Files/SFML-2.6.1/lib/libFLAC.a
   FLAGS = -g
   LINK_LIBRARIES = "C:/Program Files/SFML-2.6.1/lib/libsfml-system-s-d.a"  "C:/Program Files/SFML-2.6.1/lib/libsfml-window-s-d.a"  "C:/Program Files/SFML-2.6.1/lib/libsfml-graphics-s-d.a"  "C:/Program Files/SFML-2.6.1/lib/libsfml-audio-s-d.a"  "C:/Program Files/SFML-2.6.1/lib/libsfml-window-s-d.a"  -lOpenGL32  -lgdi32  "C:/Program Files/SFML-2.6.1/lib/libfreetype.a"  "C:/Program Files/SFML-2.6.1/lib/libsfml-system-s-d.a"  -lwinmm  "C:/Program Files/SFML-2.6.1/lib/libopenal32.a"  "C:/Program Files/SFML-2.6.1/lib/libvorbisfile.a"  "C:/Program Files/SFML-2.6.1/lib/libvorbisenc.a"  "C:/Program Files/SFML-2.6.1/lib/libvorbis.a"  "C:/Program Files/SFML-2.6.1/lib/libogg.a"  "C:/Program Files/SFML-2.6.1/lib/libFLAC.a"  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\MinecraftClone.dir

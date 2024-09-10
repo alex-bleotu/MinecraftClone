@@ -1,9 +1,6 @@
-#include <utility>
-#include <valarray>
-#include <iostream>
 #include "Block.h"
 #include "../Utils/Math.h"
-#include "../Config.h"
+#include "../Utils/Texture.h"
 
 // Define static vertices for the cube
 const GLfloat Block::vertices[24] = {
@@ -25,6 +22,22 @@ const GLuint Block::indices[36] = {
         2, 3, 7, 7, 6, 2,  // Top face
         0, 3, 7, 7, 4, 0,  // Left face
         1, 2, 6, 6, 5, 1   // Right face
+};
+
+// Define static texture coordinates for the cube
+const GLfloat Block::textureCoords[48] = {
+        // Front face (vertices: 0, 1, 2, 3)
+        0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,
+        // Back face (vertices: 4, 5, 6, 7)
+        0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,
+        // Bottom face (vertices: 0, 1, 5, 4)
+        0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,
+        // Top face (vertices: 2, 3, 7, 6)
+        0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,
+        // Left face (vertices: 0, 3, 7, 4)
+        0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,
+        // Right face (vertices: 1, 2, 6, 5)
+        0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,
 };
 
 // Constructor to initialize block with type and position
@@ -65,25 +78,29 @@ bool Block::isVisible() const {
 void Block::render() const {
     if (!m_isVisible) return; // Only render if the block is visible
 
-    // Enable depth testing
+    // Enable depth testing and texture
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_TEXTURE_2D);
 
-    // Set the color based on block type
+    // Bind the texture based on block type
     switch (m_type) {
         case BlockType::DIRT:
-            glColor3f(0.545f, 0.271f, 0.075f); // Brown for dirt
+            glBindTexture(GL_TEXTURE_2D, Texture::dirt.getNativeHandle());
             break;
         case BlockType::GRASS:
-            glColor3f(0.133f, 0.545f, 0.133f); // Green for grass
+            glBindTexture(GL_TEXTURE_2D, Texture::grass.getNativeHandle());
             break;
         case BlockType::STONE:
-            glColor3f(0.5f, 0.5f, 0.5f); // Gray for stone
+            glBindTexture(GL_TEXTURE_2D, Texture::stone.getNativeHandle());
             break;
         case BlockType::WATER:
-            glColor3f(0.0f, 0.0f, 1.0f); // Blue for water
+            glBindTexture(GL_TEXTURE_2D, Texture::water.getNativeHandle());
+            break;
+        case BlockType::PLANKS:
+            glBindTexture(GL_TEXTURE_2D, Texture::planks.getNativeHandle());
             break;
         default:
-            glColor3f(1.0f, 1.0f, 1.0f); // Default white
+            glBindTexture(GL_TEXTURE_2D, Texture::none.getNativeHandle());
             break;
     }
 
@@ -93,10 +110,32 @@ void Block::render() const {
     // Translate to the block's position
     glTranslatef(static_cast<float>(m_position.x), static_cast<float>(m_position.y), static_cast<float>(m_position.z));
 
-    // Render the cube
+    // Render the cube using triangles
     glBegin(GL_TRIANGLES);
-    for (int i = 0; i < 36; ++i) {
+    for (int i = 0; i < 36; i++) {
         int vertexIndex = indices[i];
+
+        // Calculate face and triangle indices
+        int faceIndex = i / 6;       // Determines which face we're rendering (6 vertices per face)
+        int triangleIndex = i % 6;   // Determines which triangle of the face (0-2 for first triangle, 3-5 for second)
+
+        // Texture coordinate assignment logic
+        // Each face has four texture coordinates (4 vertices)
+        int texCoordOffset = faceIndex * 8;
+
+        // First triangle: Use the first three texture coordinates
+        if (triangleIndex < 3) {
+            // First triangle of the face (uses texture coords for vertices 0, 1, 2)
+            glTexCoord2f(textureCoords[texCoordOffset + triangleIndex * 2], textureCoords[texCoordOffset + triangleIndex * 2 + 1]);
+        }
+            // Second triangle: Use the correct texture coordinates for vertices 2, 3, 0
+        else {
+            // Second triangle of the face (uses texture coords for vertices 2, 3, 0)
+            int correctedIndex = (triangleIndex == 3) ? 2 : (triangleIndex == 4) ? 3 : 0;
+            glTexCoord2f(textureCoords[texCoordOffset + correctedIndex * 2], textureCoords[texCoordOffset + correctedIndex * 2 + 1]);
+        }
+
+        // Apply the vertex positions
         glVertex3f(vertices[3 * vertexIndex], vertices[3 * vertexIndex + 1], vertices[3 * vertexIndex + 2]);
     }
     glEnd();
@@ -104,7 +143,7 @@ void Block::render() const {
     // Restore the previous matrix state
     glPopMatrix();
 
-    // Disable depth testing after rendering
+    // Disable depth testing and texture
+    glDisable(GL_TEXTURE_2D);
     glDisable(GL_DEPTH_TEST);
 }
-

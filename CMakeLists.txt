@@ -19,7 +19,9 @@ add_executable(MinecraftClone main.cpp
         src/Core/World.h
         src/Core/World.cpp
         src/Rendering/Camera.h
-        src/Rendering/Camera.cpp)
+        src/Rendering/Camera.cpp
+        src/Utils/Texture.h
+        src/Utils/Texture.cpp)
 
 set(SFML_STATIC_LIBRARIES TRUE)
 set(SFML_DIR "C:/Program Files/SFML-2.6.1/include/SFML")

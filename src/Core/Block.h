@@ -12,6 +12,7 @@ enum class BlockType {
     GRASS,  // Grass block
     STONE,  // Stone block
     WATER,  // Water block
+    PLANKS,   // Wood block
     // Add more types as needed
 };
 
@@ -48,6 +49,9 @@ private:
 
     // Cube indices for drawing faces
     static const GLuint indices[36];
+
+    // Cube texture coordinates
+    static const GLfloat textureCoords[48];
 };
 
 

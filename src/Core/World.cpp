@@ -6,12 +6,38 @@ World::World() {
 
 void World::init() {
     // Example: Add blocks to the world at different positions
-    for (int i = 0; i < 10; i++)
-        for (int j = 0; j < 10; j++)
-            if (i % 2 == 0 && j % 2 == 0)
-                blocks.emplace_back(Block(BlockType::GRASS, {i, 0, j}));
-            else
-                blocks.emplace_back(Block(BlockType::DIRT, {i, 0, j}));
+    for (int i = -20; i < 30; i++)
+        for (int j = -20; j < 30; j++)
+            blocks.emplace_back(Block(BlockType::GRASS, {i, 0, j}));
+
+    for (int i = 1; i <= 3; i++) {
+        blocks.emplace_back(Block(BlockType::DIRT, {6, i, 2}));
+        blocks.emplace_back(Block(BlockType::PLANKS, {5, i, 2}));
+        blocks.emplace_back(Block(BlockType::PLANKS, {4, i, 2}));
+        blocks.emplace_back(Block(BlockType::PLANKS, {3, i, 2}));
+        blocks.emplace_back(Block(BlockType::DIRT, {2, i, 2}));
+        blocks.emplace_back(Block(BlockType::DIRT, {6, i, 6}));
+        blocks.emplace_back(Block(BlockType::PLANKS, {5, i, 6}));
+        blocks.emplace_back(Block(BlockType::PLANKS, {3, i, 6}));
+        blocks.emplace_back(Block(BlockType::DIRT, {2, i, 6}));
+        blocks.emplace_back(Block(BlockType::PLANKS, {2, i, 5}));
+        blocks.emplace_back(Block(BlockType::PLANKS, {2, i, 4}));
+        blocks.emplace_back(Block(BlockType::PLANKS, {2, i, 3}));
+        blocks.emplace_back(Block(BlockType::PLANKS, {6, i, 5}));
+        blocks.emplace_back(Block(BlockType::PLANKS, {6, i, 4}));
+        blocks.emplace_back(Block(BlockType::PLANKS, {6, i, 3}));
+    }
+    blocks.emplace_back(Block(BlockType::PLANKS, {4, 3, 6}));
+    blocks.emplace_back(Block(BlockType::PLANKS, {3, 3, 3}));
+    blocks.emplace_back(Block(BlockType::PLANKS, {3, 3, 4}));
+    blocks.emplace_back(Block(BlockType::PLANKS, {3, 3, 5}));
+    blocks.emplace_back(Block(BlockType::PLANKS, {4, 3, 3}));
+    blocks.emplace_back(Block(BlockType::PLANKS, {5, 3, 3}));
+    blocks.emplace_back(Block(BlockType::PLANKS, {4, 3, 4}));
+    blocks.emplace_back(Block(BlockType::PLANKS, {5, 3, 5}));
+    blocks.emplace_back(Block(BlockType::PLANKS, {4, 3, 5}));
+    blocks.emplace_back(Block(BlockType::PLANKS, {5, 3, 4}));
+
 }
 
 void World::update(float deltaTime) {
