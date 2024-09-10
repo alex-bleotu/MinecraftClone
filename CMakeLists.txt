@@ -4,16 +4,22 @@ project(MinecraftClone)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(MinecraftClone main.cpp
-        Headers/Game.h
+        Game.h
         Game.cpp
-        Headers/Scene.h
-        Scene.cpp
-        Headers/UserInterface.h
-        UserInterface.cpp
-        Headers/Config.h
-        Config.cpp
-        Headers/Cube.h
-        Cube.cpp)
+        src/UI/Scene.h
+        src/UI/Scene.cpp
+        src/UI/UserInterface.h
+        src/UI/UserInterface.cpp
+        src/Config.h
+        src/Config.cpp
+        src/Core/Block.h
+        src/Core/Block.cpp
+        src/Utils/Math.h
+        src/Utils/Math.cpp
+        src/Core/World.h
+        src/Core/World.cpp
+        src/Rendering/Camera.h
+        src/Rendering/Camera.cpp)
 
 set(SFML_STATIC_LIBRARIES TRUE)
 set(SFML_DIR "C:/Program Files/SFML-2.6.1/include/SFML")
