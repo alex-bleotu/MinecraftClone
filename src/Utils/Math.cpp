@@ -1,19 +1,5 @@
-#include <math.h>
+#include <cmath>
 #include "Math.h"
-
-void Math::setPerspectiveMatrix(float fov, float aspectRatio, float nearPlane, float farPlane) {
-    float top = nearPlane * tan(fov * M_PI / 360.0);
-    float bottom = -top;
-    float right = top * aspectRatio;
-    float left = -right;
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glFrustum(left, right, bottom, top, nearPlane, farPlane);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-}
-
 
 Math::AABB::AABB(const sf::Vector3f &min, const sf::Vector3f &max) : min(min), max(max) {}
 

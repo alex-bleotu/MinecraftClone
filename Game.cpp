@@ -17,15 +17,6 @@ Game::Game() {
 void Game::run() {
     Texture::loadTextures();
 
-    // Setup OpenGL perspective matrix
-    float fov = 45.f;
-    float aspectRatio = static_cast<float>(Config::Window::WIDTH) / static_cast<float>(Config::Window::HEIGHT);
-    float nearPlane = 0.1f;
-    float farPlane = 100.f;
-
-    // Assuming Math::setPerspectiveMatrix is a custom function for setting up projection matrices
-    Math::setPerspectiveMatrix(fov, aspectRatio, nearPlane, farPlane);
-
     // Main game loop
     sf::Clock clock;
 

@@ -14,7 +14,7 @@ public:
     Player();
 
     // Update the player based on user input
-    void update(float deltaTime, sf::RenderWindow& window, const World& world);
+    void update(float deltaTime, sf::RenderWindow& window, World& world);
 
     // Apply the player transformations (position and rotation)
     void apply() const;
@@ -33,6 +33,9 @@ public:
 
     // Set the player position
     void setPosition(const sf::Vector3f& position);
+
+    // Check if the player is colliding with any blocks in the world
+    [[nodiscard]] sf::Vector3f getLookDirection() const;
 
 private:
     float x, y, z;      // Player position
@@ -59,11 +62,11 @@ private:
     // Whether the mouse is locked (for first person player)
     bool isMouseLocked = false;
 
-    void handleInput(float deltaTime, const World& world);  // Handle keyboard input for movement and jumping
+    void handleInput(float deltaTime, World& world);  // Handle keyboard input for movement and jumping
     void handleMouseInput(float deltaTime, sf::RenderWindow& window);  // Handle mouse input for looking around
 
     // Update the player's vertical movement (jumping and gravity)
-    void updateVerticalMovement(float deltaTime, const World& world);
+    void updateVerticalMovement(float deltaTime, World& world);
 
     // Check if the player is colliding with any blocks in the world
     [[nodiscard]] Math::AABB getPlayerAABB() const;

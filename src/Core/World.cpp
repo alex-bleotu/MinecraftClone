@@ -1,3 +1,4 @@
+#include <iostream>
 #include "World.h"
 
 World::World() {}
@@ -42,10 +43,6 @@ void World::init() {
     setBlockAt({5, 3, 5}, BlockType::PLANKS);
     setBlockAt({4, 3, 5}, BlockType::PLANKS);
     setBlockAt({5, 3, 4}, BlockType::PLANKS);
-
-    // Add some water blocks
-    setBlockAt({1, 1, 1}, BlockType::WATER);
-    setBlockAt({0, 1, 1}, BlockType::WATER);
 }
 
 void World::update(float deltaTime) {
@@ -68,17 +65,6 @@ void World::render(sf::RenderWindow& window) const {
 
     // Disable depth testing
     glDisable(GL_DEPTH_TEST);
-}
-
-const Block* World::getBlockAt(const sf::Vector3i& position) const {
-    // Find the block at the given position
-    for (const auto& [position, block] : blocks) {
-        if (block.getPosition() == position) {
-            return const_cast<Block*>(&block);
-        }
-    }
-
-    return nullptr;
 }
 
 bool World::checkCollision(const Math::AABB& playerAABB) const {
@@ -120,4 +106,74 @@ const Block* World::getBlockAt(const sf::Vector3i& position) const {
 
 void World::removeBlockAt(const sf::Vector3i& position) {
     blocks.erase(position);  // Erase the block at the given position
+}
+
+sf::Vector3i World::raycast(const Player& player, float maxDistance) const {
+    // Get the player's current position and look direction
+    sf::Vector3f rayOrigin = player.getPosition();
+    sf::Vector3f rayDirection = player.getLookDirection();  // Assume this method exists
+
+    // Normalize the direction vector
+    rayDirection /= std::sqrt(rayDirection.x * rayDirection.x + rayDirection.y * rayDirection.y + rayDirection.z * rayDirection.z);
+
+    // Ray step increment
+    float step = 0.1f;  // Small steps for precision
+    sf::Vector3f ray = rayOrigin;
+
+    // Step along the ray until a block is hit or max distance is exceeded
+    for (float distance = 0.0f; distance < maxDistance; distance += step) {
+        ray += rayDirection * step;
+
+        sf::Vector3i blockPos = sf::Vector3i(std::floor(ray.x), std::floor(ray.y), std::floor(ray.z));
+
+        // Check if a block exists at this position and is visible
+        if (const Block* block = getBlockAt(blockPos)) {
+            if (block->isVisible()) {
+                return blockPos;  // Return the position of the block hit by the ray
+            }
+        }
+    }
+
+    return sf::Vector3i(-1000, -1000, -1000);  // Return invalid position if no block was found
+}
+
+void World::breakBlock(const Player& player) {
+    // Raycast to find the block the player is looking at
+    sf::Vector3i blockPos = raycast(player, 5.0f);  // Assume max reach distance is 5 units
+
+    if (blockPos != sf::Vector3i(-1000, -1000, -1000)) {
+        // Remove the block from the map
+        removeBlockAt(blockPos);
+    }
+}
+
+void World::placeBlock(const Player& player, BlockType blockType) {
+    // Raycast to find the block the player is looking at
+    sf::Vector3i blockPos = raycast(player, 5.0f);  // Assume max reach distance is 5 units
+
+    if (blockPos != sf::Vector3i(-1000, -1000, -1000)) {
+        // Find the adjacent position to place the block
+        sf::Vector3f normal = getBlockFaceNormal(player, blockPos);  // Assume this method exists
+        sf::Vector3i newBlockPos = blockPos + sf::Vector3i(normal.x, normal.y, normal.z);
+
+        // Place the block in the world
+        setBlockAt(newBlockPos, blockType);
+    }
+}
+
+sf::Vector3f World::getBlockFaceNormal(const Player& player, const sf::Vector3i& blockPos) const {
+    sf::Vector3f playerPos = player.getPosition();
+    sf::Vector3f blockCenter = sf::Vector3f(blockPos.x + 0.5f, blockPos.y + 0.5f, blockPos.z + 0.5f);
+
+    // Calculate the direction from the block center to the player
+    sf::Vector3f direction = playerPos - blockCenter;
+
+    // Find the largest component of the direction vector
+    if (std::abs(direction.x) > std::abs(direction.y) && std::abs(direction.x) > std::abs(direction.z)) {
+        return {(direction.x > 0) ? 1.0f : -1.0f, 0.0f, 0.0f};  // Left or right face
+    } else if (std::abs(direction.y) > std::abs(direction.x) && std::abs(direction.y) > std::abs(direction.z)) {
+        return {0.0f, (direction.y > 0) ? 1.0f : -1.0f, 0.0f};  // Top or bottom face
+    } else {
+        return {0.0f, 0.0f, (direction.z > 0) ? 1.0f : -1.0f};  // Front or back face
+    }
 }

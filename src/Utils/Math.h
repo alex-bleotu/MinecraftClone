@@ -5,11 +5,22 @@
 #include <SFML/OpenGL.hpp>
 #include <System/Vector3.hpp>
 #include <functional>
+#include <cmath>
 
 namespace Math {
-
     // Custom gluPerspective function
-    void static setPerspectiveMatrix(float fov, float aspectRatio, float nearPlane, float farPlane);
+    void static setPerspectiveMatrix(float fov, float aspectRatio, float nearPlane, float farPlane) {
+        float top = nearPlane * tan(fov * M_PI / 360.0);
+        float bottom = -top;
+        float right = top * aspectRatio;
+        float left = -right;
+
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glFrustum(left, right, bottom, top, nearPlane, farPlane);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+    }
 
     // Axis-aligned bounding box (AABB) for collision detection
     struct AABB {

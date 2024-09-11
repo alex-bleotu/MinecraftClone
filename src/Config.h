@@ -36,6 +36,8 @@ namespace Config {
         const float NORMAL_HEIGHT = 1.72f;
         const float CROUCH_HEIGHT = 1.2f;
 
+        const float FOV = 50.0f;
+
         const float SENSITIVITY = 0.1f;
 
         const float X = 0.0f;

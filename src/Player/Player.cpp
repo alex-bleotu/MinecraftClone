@@ -10,7 +10,7 @@ Player::Player() : x(Config::Player::X), y(Config::Player::Y), z(Config::Player:
                    jumpVelocity(Config::Player::JUMP_VELOCITY), verticalVelocity(0.0f),
                    isGrounded(false), isSprinting(false), isCrouching(false) {}
 
-void Player::update(float deltaTime, sf::RenderWindow& window, const World& world) {
+void Player::update(float deltaTime, sf::RenderWindow& window, World& world) {
     // Handle keyboard input for movement and jumping
     handleInput(deltaTime, world);  // Pass the world for collision checks
 
@@ -38,7 +38,7 @@ void Player::apply() const {
     glTranslatef(-x, -(y + cameraHeight), -z);
 }
 
-void Player::handleInput(float deltaTime, const World& world) {
+void Player::handleInput(float deltaTime, World& world) {
     float moveSpeed = speed * deltaTime;
     float moveX = 0.0f, moveZ = 0.0f;  // Initialize movement on the X and Z axes
 
@@ -101,8 +101,6 @@ void Player::handleInput(float deltaTime, const World& world) {
     // First, check collision on X axis
     if (!world.checkCollision(playerAABB)) {
         x = newPosition.x;  // No collision on X axis, apply movement
-    } else {
-        std::cout << "Collision on X axis, sliding along Z!" << std::endl;
     }
 
     // Now check the Z axis movement
@@ -112,14 +110,22 @@ void Player::handleInput(float deltaTime, const World& world) {
 
     if (!world.checkCollision(playerAABB)) {
         z = newPosition.z;  // No collision on Z axis, apply movement
-    } else {
-        std::cout << "Collision on Z axis, sliding along X!" << std::endl;
     }
 
     // Jumping (only when grounded)
     if (isGrounded && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
         verticalVelocity = jumpVelocity;
         isGrounded = false;
+    }
+
+    // Check for block-breaking input (left mouse click)
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+        world.breakBlock(*this);
+    }
+
+    // Check for block-placing input (right mouse click)
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
+        world.placeBlock(*this, BlockType::PLANKS);
     }
 }
 
@@ -182,7 +188,7 @@ void Player::setPosition(const sf::Vector3f& position) {
     z = position.z;
 }
 
-void Player::updateVerticalMovement(float deltaTime, const World& world) {
+void Player::updateVerticalMovement(float deltaTime, World& world) {
     if (!isGrounded || verticalVelocity != 0) {  // Handle movement when jumping or falling
         // Apply gravity if the player is not grounded
         verticalVelocity -= gravity * deltaTime;
@@ -217,8 +223,22 @@ void Player::updateVerticalMovement(float deltaTime, const World& world) {
 
 Math::AABB Player::getPlayerAABB() const {
     if (isCrouching) {
-        return Math::AABB({ x - 0.3f, y, z - 0.3f }, { x + 0.3f, y + crouchHeight, z + 0.3f });
+        return {{ x - 0.3f, y, z - 0.3f }, { x + 0.3f, y + crouchHeight, z + 0.3f }};
     } else {
-        return Math::AABB({ x - 0.3f, y, z - 0.3f }, { x + 0.3f, y + normalHeight, z + 0.3f });
+        return {{ x - 0.3f, y, z - 0.3f }, { x + 0.3f, y + normalHeight, z + 0.3f }};
     }
+}
+
+sf::Vector3f Player::getLookDirection() const {
+    // Convert yaw and pitch from degrees to radians
+    float yawRadians = yaw * M_PI / 180.0f;
+    float pitchRadians = pitch * M_PI / 180.0f;
+
+    // Calculate the look direction based on yaw and pitch
+    sf::Vector3f lookDirection;
+    lookDirection.x = cos(pitchRadians) * sin(yawRadians);   // Left-right direction
+    lookDirection.y = sin(pitchRadians);                     // Up-down direction
+    lookDirection.z = cos(pitchRadians) * -cos(yawRadians);  // Forward-backward direction
+
+    return lookDirection;
 }

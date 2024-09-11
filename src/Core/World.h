@@ -6,6 +6,9 @@
 #include <unordered_map>
 #include "Block.h"
 #include "../Utils/Math.h"
+#include "../Player/Player.h"
+
+class Player;
 
 class World {
 public:
@@ -21,7 +24,7 @@ public:
     // Render all blocks in the world
     void render(sf::RenderWindow& window) const;
 
-    // Get the block at a specific position
+    // Get the block at a specific position in the world
     [[nodiscard]] const Block* getBlockAt(const sf::Vector3i& position) const;
 
     // Check if a player AABB collides with any blocks in the world
@@ -30,11 +33,20 @@ public:
     // Set a block at a specific position
     void setBlockAt(const sf::Vector3i& position, BlockType type);
 
-    // Get the block at a specific position (returns nullptr if not found)
-    const Block* getBlockAt(const sf::Vector3i& position) const;
-
     // Remove a block at a specific position
     void removeBlockAt(const sf::Vector3i& position);
+
+    // Raycast from the player's position to find the first block hit
+    sf::Vector3i raycast(const Player& player, float maxDistance) const;
+
+    // Break a block at the player's position
+    void breakBlock(const Player& player);
+
+    //  Place a block at the player's position
+    void placeBlock(const Player& player, BlockType blockType);
+
+    // Get the normal of the block face the player is looking at
+    [[nodiscard]] sf::Vector3f getBlockFaceNormal(const Player& player, const sf::Vector3i& blockPos) const;
 
 private:
     std::unordered_map<sf::Vector3i, Block> blocks;  // List of blocks in the world

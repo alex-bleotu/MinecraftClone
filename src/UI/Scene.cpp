@@ -1,9 +1,7 @@
 #include "Scene.h"
 #include "../Config.h"
-#include "../Utils/Math.h"
 
 #include <utility>
-#include <iostream>
 
 const std::function<void(Scene*)>& Scene::getSceneChanger() const {
     return sceneChanger;
@@ -54,12 +52,12 @@ void MenuScene::onResize(unsigned int width, unsigned int height) {}
 
 GameScene::GameScene(std::function<void(Scene*)> sceneChanger, sf::RenderWindow& window) : Scene(std::move(sceneChanger), window), world() {
     // Setup OpenGL perspective matrix
-    float fov = 45.f;
+    float fov = Config::Player::FOV;
     float aspectRatio = static_cast<float>(Config::Window::WIDTH) / static_cast<float>(Config::Window::HEIGHT);
     float nearPlane = 0.1f;
     float farPlane = 100.f;
 
-    // Assuming Math::setPerspectiveMatrix is a custom function for setting up projection matrices
+    // Set the perspective matrix for the game
     Math::setPerspectiveMatrix(fov, aspectRatio, nearPlane, farPlane);
 
     // Lock the mouse to the center of the window
@@ -71,6 +69,8 @@ GameScene::GameScene(std::function<void(Scene*)> sceneChanger, sf::RenderWindow&
 
 void GameScene::update(float& deltaTime) {
     player.update(deltaTime, window, world);  // Update the player based on input
+
+    world.update(deltaTime);  // Update the world
 }
 
 void GameScene::render() const {
