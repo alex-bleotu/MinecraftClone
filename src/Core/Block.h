@@ -1,9 +1,12 @@
 #ifndef MINECRAFTCLONE_BLOCK_H
 #define MINECRAFTCLONE_BLOCK_H
 
+
 #include <SFML/Graphics.hpp>
 #include <SFML/OpenGL.hpp>
 #include <array>
+
+class World;
 
 // Enum to define different block types
 enum class BlockType {
@@ -37,7 +40,7 @@ public:
     bool isVisible() const;
 
     // Render the block (for simplicity, could use SFML's RectangleShape or custom logic)
-    void render() const;
+    void render(const World& world) const;
 
 private:
     BlockType m_type;            // Type of block (AIR, DIRT, etc.)

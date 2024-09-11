@@ -76,12 +76,15 @@ bool Block::isVisible() const {
 }
 
 // Render the block
-void Block::render() const {
+void Block::render(const World& world) const {
     if (!m_isVisible) return; // Only render if the block is visible
 
     // Enable depth testing and texture
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
+
+    // Check water boolean
+    bool isWater = false;
 
     // Bind the texture based on block type
     switch (m_type) {
@@ -96,6 +99,7 @@ void Block::render() const {
             break;
         case BlockType::WATER:
             glBindTexture(GL_TEXTURE_2D, Texture::water.getNativeHandle());
+            isWater = true;
             break;
         case BlockType::PLANKS:
             glBindTexture(GL_TEXTURE_2D, Texture::planks.getNativeHandle());
@@ -103,6 +107,12 @@ void Block::render() const {
         default:
             glBindTexture(GL_TEXTURE_2D, Texture::none.getNativeHandle());
             break;
+    }
+
+    // If rendering water, enable blending for transparency
+    if (isWater) {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
     // Save the current matrix state
@@ -136,6 +146,14 @@ void Block::render() const {
             glTexCoord2f(textureCoords[texCoordOffset + correctedIndex * 2], textureCoords[texCoordOffset + correctedIndex * 2 + 1]);
         }
 
+
+        // Set semi-transparent alpha for water, full opacity otherwise
+        if (isWater) {
+            glColor4f(1.0f, 1.0f, 1.0f, 0.5f); // Water with 50% transparency
+        } else {
+            glColor4f(1.0f, 1.0f, 1.0f, 1.0f); // Opaque for other blocks
+        }
+
         // Apply the vertex positions
         glVertex3f(vertices[3 * vertexIndex], vertices[3 * vertexIndex + 1], vertices[3 * vertexIndex + 2]);
     }
@@ -143,6 +161,11 @@ void Block::render() const {
 
     // Restore the previous matrix state
     glPopMatrix();
+
+    // Disable blending if it was enabled
+    if (isWater) {
+        glDisable(GL_BLEND);
+    }
 
     // Disable depth testing and texture
     glDisable(GL_TEXTURE_2D);

@@ -128,54 +128,6 @@ MinecraftClone/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/build
 .PHONY : MinecraftClone/fast
 
-Config.obj: Config.cpp.obj
-.PHONY : Config.obj
-
-# target to build an object file
-Config.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/Config.cpp.obj
-.PHONY : Config.cpp.obj
-
-Config.i: Config.cpp.i
-.PHONY : Config.i
-
-# target to preprocess a source file
-Config.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/Config.cpp.i
-.PHONY : Config.cpp.i
-
-Config.s: Config.cpp.s
-.PHONY : Config.s
-
-# target to generate assembly for a file
-Config.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/Config.cpp.s
-.PHONY : Config.cpp.s
-
-Cube.obj: Cube.cpp.obj
-.PHONY : Cube.obj
-
-# target to build an object file
-Cube.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/Cube.cpp.obj
-.PHONY : Cube.cpp.obj
-
-Cube.i: Cube.cpp.i
-.PHONY : Cube.i
-
-# target to preprocess a source file
-Cube.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/Cube.cpp.i
-.PHONY : Cube.cpp.i
-
-Cube.s: Cube.cpp.s
-.PHONY : Cube.s
-
-# target to generate assembly for a file
-Cube.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/Cube.cpp.s
-.PHONY : Cube.cpp.s
-
 Game.obj: Game.cpp.obj
 .PHONY : Game.obj
 
@@ -199,54 +151,6 @@ Game.s: Game.cpp.s
 Game.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/Game.cpp.s
 .PHONY : Game.cpp.s
-
-Scene.obj: Scene.cpp.obj
-.PHONY : Scene.obj
-
-# target to build an object file
-Scene.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/Scene.cpp.obj
-.PHONY : Scene.cpp.obj
-
-Scene.i: Scene.cpp.i
-.PHONY : Scene.i
-
-# target to preprocess a source file
-Scene.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/Scene.cpp.i
-.PHONY : Scene.cpp.i
-
-Scene.s: Scene.cpp.s
-.PHONY : Scene.s
-
-# target to generate assembly for a file
-Scene.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/Scene.cpp.s
-.PHONY : Scene.cpp.s
-
-UserInterface.obj: UserInterface.cpp.obj
-.PHONY : UserInterface.obj
-
-# target to build an object file
-UserInterface.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/UserInterface.cpp.obj
-.PHONY : UserInterface.cpp.obj
-
-UserInterface.i: UserInterface.cpp.i
-.PHONY : UserInterface.i
-
-# target to preprocess a source file
-UserInterface.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/UserInterface.cpp.i
-.PHONY : UserInterface.cpp.i
-
-UserInterface.s: UserInterface.cpp.s
-.PHONY : UserInterface.s
-
-# target to generate assembly for a file
-UserInterface.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/UserInterface.cpp.s
-.PHONY : UserInterface.cpp.s
 
 main.obj: main.cpp.obj
 .PHONY : main.obj
@@ -272,6 +176,198 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+src/Config.obj: src/Config.cpp.obj
+.PHONY : src/Config.obj
+
+# target to build an object file
+src/Config.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Config.cpp.obj
+.PHONY : src/Config.cpp.obj
+
+src/Config.i: src/Config.cpp.i
+.PHONY : src/Config.i
+
+# target to preprocess a source file
+src/Config.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Config.cpp.i
+.PHONY : src/Config.cpp.i
+
+src/Config.s: src/Config.cpp.s
+.PHONY : src/Config.s
+
+# target to generate assembly for a file
+src/Config.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Config.cpp.s
+.PHONY : src/Config.cpp.s
+
+src/Core/Block.obj: src/Core/Block.cpp.obj
+.PHONY : src/Core/Block.obj
+
+# target to build an object file
+src/Core/Block.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Core/Block.cpp.obj
+.PHONY : src/Core/Block.cpp.obj
+
+src/Core/Block.i: src/Core/Block.cpp.i
+.PHONY : src/Core/Block.i
+
+# target to preprocess a source file
+src/Core/Block.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Core/Block.cpp.i
+.PHONY : src/Core/Block.cpp.i
+
+src/Core/Block.s: src/Core/Block.cpp.s
+.PHONY : src/Core/Block.s
+
+# target to generate assembly for a file
+src/Core/Block.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Core/Block.cpp.s
+.PHONY : src/Core/Block.cpp.s
+
+src/Core/World.obj: src/Core/World.cpp.obj
+.PHONY : src/Core/World.obj
+
+# target to build an object file
+src/Core/World.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Core/World.cpp.obj
+.PHONY : src/Core/World.cpp.obj
+
+src/Core/World.i: src/Core/World.cpp.i
+.PHONY : src/Core/World.i
+
+# target to preprocess a source file
+src/Core/World.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Core/World.cpp.i
+.PHONY : src/Core/World.cpp.i
+
+src/Core/World.s: src/Core/World.cpp.s
+.PHONY : src/Core/World.s
+
+# target to generate assembly for a file
+src/Core/World.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Core/World.cpp.s
+.PHONY : src/Core/World.cpp.s
+
+src/Rendering/Camera.obj: src/Rendering/Camera.cpp.obj
+.PHONY : src/Rendering/Camera.obj
+
+# target to build an object file
+src/Rendering/Camera.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Rendering/Camera.cpp.obj
+.PHONY : src/Rendering/Camera.cpp.obj
+
+src/Rendering/Camera.i: src/Rendering/Camera.cpp.i
+.PHONY : src/Rendering/Camera.i
+
+# target to preprocess a source file
+src/Rendering/Camera.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Rendering/Camera.cpp.i
+.PHONY : src/Rendering/Camera.cpp.i
+
+src/Rendering/Camera.s: src/Rendering/Camera.cpp.s
+.PHONY : src/Rendering/Camera.s
+
+# target to generate assembly for a file
+src/Rendering/Camera.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Rendering/Camera.cpp.s
+.PHONY : src/Rendering/Camera.cpp.s
+
+src/UI/Scene.obj: src/UI/Scene.cpp.obj
+.PHONY : src/UI/Scene.obj
+
+# target to build an object file
+src/UI/Scene.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/UI/Scene.cpp.obj
+.PHONY : src/UI/Scene.cpp.obj
+
+src/UI/Scene.i: src/UI/Scene.cpp.i
+.PHONY : src/UI/Scene.i
+
+# target to preprocess a source file
+src/UI/Scene.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/UI/Scene.cpp.i
+.PHONY : src/UI/Scene.cpp.i
+
+src/UI/Scene.s: src/UI/Scene.cpp.s
+.PHONY : src/UI/Scene.s
+
+# target to generate assembly for a file
+src/UI/Scene.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/UI/Scene.cpp.s
+.PHONY : src/UI/Scene.cpp.s
+
+src/UI/UserInterface.obj: src/UI/UserInterface.cpp.obj
+.PHONY : src/UI/UserInterface.obj
+
+# target to build an object file
+src/UI/UserInterface.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/UI/UserInterface.cpp.obj
+.PHONY : src/UI/UserInterface.cpp.obj
+
+src/UI/UserInterface.i: src/UI/UserInterface.cpp.i
+.PHONY : src/UI/UserInterface.i
+
+# target to preprocess a source file
+src/UI/UserInterface.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/UI/UserInterface.cpp.i
+.PHONY : src/UI/UserInterface.cpp.i
+
+src/UI/UserInterface.s: src/UI/UserInterface.cpp.s
+.PHONY : src/UI/UserInterface.s
+
+# target to generate assembly for a file
+src/UI/UserInterface.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/UI/UserInterface.cpp.s
+.PHONY : src/UI/UserInterface.cpp.s
+
+src/Utils/Math.obj: src/Utils/Math.cpp.obj
+.PHONY : src/Utils/Math.obj
+
+# target to build an object file
+src/Utils/Math.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Utils/Math.cpp.obj
+.PHONY : src/Utils/Math.cpp.obj
+
+src/Utils/Math.i: src/Utils/Math.cpp.i
+.PHONY : src/Utils/Math.i
+
+# target to preprocess a source file
+src/Utils/Math.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Utils/Math.cpp.i
+.PHONY : src/Utils/Math.cpp.i
+
+src/Utils/Math.s: src/Utils/Math.cpp.s
+.PHONY : src/Utils/Math.s
+
+# target to generate assembly for a file
+src/Utils/Math.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Utils/Math.cpp.s
+.PHONY : src/Utils/Math.cpp.s
+
+src/Utils/Texture.obj: src/Utils/Texture.cpp.obj
+.PHONY : src/Utils/Texture.obj
+
+# target to build an object file
+src/Utils/Texture.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Utils/Texture.cpp.obj
+.PHONY : src/Utils/Texture.cpp.obj
+
+src/Utils/Texture.i: src/Utils/Texture.cpp.i
+.PHONY : src/Utils/Texture.i
+
+# target to preprocess a source file
+src/Utils/Texture.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Utils/Texture.cpp.i
+.PHONY : src/Utils/Texture.cpp.i
+
+src/Utils/Texture.s: src/Utils/Texture.cpp.s
+.PHONY : src/Utils/Texture.s
+
+# target to generate assembly for a file
+src/Utils/Texture.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Utils/Texture.cpp.s
+.PHONY : src/Utils/Texture.cpp.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -281,24 +377,36 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... MinecraftClone
-	@echo ... Config.obj
-	@echo ... Config.i
-	@echo ... Config.s
-	@echo ... Cube.obj
-	@echo ... Cube.i
-	@echo ... Cube.s
 	@echo ... Game.obj
 	@echo ... Game.i
 	@echo ... Game.s
-	@echo ... Scene.obj
-	@echo ... Scene.i
-	@echo ... Scene.s
-	@echo ... UserInterface.obj
-	@echo ... UserInterface.i
-	@echo ... UserInterface.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
+	@echo ... src/Config.obj
+	@echo ... src/Config.i
+	@echo ... src/Config.s
+	@echo ... src/Core/Block.obj
+	@echo ... src/Core/Block.i
+	@echo ... src/Core/Block.s
+	@echo ... src/Core/World.obj
+	@echo ... src/Core/World.i
+	@echo ... src/Core/World.s
+	@echo ... src/Rendering/Camera.obj
+	@echo ... src/Rendering/Camera.i
+	@echo ... src/Rendering/Camera.s
+	@echo ... src/UI/Scene.obj
+	@echo ... src/UI/Scene.i
+	@echo ... src/UI/Scene.s
+	@echo ... src/UI/UserInterface.obj
+	@echo ... src/UI/UserInterface.i
+	@echo ... src/UI/UserInterface.s
+	@echo ... src/Utils/Math.obj
+	@echo ... src/Utils/Math.i
+	@echo ... src/Utils/Math.s
+	@echo ... src/Utils/Texture.obj
+	@echo ... src/Utils/Texture.i
+	@echo ... src/Utils/Texture.s
 .PHONY : help
 
 

@@ -37,6 +37,8 @@ void World::init() {
     blocks.emplace_back(Block(BlockType::PLANKS, {5, 3, 5}));
     blocks.emplace_back(Block(BlockType::PLANKS, {4, 3, 5}));
     blocks.emplace_back(Block(BlockType::PLANKS, {5, 3, 4}));
+    blocks.emplace_back(Block(BlockType::WATER, {1, 1, 1}));
+    blocks.emplace_back(Block(BlockType::WATER, {0, 1, 1}));
 
 }
 
@@ -49,6 +51,23 @@ void World::render(sf::RenderWindow& window) const {
 
     // Render each block in the world
     for (const auto& block : blocks) {
-        block.render();
+        block.render(*this);
     }
+}
+
+Block World::getBlockAt(const sf::Vector3i& position) const {
+    // Find the block at the given position
+    for (const auto& block : blocks) {
+        if (block.getPosition() == position) {
+            return block;
+        }
+    }
+
+    // Return air block if no block is found
+    return Block(BlockType::AIR, position);
+}
+
+bool World::hasNeighbor(const Block block) const {
+    // Check if there is a block at the given position
+    return getBlockAt(block.getPosition()).isVisible();
 }
