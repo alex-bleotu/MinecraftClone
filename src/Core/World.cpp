@@ -74,3 +74,20 @@ const Block* World::getBlockAt(const sf::Vector3i& position) const {
 
     return nullptr;
 }
+
+bool World::checkCollision(const AABB& playerAABB) const {
+    float epsilon = 0.001f;  // Small buffer to avoid floating-point precision issues
+
+    for (const auto& block : blocks) {
+        AABB blockAABB = block.getBoundingBox();
+
+        // Check collision between playerAABB and blockAABB, with a small epsilon buffer
+        if ((playerAABB.max.x > blockAABB.min.x - epsilon && playerAABB.min.x < blockAABB.max.x + epsilon) &&
+            (playerAABB.max.y > blockAABB.min.y - epsilon && playerAABB.min.y < blockAABB.max.y + epsilon) &&
+            (playerAABB.max.z > blockAABB.min.z - epsilon && playerAABB.min.z < blockAABB.max.z + epsilon)) {
+            return true;
+        }
+    }
+
+    return false;
+}

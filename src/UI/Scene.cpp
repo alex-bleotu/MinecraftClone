@@ -70,7 +70,7 @@ GameScene::GameScene(std::function<void(Scene*)> sceneChanger, sf::RenderWindow&
 }
 
 void GameScene::update(float& deltaTime) {
-    player.update(deltaTime, window);  // Update the player based on input
+    player.update(deltaTime, window, world);  // Update the player based on input
 }
 
 void GameScene::render() const {

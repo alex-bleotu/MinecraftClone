@@ -20,7 +20,10 @@ public:
     void render(sf::RenderWindow& window) const;
 
     // Get the block at a specific position
-    const Block* getBlockAt(const sf::Vector3i& position) const;
+    [[nodiscard]] const Block* getBlockAt(const sf::Vector3i& position) const;
+
+    // Check if a player AABB collides with any blocks in the world
+    bool checkCollision(const AABB& playerAABB) const;
 
 private:
     std::map<sf::Vector3i, Block> blockMap;

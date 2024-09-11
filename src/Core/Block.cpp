@@ -4,14 +4,14 @@
 
 // Define static vertices for the cube
 const GLfloat Block::vertices[24] = {
-        -0.5f, -0.5f, -0.5f,  // Vertex 0
-        0.5f, -0.5f, -0.5f,  // Vertex 1
-        0.5f,  0.5f, -0.5f,  // Vertex 2
-        -0.5f,  0.5f, -0.5f,  // Vertex 3
-        -0.5f, -0.5f,  0.5f,  // Vertex 4
-        0.5f, -0.5f,  0.5f,  // Vertex 5
-        0.5f,  0.5f,  0.5f,  // Vertex 6
-        -0.5f,  0.5f,  0.5f   // Vertex 7
+        0.0f, 0.0f, 0.0f,  // Vertex 0 (Front bottom left)
+        1.0f, 0.0f, 0.0f,  // Vertex 1 (Front bottom right)
+        1.0f, 1.0f, 0.0f,  // Vertex 2 (Front top right)
+        0.0f, 1.0f, 0.0f,  // Vertex 3 (Front top left)
+        0.0f, 0.0f, 1.0f,  // Vertex 4 (Back bottom left)
+        1.0f, 0.0f, 1.0f,  // Vertex 5 (Back bottom right)
+        1.0f, 1.0f, 1.0f,  // Vertex 6 (Back top right)
+        0.0f, 1.0f, 1.0f   // Vertex 7 (Back top left)
 };
 
 // Define static indices for the cube
@@ -26,19 +26,27 @@ const GLuint Block::indices[36] = {
 
 // Define static texture coordinates for the cube
 const GLfloat Block::textureCoords[48] = {
-        // Front face (vertices: 0, 1, 2, 3) - Flipped by 90 degrees
-        1.0f, 1.0f,  0.0f, 1.0f,  0.0f, 0.0f,  1.0f, 0.0f,
-        // Back face (vertices: 4, 5, 6, 7) - Flipped by 90 degrees
-        1.0f, 1.0f,  0.0f, 1.0f,  0.0f, 0.0f,  1.0f, 0.0f,
-        // Bottom face (vertices: 0, 1, 5, 4)
+        // Front face (vertices: 0, 1, 2, 3) - Rotated 180 degrees
         0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,
-        // Top face (vertices: 2, 3, 7, 6)
+        // Back face (vertices: 4, 5, 6, 7) - Rotated 180 degrees
         0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,
-        // Left face (vertices: 0, 3, 7, 4)
-        0.0f, 1.0f,  0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,
-        // Right face (vertices: 1, 2, 6, 5)
-        0.0f, 1.0f,  0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f
+        // Bottom face (vertices: 0, 1, 5, 4) - No change
+        0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,
+        // Top face (vertices: 2, 3, 7, 6) - No change
+        0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,
+        // Left face (vertices: 0, 3, 7, 4) - Rotated 180 degrees
+        1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,  0.0f, 0.0f,
+        // Right face (vertices: 1, 2, 6, 5) - Rotated 180 degrees
+        1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,  0.0f, 0.0f
 };
+
+AABB::AABB(const sf::Vector3f &min, const sf::Vector3f &max) : min(min), max(max) {}
+
+bool AABB::intersects(const AABB &other) const {
+    return (min.x <= other.max.x && max.x >= other.min.x) &&
+           (min.y <= other.max.y && max.y >= other.min.y) &&
+           (min.z <= other.max.z && max.z >= other.min.z);
+}
 
 
 // Constructor to initialize block with type and position
@@ -168,4 +176,11 @@ void Block::render(const World& world) const {
     // Disable depth testing and texture
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_DEPTH_TEST);
+}
+
+// Get the bounding box of the block
+AABB Block::getBoundingBox() const {
+    sf::Vector3f minPos(m_position.x, m_position.y, m_position.z);
+    sf::Vector3f maxPos = minPos + sf::Vector3f(1.0f, 1.0f, 1.0f);
+    return AABB(minPos, maxPos);
 }

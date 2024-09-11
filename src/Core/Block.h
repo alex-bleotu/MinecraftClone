@@ -19,6 +19,16 @@ enum class BlockType {
     // Add more types as needed
 };
 
+// Axis-aligned bounding box (AABB) for collision detection
+struct AABB {
+    sf::Vector3f min;
+    sf::Vector3f max;
+
+    AABB(const sf::Vector3f& min, const sf::Vector3f& max);
+
+    bool intersects(const AABB& other) const;
+};
+
 class Block {
 public:
     // Constructor to initialize block with type and position
@@ -41,6 +51,9 @@ public:
 
     // Render the block (for simplicity, could use SFML's RectangleShape or custom logic)
     void render(const World& world) const;
+
+    // Get the bounding box of the block
+    AABB getBoundingBox() const;
 
 private:
     BlockType m_type;            // Type of block (AIR, DIRT, etc.)

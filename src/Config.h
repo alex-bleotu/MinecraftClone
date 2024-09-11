@@ -31,12 +31,15 @@ namespace Config {
     namespace Player {
         const float MOVE_SPEED = 4.317f;
         const float SPRINT_SPEED = 5.612f;
-        const float JUMPING_SPRINT_SPEED = 7.127f;
+        const float CROUCH_SPEED = 1.612f;
+
+        const float NORMAL_HEIGHT = 1.72f;
+        const float CROUCH_HEIGHT = 1.2f;
 
         const float SENSITIVITY = 0.1f;
 
         const float X = 0.0f;
-        const float Y = 2.0f;
+        const float Y = 1.2f;
         const float Z = 0.0f;
 
         const float PITCH = 0.0f;

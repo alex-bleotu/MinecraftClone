@@ -4,13 +4,15 @@
 
 Player::Player() : x(Config::Player::X), y(Config::Player::Y), z(Config::Player::Z),
                    pitch(Config::Player::PITCH), yaw(Config::Player::YAW), speed(Config::Player::MOVE_SPEED),
-                   sprintSpeed(Config::Player::SPRINT_SPEED), sensitivity(Config::Player::SENSITIVITY),
-                   gravity(Config::Player::GRAVITY), jumpVelocity(Config::Player::JUMP_VELOCITY),
-                   verticalVelocity(0.0f), isGrounded(true), isSprinting(false) {}
+                   sprintSpeed(Config::Player::SPRINT_SPEED), crouchSpeed(Config::Player::CROUCH_SPEED),
+                   normalHeight(Config::Player::NORMAL_HEIGHT), crouchHeight(Config::Player::CROUCH_HEIGHT),
+                   sensitivity(Config::Player::SENSITIVITY), gravity(Config::Player::GRAVITY),
+                   jumpVelocity(Config::Player::JUMP_VELOCITY), verticalVelocity(0.0f),
+                   isGrounded(false), isSprinting(false), isCrouching(false) {}
 
-void Player::update(float deltaTime, sf::RenderWindow& window) {
+void Player::update(float deltaTime, sf::RenderWindow& window, const World& world) {
     // Handle keyboard input for movement and jumping
-    handleInput(deltaTime);
+    handleInput(deltaTime, world);  // Pass the world for collision checks
 
     // Handle mouse input for looking around
     handleMouseInput(deltaTime, window);
@@ -19,7 +21,7 @@ void Player::update(float deltaTime, sf::RenderWindow& window) {
     handleEscape(window);
 
     // Update vertical movement (gravity and jumping)
-    updateVerticalMovement(deltaTime);
+    updateVerticalMovement(deltaTime, world);  // Pass the world for collision checks
 }
 
 void Player::apply() const {
@@ -31,29 +33,34 @@ void Player::apply() const {
     glRotatef(yaw, 0.0f, 1.0f, 0.0f);    // Looking left/right
 
     // Move the player to its position
-    glTranslatef(-x, -y, -z);
+    // Adjust camera height based on whether the player is crouching
+    float cameraHeight = isCrouching ? crouchHeight : normalHeight - 0.1f;
+    glTranslatef(-x, -(y + cameraHeight), -z);
 }
 
-void Player::handleInput(float deltaTime) {
+void Player::handleInput(float deltaTime, const World& world) {
     float moveSpeed = speed * deltaTime;
     float moveX = 0.0f, moveZ = 0.0f;  // Initialize movement on the X and Z axes
 
     // Sprinting increases movement speed
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)) {
         isSprinting = true;
         moveSpeed = sprintSpeed * deltaTime;  // Increase movement speed while sprinting
     } else {
         isSprinting = false;
     }
 
-    // Check if the player is sprinting and jumping
-    if (isSprinting && !isGrounded) {
-        // Set the specific speed to 7.127 units/second for sprinting and jumping
-        moveSpeed = Config::Player::JUMPING_SPRINT_SPEED * deltaTime;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
+        if (!isCrouching) {
+            isCrouching = true;
+            speed = crouchSpeed;  // Reduce movement speed when crouching
+        }
+    } else {
+        if (isCrouching) {
+            isCrouching = false;
+            speed = Config::Player::MOVE_SPEED;  // Reset to normal speed
+        }
     }
-
-    // Print current movement speed for debugging
-    std::cout << "Current speed: " << moveSpeed / deltaTime << " units/second" << std::endl;
 
     // Move forward
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
@@ -83,9 +90,31 @@ void Player::handleInput(float deltaTime) {
         moveZ /= length;
     }
 
-    // Apply the normalized movement
-    x += moveX * moveSpeed;
-    z += moveZ * moveSpeed;
+    // New potential position based on input
+    sf::Vector3f newPosition = { x + moveX * moveSpeed, y, z + moveZ * moveSpeed };
+
+    // Sliding mechanic: Handle collisions on X and Z axes independently
+    AABB playerAABB = getPlayerAABB();  // Current player's AABB
+    playerAABB.min.x += moveX * moveSpeed;
+    playerAABB.max.x += moveX * moveSpeed;
+
+    // First, check collision on X axis
+    if (!world.checkCollision(playerAABB)) {
+        x = newPosition.x;  // No collision on X axis, apply movement
+    } else {
+        std::cout << "Collision on X axis, sliding along Z!" << std::endl;
+    }
+
+    // Now check the Z axis movement
+    playerAABB = getPlayerAABB();  // Reset to current AABB
+    playerAABB.min.z += moveZ * moveSpeed;
+    playerAABB.max.z += moveZ * moveSpeed;
+
+    if (!world.checkCollision(playerAABB)) {
+        z = newPosition.z;  // No collision on Z axis, apply movement
+    } else {
+        std::cout << "Collision on Z axis, sliding along X!" << std::endl;
+    }
 
     // Jumping (only when grounded)
     if (isGrounded && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
@@ -153,17 +182,43 @@ void Player::setPosition(const sf::Vector3f& position) {
     z = position.z;
 }
 
-void Player::updateVerticalMovement(float deltaTime) {
-    if (!isGrounded) {
+void Player::updateVerticalMovement(float deltaTime, const World& world) {
+    if (!isGrounded || verticalVelocity != 0) {  // Handle movement when jumping or falling
         // Apply gravity if the player is not grounded
         verticalVelocity -= gravity * deltaTime;
-        y += verticalVelocity * deltaTime;
+        sf::Vector3f newPosition = { x, y + verticalVelocity * deltaTime, z };
 
-        // Check if the player hit the ground
-        if (y <= 2.0f) {
-            y = 2.0f;
-            verticalVelocity = 0.0f;
-            isGrounded = true;
+        // Check for collision in the vertical direction
+        AABB playerAABB = getPlayerAABB();
+        playerAABB.min.y += verticalVelocity * deltaTime;
+        playerAABB.max.y += verticalVelocity * deltaTime;
+
+        if (!world.checkCollision(playerAABB)) {
+            // No collision, update Y position
+            y = newPosition.y;
+            isGrounded = false;  // Player is not grounded if there is no collision
+        } else {
+            if (verticalVelocity > 0) {  // Collided with ceiling while moving up
+                verticalVelocity = 0.0f;  // Stop upward movement
+            } else {  // Collided with ground while falling
+                verticalVelocity = 0.0f;  // Stop falling
+                isGrounded = true;  // Player is now grounded
+            }
         }
+    }
+
+    // Re-check if the player is still grounded after horizontal movement
+    AABB playerAABB = getPlayerAABB();
+    playerAABB.min.y -= 0.1f;  // Check slightly below the player's feet
+    if (!world.checkCollision(playerAABB)) {
+        isGrounded = false;  // If there is no block below the player, set grounded to false
+    }
+}
+
+AABB Player::getPlayerAABB() const {
+    if (isCrouching) {
+        return AABB({ x - 0.3f, y, z - 0.3f }, { x + 0.3f, y + crouchHeight, z + 0.3f });
+    } else {
+        return AABB({ x - 0.3f, y, z - 0.3f }, { x + 0.3f, y + normalHeight, z + 0.3f });
     }
 }
