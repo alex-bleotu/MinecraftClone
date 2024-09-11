@@ -13,7 +13,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "C:/Users/alexb/Projects/MinecraftClone/src/Config.cpp" "CMakeFiles/MinecraftClone.dir/src/Config.cpp.obj" "gcc" "CMakeFiles/MinecraftClone.dir/src/Config.cpp.obj.d"
   "C:/Users/alexb/Projects/MinecraftClone/src/Core/Block.cpp" "CMakeFiles/MinecraftClone.dir/src/Core/Block.cpp.obj" "gcc" "CMakeFiles/MinecraftClone.dir/src/Core/Block.cpp.obj.d"
   "C:/Users/alexb/Projects/MinecraftClone/src/Core/World.cpp" "CMakeFiles/MinecraftClone.dir/src/Core/World.cpp.obj" "gcc" "CMakeFiles/MinecraftClone.dir/src/Core/World.cpp.obj.d"
-  "C:/Users/alexb/Projects/MinecraftClone/src/Rendering/Camera.cpp" "CMakeFiles/MinecraftClone.dir/src/Rendering/Camera.cpp.obj" "gcc" "CMakeFiles/MinecraftClone.dir/src/Rendering/Camera.cpp.obj.d"
+  "C:/Users/alexb/Projects/MinecraftClone/src/Player/Player.cpp" "CMakeFiles/MinecraftClone.dir/src/Player/Player.cpp.obj" "gcc" "CMakeFiles/MinecraftClone.dir/src/Player/Player.cpp.obj.d"
   "C:/Users/alexb/Projects/MinecraftClone/src/UI/Scene.cpp" "CMakeFiles/MinecraftClone.dir/src/UI/Scene.cpp.obj" "gcc" "CMakeFiles/MinecraftClone.dir/src/UI/Scene.cpp.obj.d"
   "C:/Users/alexb/Projects/MinecraftClone/src/UI/UserInterface.cpp" "CMakeFiles/MinecraftClone.dir/src/UI/UserInterface.cpp.obj" "gcc" "CMakeFiles/MinecraftClone.dir/src/UI/UserInterface.cpp.obj.d"
   "C:/Users/alexb/Projects/MinecraftClone/src/Utils/Math.cpp" "CMakeFiles/MinecraftClone.dir/src/Utils/Math.cpp.obj" "gcc" "CMakeFiles/MinecraftClone.dir/src/Utils/Math.cpp.obj.d"

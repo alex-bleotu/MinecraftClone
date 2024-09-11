@@ -47,27 +47,30 @@ void World::update(float deltaTime) {
 }
 
 void World::render(sf::RenderWindow& window) const {
-    window.clear(skyColor);
+    glClearColor(skyColor.x, skyColor.y, skyColor.z, 1.0f);
+
+    // Clear buffers
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // Enable depth testing
+    glEnable(GL_DEPTH_TEST);
 
     // Render each block in the world
     for (const auto& block : blocks) {
         block.render(*this);
     }
+
+    // Disable depth testing
+    glDisable(GL_DEPTH_TEST);
 }
 
-Block World::getBlockAt(const sf::Vector3i& position) const {
+const Block* World::getBlockAt(const sf::Vector3i& position) const {
     // Find the block at the given position
     for (const auto& block : blocks) {
         if (block.getPosition() == position) {
-            return block;
+            return const_cast<Block*>(&block);
         }
     }
 
-    // Return air block if no block is found
-    return Block(BlockType::AIR, position);
-}
-
-bool World::hasNeighbor(const Block block) const {
-    // Check if there is a block at the given position
-    return getBlockAt(block.getPosition()).isVisible();
+    return nullptr;
 }

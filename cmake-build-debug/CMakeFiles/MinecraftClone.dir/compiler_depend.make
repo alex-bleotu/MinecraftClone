@@ -519,7 +519,7 @@ CMakeFiles/MinecraftClone.dir/Game.cpp.obj: C:/Users/alexb/Projects/MinecraftClo
   C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/x86_64-w64-mingw32/include/wtypesbase.h \
   C:/Users/alexb/Projects/MinecraftClone/src/Core/Block.h \
   C:/Users/alexb/Projects/MinecraftClone/src/Core/World.h \
-  C:/Users/alexb/Projects/MinecraftClone/src/Rendering/Camera.h \
+  C:/Users/alexb/Projects/MinecraftClone/src/Player/Player.h \
   C:/Users/alexb/Projects/MinecraftClone/Game.h \
   C:/Users/alexb/Projects/MinecraftClone/src/Config.h \
   C:/Users/alexb/Projects/MinecraftClone/src/UI/Scene.h \
@@ -1045,7 +1045,7 @@ CMakeFiles/MinecraftClone.dir/main.cpp.obj: C:/Users/alexb/Projects/MinecraftClo
   C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/x86_64-w64-mingw32/include/wtypesbase.h \
   C:/Users/alexb/Projects/MinecraftClone/src/Core/Block.h \
   C:/Users/alexb/Projects/MinecraftClone/src/Core/World.h \
-  C:/Users/alexb/Projects/MinecraftClone/src/Rendering/Camera.h \
+  C:/Users/alexb/Projects/MinecraftClone/src/Player/Player.h \
   C:/Users/alexb/Projects/MinecraftClone/Game.h \
   C:/Users/alexb/Projects/MinecraftClone/src/UI/Scene.h \
   C:/Users/alexb/Projects/MinecraftClone/src/UI/UserInterface.h
@@ -2464,7 +2464,7 @@ CMakeFiles/MinecraftClone.dir/src/Core/World.cpp.obj: C:/Users/alexb/Projects/Mi
   C:/Users/alexb/Projects/MinecraftClone/src/Core/Block.h \
   C:/Users/alexb/Projects/MinecraftClone/src/Core/World.h
 
-CMakeFiles/MinecraftClone.dir/src/Rendering/Camera.cpp.obj: C:/Users/alexb/Projects/MinecraftClone/src/Rendering/Camera.cpp \
+CMakeFiles/MinecraftClone.dir/src/Player/Player.cpp.obj: C:/Users/alexb/Projects/MinecraftClone/src/Player/Player.cpp \
   C:/Program\ Files/SFML-2.6.1/include/SFML/Config.hpp \
   C:/Program\ Files/SFML-2.6.1/include/SFML/Graphics/BlendMode.hpp \
   C:/Program\ Files/SFML-2.6.1/include/SFML/Graphics/Color.hpp \
@@ -2957,7 +2957,7 @@ CMakeFiles/MinecraftClone.dir/src/Rendering/Camera.cpp.obj: C:/Users/alexb/Proje
   C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/x86_64-w64-mingw32/include/wtypes.h \
   C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/x86_64-w64-mingw32/include/wtypesbase.h \
   C:/Users/alexb/Projects/MinecraftClone/src/Config.h \
-  C:/Users/alexb/Projects/MinecraftClone/src/Rendering/Camera.h
+  C:/Users/alexb/Projects/MinecraftClone/src/Player/Player.h
 
 CMakeFiles/MinecraftClone.dir/src/UI/Scene.cpp.obj: C:/Users/alexb/Projects/MinecraftClone/src/UI/Scene.cpp \
   C:/Program\ Files/SFML-2.6.1/include/SFML/Config.hpp \
@@ -3483,7 +3483,7 @@ CMakeFiles/MinecraftClone.dir/src/UI/Scene.cpp.obj: C:/Users/alexb/Projects/Mine
   C:/Users/alexb/Projects/MinecraftClone/src/Config.h \
   C:/Users/alexb/Projects/MinecraftClone/src/Core/Block.h \
   C:/Users/alexb/Projects/MinecraftClone/src/Core/World.h \
-  C:/Users/alexb/Projects/MinecraftClone/src/Rendering/Camera.h \
+  C:/Users/alexb/Projects/MinecraftClone/src/Player/Player.h \
   C:/Users/alexb/Projects/MinecraftClone/src/Utils/Math.h \
   C:/Users/alexb/Projects/MinecraftClone/src/UI/Scene.h \
   C:/Users/alexb/Projects/MinecraftClone/src/UI/UserInterface.h
@@ -4587,6 +4587,8 @@ C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/x86_64-w64-mingw32/include
 
 C:/Program\ Files/SFML-2.6.1/include/SFML/Graphics/ConvexShape.hpp:
 
+C:/Users/alexb/Projects/MinecraftClone/src/Player/Player.cpp:
+
 C:/Program\ Files/SFML-2.6.1/include/SFML/Graphics/BlendMode.hpp:
 
 C:/Program\ Files/SFML-2.6.1/include/SFML/Graphics/CircleShape.hpp:
@@ -4612,8 +4614,6 @@ C:/Program\ Files/SFML-2.6.1/include/SFML/Graphics/Font.hpp:
 C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/pconfigintrin.h:
 
 C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/x86_64-w64-mingw32/include/winperf.h:
-
-C:/Users/alexb/Projects/MinecraftClone/src/Rendering/Camera.h:
 
 C:/Program\ Files/SFML-2.6.1/include/SFML/System/Utf.inl:
 
@@ -4873,8 +4873,6 @@ C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32
 
 C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/limits:
 
-C:/Users/alexb/Projects/MinecraftClone/src/Rendering/Camera.cpp:
-
 C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/vector.tcc:
 
 C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/avx512dqintrin.h:
@@ -4918,6 +4916,8 @@ C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32
 C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/avx512vp2intersectvlintrin.h:
 
 C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/xmmintrin.h:
+
+C:/Users/alexb/Projects/MinecraftClone/src/Player/Player.h:
 
 C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/x86_64-w64-mingw32/include/stdint.h:
 

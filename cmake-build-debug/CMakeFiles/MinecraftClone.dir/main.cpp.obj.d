@@ -510,7 +510,7 @@ CMakeFiles/MinecraftClone.dir/main.cpp.obj: \
  C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/x86_64-w64-mingw32/include/imm.h \
  C:/Users/alexb/Projects/MinecraftClone/src/Core/World.h \
  C:/Users/alexb/Projects/MinecraftClone/src/Core/Block.h \
- C:/Users/alexb/Projects/MinecraftClone/src/Rendering/Camera.h \
+ C:/Users/alexb/Projects/MinecraftClone/src/Player/Player.h \
  C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/cmath \
  C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/x86_64-w64-mingw32/include/math.h \
  C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/specfun.h \

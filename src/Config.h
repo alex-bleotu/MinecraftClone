@@ -28,7 +28,7 @@ namespace Config {
         const unsigned int FONT_SIZE = 50;
     }
 
-    namespace Camera {
+    namespace Player {
         const float MOVE_SPEED = 5.0f;
         const float SENSITIVITY = 0.1f;
 
@@ -38,6 +38,10 @@ namespace Config {
 
         const float PITCH = 30.0f;
         const float YAW = 135.0f;
+
+        const float GRAVITY = -9.8f;
+        const float JUMP_STRENGTH = 5.0f;
+        const float GROUND_LEVEL = 0.0f;
     }
 
     class Assets {

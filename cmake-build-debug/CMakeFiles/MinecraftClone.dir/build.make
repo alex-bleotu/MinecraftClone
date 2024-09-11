@@ -188,20 +188,20 @@ CMakeFiles/MinecraftClone.dir/src/Core/World.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/MinecraftClone.dir/src/Core/World.cpp.s"
 	C:\Users\alexb\AppData\Local\Programs\CLion\bin\mingw\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\alexb\Projects\MinecraftClone\src\Core\World.cpp -o CMakeFiles\MinecraftClone.dir\src\Core\World.cpp.s
 
-CMakeFiles/MinecraftClone.dir/src/Rendering/Camera.cpp.obj: CMakeFiles/MinecraftClone.dir/flags.make
-CMakeFiles/MinecraftClone.dir/src/Rendering/Camera.cpp.obj: CMakeFiles/MinecraftClone.dir/includes_CXX.rsp
-CMakeFiles/MinecraftClone.dir/src/Rendering/Camera.cpp.obj: C:/Users/alexb/Projects/MinecraftClone/src/Rendering/Camera.cpp
-CMakeFiles/MinecraftClone.dir/src/Rendering/Camera.cpp.obj: CMakeFiles/MinecraftClone.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\alexb\Projects\MinecraftClone\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/MinecraftClone.dir/src/Rendering/Camera.cpp.obj"
-	C:\Users\alexb\AppData\Local\Programs\CLion\bin\mingw\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MinecraftClone.dir/src/Rendering/Camera.cpp.obj -MF CMakeFiles\MinecraftClone.dir\src\Rendering\Camera.cpp.obj.d -o CMakeFiles\MinecraftClone.dir\src\Rendering\Camera.cpp.obj -c C:\Users\alexb\Projects\MinecraftClone\src\Rendering\Camera.cpp
+CMakeFiles/MinecraftClone.dir/src/Player/Player.cpp.obj: CMakeFiles/MinecraftClone.dir/flags.make
+CMakeFiles/MinecraftClone.dir/src/Player/Player.cpp.obj: CMakeFiles/MinecraftClone.dir/includes_CXX.rsp
+CMakeFiles/MinecraftClone.dir/src/Player/Player.cpp.obj: C:/Users/alexb/Projects/MinecraftClone/src/Player/Player.cpp
+CMakeFiles/MinecraftClone.dir/src/Player/Player.cpp.obj: CMakeFiles/MinecraftClone.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\alexb\Projects\MinecraftClone\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/MinecraftClone.dir/src/Player/Player.cpp.obj"
+	C:\Users\alexb\AppData\Local\Programs\CLion\bin\mingw\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MinecraftClone.dir/src/Player/Player.cpp.obj -MF CMakeFiles\MinecraftClone.dir\src\Player\Player.cpp.obj.d -o CMakeFiles\MinecraftClone.dir\src\Player\Player.cpp.obj -c C:\Users\alexb\Projects\MinecraftClone\src\Player\Player.cpp
 
-CMakeFiles/MinecraftClone.dir/src/Rendering/Camera.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/MinecraftClone.dir/src/Rendering/Camera.cpp.i"
-	C:\Users\alexb\AppData\Local\Programs\CLion\bin\mingw\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\alexb\Projects\MinecraftClone\src\Rendering\Camera.cpp > CMakeFiles\MinecraftClone.dir\src\Rendering\Camera.cpp.i
+CMakeFiles/MinecraftClone.dir/src/Player/Player.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/MinecraftClone.dir/src/Player/Player.cpp.i"
+	C:\Users\alexb\AppData\Local\Programs\CLion\bin\mingw\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\alexb\Projects\MinecraftClone\src\Player\Player.cpp > CMakeFiles\MinecraftClone.dir\src\Player\Player.cpp.i
 
-CMakeFiles/MinecraftClone.dir/src/Rendering/Camera.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/MinecraftClone.dir/src/Rendering/Camera.cpp.s"
-	C:\Users\alexb\AppData\Local\Programs\CLion\bin\mingw\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\alexb\Projects\MinecraftClone\src\Rendering\Camera.cpp -o CMakeFiles\MinecraftClone.dir\src\Rendering\Camera.cpp.s
+CMakeFiles/MinecraftClone.dir/src/Player/Player.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/MinecraftClone.dir/src/Player/Player.cpp.s"
+	C:\Users\alexb\AppData\Local\Programs\CLion\bin\mingw\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\alexb\Projects\MinecraftClone\src\Player\Player.cpp -o CMakeFiles\MinecraftClone.dir\src\Player\Player.cpp.s
 
 CMakeFiles/MinecraftClone.dir/src/Utils/Texture.cpp.obj: CMakeFiles/MinecraftClone.dir/flags.make
 CMakeFiles/MinecraftClone.dir/src/Utils/Texture.cpp.obj: CMakeFiles/MinecraftClone.dir/includes_CXX.rsp
@@ -228,7 +228,7 @@ MinecraftClone_OBJECTS = \
 "CMakeFiles/MinecraftClone.dir/src/Core/Block.cpp.obj" \
 "CMakeFiles/MinecraftClone.dir/src/Utils/Math.cpp.obj" \
 "CMakeFiles/MinecraftClone.dir/src/Core/World.cpp.obj" \
-"CMakeFiles/MinecraftClone.dir/src/Rendering/Camera.cpp.obj" \
+"CMakeFiles/MinecraftClone.dir/src/Player/Player.cpp.obj" \
 "CMakeFiles/MinecraftClone.dir/src/Utils/Texture.cpp.obj"
 
 # External object files for target MinecraftClone
@@ -242,7 +242,7 @@ MinecraftClone.exe: CMakeFiles/MinecraftClone.dir/src/Config.cpp.obj
 MinecraftClone.exe: CMakeFiles/MinecraftClone.dir/src/Core/Block.cpp.obj
 MinecraftClone.exe: CMakeFiles/MinecraftClone.dir/src/Utils/Math.cpp.obj
 MinecraftClone.exe: CMakeFiles/MinecraftClone.dir/src/Core/World.cpp.obj
-MinecraftClone.exe: CMakeFiles/MinecraftClone.dir/src/Rendering/Camera.cpp.obj
+MinecraftClone.exe: CMakeFiles/MinecraftClone.dir/src/Player/Player.cpp.obj
 MinecraftClone.exe: CMakeFiles/MinecraftClone.dir/src/Utils/Texture.cpp.obj
 MinecraftClone.exe: CMakeFiles/MinecraftClone.dir/build.make
 MinecraftClone.exe: C:/Program\ Files/SFML-2.6.1/lib/libsfml-system-s-d.a

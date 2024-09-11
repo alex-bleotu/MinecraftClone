@@ -63,35 +63,26 @@ GameScene::GameScene(std::function<void(Scene*)> sceneChanger, sf::RenderWindow&
     Math::setPerspectiveMatrix(fov, aspectRatio, nearPlane, farPlane);
 
     // Lock the mouse to the center of the window
-    camera.lockMouse(window);
+    player.lockMouse(window);
 
     // World initialization
     world.init();
 }
 
 void GameScene::update(float& deltaTime) {
-    camera.update(deltaTime, window);  // Update the camera based on input
+    player.update(deltaTime, window);  // Update the player based on input
 }
 
 void GameScene::render() const {
-    // Clear buffers
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    // Enable depth testing
-    glEnable(GL_DEPTH_TEST);
-
-    // Apply the camera transformations
-    camera.apply();
+    // Apply the player transformations
+    player.apply();
 
     // Render the world
     world.render(window);
-
-    // Disable depth testing
-    glDisable(GL_DEPTH_TEST);
 }
 
 void GameScene::onResize(unsigned int width, unsigned int height) {}
 
 void GameScene::onClick(sf::Vector2f position) {
-    camera.lockMouse(window);
+    player.lockMouse(window);
 }

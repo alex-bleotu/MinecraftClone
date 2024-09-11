@@ -7,7 +7,7 @@
 #include "UserInterface.h"
 #include "../Core/Block.h"
 #include "../Core/World.h"
-#include "../Rendering/Camera.h"
+#include "../Player/Player.h"
 
 class Scene {
 private:
@@ -42,7 +42,7 @@ public:
 
 class GameScene : public Scene {
     World world;  // The game world that contains blocks
-    Camera camera;  // The camera to move around the world
+    Player player;  // The player to move around the world
 public:
     explicit GameScene(std::function<void(Scene*)> sceneChanger, sf::RenderWindow& window);
 

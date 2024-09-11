@@ -248,29 +248,29 @@ src/Core/World.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Core/World.cpp.s
 .PHONY : src/Core/World.cpp.s
 
-src/Rendering/Camera.obj: src/Rendering/Camera.cpp.obj
-.PHONY : src/Rendering/Camera.obj
+src/Player/Player.obj: src/Player/Player.cpp.obj
+.PHONY : src/Player/Player.obj
 
 # target to build an object file
-src/Rendering/Camera.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Rendering/Camera.cpp.obj
-.PHONY : src/Rendering/Camera.cpp.obj
+src/Player/Player.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Player/Player.cpp.obj
+.PHONY : src/Player/Player.cpp.obj
 
-src/Rendering/Camera.i: src/Rendering/Camera.cpp.i
-.PHONY : src/Rendering/Camera.i
+src/Player/Player.i: src/Player/Player.cpp.i
+.PHONY : src/Player/Player.i
 
 # target to preprocess a source file
-src/Rendering/Camera.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Rendering/Camera.cpp.i
-.PHONY : src/Rendering/Camera.cpp.i
+src/Player/Player.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Player/Player.cpp.i
+.PHONY : src/Player/Player.cpp.i
 
-src/Rendering/Camera.s: src/Rendering/Camera.cpp.s
-.PHONY : src/Rendering/Camera.s
+src/Player/Player.s: src/Player/Player.cpp.s
+.PHONY : src/Player/Player.s
 
 # target to generate assembly for a file
-src/Rendering/Camera.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Rendering/Camera.cpp.s
-.PHONY : src/Rendering/Camera.cpp.s
+src/Player/Player.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Player/Player.cpp.s
+.PHONY : src/Player/Player.cpp.s
 
 src/UI/Scene.obj: src/UI/Scene.cpp.obj
 .PHONY : src/UI/Scene.obj
@@ -392,9 +392,9 @@ help:
 	@echo ... src/Core/World.obj
 	@echo ... src/Core/World.i
 	@echo ... src/Core/World.s
-	@echo ... src/Rendering/Camera.obj
-	@echo ... src/Rendering/Camera.i
-	@echo ... src/Rendering/Camera.s
+	@echo ... src/Player/Player.obj
+	@echo ... src/Player/Player.i
+	@echo ... src/Player/Player.s
 	@echo ... src/UI/Scene.obj
 	@echo ... src/UI/Scene.i
 	@echo ... src/UI/Scene.s
