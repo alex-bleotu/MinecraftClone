@@ -29,19 +29,21 @@ namespace Config {
     }
 
     namespace Player {
-        const float MOVE_SPEED = 5.0f;
+        const float MOVE_SPEED = 4.317f;
+        const float SPRINT_SPEED = 5.612f;
+        const float JUMPING_SPRINT_SPEED = 7.127f;
+
         const float SENSITIVITY = 0.1f;
 
         const float X = 0.0f;
-        const float Y = 5.0f;
+        const float Y = 2.0f;
         const float Z = 0.0f;
 
-        const float PITCH = 30.0f;
-        const float YAW = 135.0f;
+        const float PITCH = 0.0f;
+        const float YAW = 0.0f;
 
-        const float GRAVITY = -9.8f;
-        const float JUMP_STRENGTH = 5.0f;
-        const float GROUND_LEVEL = 0.0f;
+        const float GRAVITY = 27.55f;
+        const float JUMP_VELOCITY = 8.0f;
     }
 
     class Assets {

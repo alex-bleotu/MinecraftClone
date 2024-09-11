@@ -36,6 +36,14 @@ private:
     float x, y, z;      // Player position
     float pitch, yaw;   // Player rotation (look up/down and left/right)
     float speed;        // Movement speed
+    float sprintSpeed;  // Sprinting speed (increased movement speed when sprinting)
+
+    float jumpVelocity; // Velocity during jump
+    float gravity;      // Gravity strength
+    float verticalVelocity; // Current velocity in the y-axis
+
+    bool isGrounded;    // Is the player on the ground?
+    bool isSprinting;   // Is the player sprinting?
 
     // Sensitivity for the mouse input
     float sensitivity;
@@ -43,9 +51,11 @@ private:
     // Whether the mouse is locked (for first person player)
     bool isMouseLocked = false;
 
-    void handleInput(float deltaTime);  // Handle keyboard input for movement
+    void handleInput(float deltaTime);  // Handle keyboard input for movement and jumping
     void handleMouseInput(float deltaTime, sf::RenderWindow& window);  // Handle mouse input for looking around
-};
 
+    // Update the player's vertical movement (jumping and gravity)
+    void updateVerticalMovement(float deltaTime);
+};
 
 #endif //MINECRAFTCLONE_PLAYER_H

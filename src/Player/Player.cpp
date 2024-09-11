@@ -1,12 +1,15 @@
+#include <iostream>
 #include "Player.h"
 #include "../Config.h"
 
 Player::Player() : x(Config::Player::X), y(Config::Player::Y), z(Config::Player::Z),
                    pitch(Config::Player::PITCH), yaw(Config::Player::YAW), speed(Config::Player::MOVE_SPEED),
-                   sensitivity(Config::Player::SENSITIVITY) {}
+                   sprintSpeed(Config::Player::SPRINT_SPEED), sensitivity(Config::Player::SENSITIVITY),
+                   gravity(Config::Player::GRAVITY), jumpVelocity(Config::Player::JUMP_VELOCITY),
+                   verticalVelocity(0.0f), isGrounded(true), isSprinting(false) {}
 
 void Player::update(float deltaTime, sf::RenderWindow& window) {
-    // Handle keyboard input for movement
+    // Handle keyboard input for movement and jumping
     handleInput(deltaTime);
 
     // Handle mouse input for looking around
@@ -14,6 +17,9 @@ void Player::update(float deltaTime, sf::RenderWindow& window) {
 
     // Handle the escape key to unlock the mouse
     handleEscape(window);
+
+    // Update vertical movement (gravity and jumping)
+    updateVerticalMovement(deltaTime);
 }
 
 void Player::apply() const {
@@ -30,34 +36,61 @@ void Player::apply() const {
 
 void Player::handleInput(float deltaTime) {
     float moveSpeed = speed * deltaTime;
+    float moveX = 0.0f, moveZ = 0.0f;  // Initialize movement on the X and Z axes
+
+    // Sprinting increases movement speed
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
+        isSprinting = true;
+        moveSpeed = sprintSpeed * deltaTime;  // Increase movement speed while sprinting
+    } else {
+        isSprinting = false;
+    }
+
+    // Check if the player is sprinting and jumping
+    if (isSprinting && !isGrounded) {
+        // Set the specific speed to 7.127 units/second for sprinting and jumping
+        moveSpeed = Config::Player::JUMPING_SPRINT_SPEED * deltaTime;
+    }
+
+    // Print current movement speed for debugging
+    std::cout << "Current speed: " << moveSpeed / deltaTime << " units/second" << std::endl;
 
     // Move forward
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-        x += sin(yaw * M_PI / 180.0f) * moveSpeed;
-        z -= cos(yaw * M_PI / 180.0f) * moveSpeed;
+        moveX += sin(yaw * M_PI / 180.0f);
+        moveZ -= cos(yaw * M_PI / 180.0f);
     }
     // Move backward
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-        x -= sin(yaw * M_PI / 180.0f) * moveSpeed;
-        z += cos(yaw * M_PI / 180.0f) * moveSpeed;
+        moveX -= sin(yaw * M_PI / 180.0f);
+        moveZ += cos(yaw * M_PI / 180.0f);
     }
     // Strafe left
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-        x -= cos(yaw * M_PI / 180.0f) * moveSpeed;
-        z -= sin(yaw * M_PI / 180.0f) * moveSpeed;
+        moveX -= cos(yaw * M_PI / 180.0f);
+        moveZ -= sin(yaw * M_PI / 180.0f);
     }
     // Strafe right
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-        x += cos(yaw * M_PI / 180.0f) * moveSpeed;
-        z += sin(yaw * M_PI / 180.0f) * moveSpeed;
+        moveX += cos(yaw * M_PI / 180.0f);
+        moveZ += sin(yaw * M_PI / 180.0f);
     }
-    // Move up (Space)
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-        y += moveSpeed;
+
+    // Normalize the movement vector if there's movement
+    float length = std::sqrt(moveX * moveX + moveZ * moveZ);
+    if (length > 0.0f) {
+        moveX /= length;
+        moveZ /= length;
     }
-    // Move down (Shift)
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
-        y -= moveSpeed;
+
+    // Apply the normalized movement
+    x += moveX * moveSpeed;
+    z += moveZ * moveSpeed;
+
+    // Jumping (only when grounded)
+    if (isGrounded && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+        verticalVelocity = jumpVelocity;
+        isGrounded = false;
     }
 }
 
@@ -118,4 +151,19 @@ void Player::setPosition(const sf::Vector3f& position) {
     x = position.x;
     y = position.y;
     z = position.z;
+}
+
+void Player::updateVerticalMovement(float deltaTime) {
+    if (!isGrounded) {
+        // Apply gravity if the player is not grounded
+        verticalVelocity -= gravity * deltaTime;
+        y += verticalVelocity * deltaTime;
+
+        // Check if the player hit the ground
+        if (y <= 2.0f) {
+            y = 2.0f;
+            verticalVelocity = 0.0f;
+            isGrounded = true;
+        }
+    }
 }

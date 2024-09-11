@@ -26,18 +26,18 @@ const GLuint Block::indices[36] = {
 
 // Define static texture coordinates for the cube
 const GLfloat Block::textureCoords[48] = {
-        // Front face (vertices: 0, 1, 2, 3)
-        0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,
-        // Back face (vertices: 4, 5, 6, 7)
-        0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,
+        // Front face (vertices: 0, 1, 2, 3) - Flipped by 90 degrees
+        1.0f, 1.0f,  0.0f, 1.0f,  0.0f, 0.0f,  1.0f, 0.0f,
+        // Back face (vertices: 4, 5, 6, 7) - Flipped by 90 degrees
+        1.0f, 1.0f,  0.0f, 1.0f,  0.0f, 0.0f,  1.0f, 0.0f,
         // Bottom face (vertices: 0, 1, 5, 4)
         0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,
         // Top face (vertices: 2, 3, 7, 6)
         0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,
-        // Left face (vertices: 0, 3, 7, 4) - Flipped by 90 degrees
-        1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,  0.0f, 0.0f,
-        // Right face (vertices: 1, 2, 6, 5) - Flipped by 90 degrees
-        1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,  0.0f, 0.0f
+        // Left face (vertices: 0, 3, 7, 4)
+        0.0f, 1.0f,  0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,
+        // Right face (vertices: 1, 2, 6, 5)
+        0.0f, 1.0f,  0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f
 };
 
 
@@ -150,8 +150,6 @@ void Block::render(const World& world) const {
         // Set semi-transparent alpha for water, full opacity otherwise
         if (isWater) {
             glColor4f(1.0f, 1.0f, 1.0f, 0.5f); // Water with 50% transparency
-        } else {
-            glColor4f(1.0f, 1.0f, 1.0f, 1.0f); // Opaque for other blocks
         }
 
         // Apply the vertex positions
