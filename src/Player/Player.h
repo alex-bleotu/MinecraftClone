@@ -7,6 +7,7 @@
 #include <Window.hpp>
 #include <Graphics/RenderWindow.hpp>
 #include "../Core/World.h"
+#include "../Utils/Math.h"
 
 class Player {
 public:
@@ -65,7 +66,7 @@ private:
     void updateVerticalMovement(float deltaTime, const World& world);
 
     // Check if the player is colliding with any blocks in the world
-    [[nodiscard]] AABB getPlayerAABB() const;
+    [[nodiscard]] Math::AABB getPlayerAABB() const;
 };
 
 #endif //MINECRAFTCLONE_PLAYER_H

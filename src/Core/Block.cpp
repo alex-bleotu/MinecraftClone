@@ -1,5 +1,4 @@
 #include "Block.h"
-#include "../Utils/Math.h"
 #include "../Utils/Texture.h"
 
 // Define static vertices for the cube
@@ -40,13 +39,7 @@ const GLfloat Block::textureCoords[48] = {
         1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,  0.0f, 0.0f
 };
 
-AABB::AABB(const sf::Vector3f &min, const sf::Vector3f &max) : min(min), max(max) {}
-
-bool AABB::intersects(const AABB &other) const {
-    return (min.x <= other.max.x && max.x >= other.min.x) &&
-           (min.y <= other.max.y && max.y >= other.min.y) &&
-           (min.z <= other.max.z && max.z >= other.min.z);
-}
+Block::Block() : m_type(BlockType::AIR), m_position(0, 0, 0), m_isVisible(false) {}
 
 
 // Constructor to initialize block with type and position
@@ -179,8 +172,8 @@ void Block::render(const World& world) const {
 }
 
 // Get the bounding box of the block
-AABB Block::getBoundingBox() const {
+Math::AABB Block::getBoundingBox() const {
     sf::Vector3f minPos(m_position.x, m_position.y, m_position.z);
     sf::Vector3f maxPos = minPos + sf::Vector3f(1.0f, 1.0f, 1.0f);
-    return AABB(minPos, maxPos);
+    return {minPos, maxPos};
 }

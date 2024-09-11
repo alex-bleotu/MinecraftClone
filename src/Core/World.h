@@ -3,7 +3,9 @@
 
 
 #include <vector>
+#include <unordered_map>
 #include "Block.h"
+#include "../Utils/Math.h"
 
 class World {
 public:
@@ -23,11 +25,19 @@ public:
     [[nodiscard]] const Block* getBlockAt(const sf::Vector3i& position) const;
 
     // Check if a player AABB collides with any blocks in the world
-    bool checkCollision(const AABB& playerAABB) const;
+    bool checkCollision(const Math::AABB& playerAABB) const;
+
+    // Set a block at a specific position
+    void setBlockAt(const sf::Vector3i& position, BlockType type);
+
+    // Get the block at a specific position (returns nullptr if not found)
+    const Block* getBlockAt(const sf::Vector3i& position) const;
+
+    // Remove a block at a specific position
+    void removeBlockAt(const sf::Vector3i& position);
 
 private:
-    std::map<sf::Vector3i, Block> blockMap;
-    std::vector<Block> blocks;  // List of blocks in the world
+    std::unordered_map<sf::Vector3i, Block> blocks;  // List of blocks in the world
 
     const sf::Vector3f skyColor = {0.431f, 0.694f, 1.0f};
 };

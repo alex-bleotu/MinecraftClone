@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/OpenGL.hpp>
 #include <array>
+#include "../Utils/Math.h"
 
 class World;
 
@@ -19,20 +20,13 @@ enum class BlockType {
     // Add more types as needed
 };
 
-// Axis-aligned bounding box (AABB) for collision detection
-struct AABB {
-    sf::Vector3f min;
-    sf::Vector3f max;
-
-    AABB(const sf::Vector3f& min, const sf::Vector3f& max);
-
-    bool intersects(const AABB& other) const;
-};
-
 class Block {
 public:
     // Constructor to initialize block with type and position
-    explicit Block(BlockType type = BlockType::AIR, const sf::Vector3i& position = {0, 0, 0});
+    Block();
+
+    // Constructor to initialize block with type and position
+    Block(BlockType type, const sf::Vector3i& position);
 
     // Getter for the block type
     [[nodiscard]] BlockType getType() const;
@@ -53,7 +47,7 @@ public:
     void render(const World& world) const;
 
     // Get the bounding box of the block
-    AABB getBoundingBox() const;
+    Math::AABB getBoundingBox() const;
 
 private:
     BlockType m_type;            // Type of block (AIR, DIRT, etc.)
