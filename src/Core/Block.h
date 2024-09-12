@@ -44,7 +44,7 @@ public:
     bool isVisible() const;
 
     // Render the block (for simplicity, could use SFML's RectangleShape or custom logic)
-    void render(const World& world) const;
+    void render() const;
 
     // Get the bounding box of the block
     Math::AABB getAABB() const;

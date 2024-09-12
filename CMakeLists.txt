@@ -22,6 +22,10 @@ add_executable(MinecraftClone main.cpp
         src/Player/Player.cpp
         src/Utils/Texture.h
         src/Utils/Texture.cpp
+        src/Core/Chunk.h
+        src/Utils/PerlinNoise.h
+        src/Utils/PerlinNoise.cpp
+        src/Core/Chunk.cpp
 )
 
 set(SFML_STATIC_LIBRARIES TRUE)

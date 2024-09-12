@@ -2,12 +2,12 @@
 #include "Player.h"
 #include "../Config.h"
 
-Player::Player() : x(Config::Player::X), y(Config::Player::Y), z(Config::Player::Z),
+Player::Player() : position(Config::Player::POSITION),
                    pitch(Config::Player::PITCH), yaw(Config::Player::YAW), speed(Config::Player::MOVE_SPEED),
                    sprintSpeed(Config::Player::SPRINT_SPEED), crouchSpeed(Config::Player::CROUCH_SPEED),
                    normalHeight(Config::Player::NORMAL_HEIGHT), crouchHeight(Config::Player::CROUCH_HEIGHT),
                    sensitivity(Config::Player::SENSITIVITY), gravity(Config::Player::GRAVITY),
-                   jumpVelocity(Config::Player::JUMP_VELOCITY), verticalVelocity(0.0f),
+                   jumpVelocity(Config::Player::JUMP_VELOCITY), verticalVelocity(0.0f), maxReach(Config::Player::MAX_REACH),
                    isGrounded(false), isSprinting(false), isCrouching(false), currentBlock(BlockType::PLANKS),
                    spaceHeld(false) {}
 
@@ -16,7 +16,7 @@ void Player::update(float deltaTime, sf::RenderWindow& window, World& world) {
     handleInput(deltaTime, world);
 
     // Handle mouse input for looking around
-    handleMouseInput(deltaTime, window, world);
+    handleMouseInput(deltaTime, window);
 
     // Handle the escape key to unlock the mouse
     handleEscape(window);
@@ -93,7 +93,7 @@ void Player::apply() const {
     // Move the player to its position
     // Adjust camera height based on whether the player is crouching
     float cameraHeight = isCrouching ? crouchHeight : normalHeight - 0.1f;
-    glTranslatef(-x, -(y + cameraHeight), -z);
+    glTranslatef(-position.x, -(position.y + cameraHeight), -position.z);
 }
 
 void Player::handleInput(float deltaTime, World& world) {
@@ -172,7 +172,7 @@ void Player::handleInput(float deltaTime, World& world) {
     }
 
     // Movement when flying or walking
-    sf::Vector3f newPosition = { x + moveX * moveSpeed, y, z + moveZ * moveSpeed };
+    sf::Vector3f newPosition = { position.x + moveX * moveSpeed, position.y, position.z + moveZ * moveSpeed };
 
     // Handle collision detection for X and Z axes (horizontal movement)
     Math::AABB playerAABB = getAABB();
@@ -180,7 +180,7 @@ void Player::handleInput(float deltaTime, World& world) {
     playerAABB.max.x += moveX * moveSpeed;
 
     if (!world.checkCollision(playerAABB)) {
-        x = newPosition.x;  // Allow movement on X axis if no collision
+        position.x = newPosition.x;  // Allow movement on X axis if no collision
     }
 
     playerAABB = getAABB();  // Reset AABB
@@ -188,7 +188,7 @@ void Player::handleInput(float deltaTime, World& world) {
     playerAABB.max.z += moveZ * moveSpeed;
 
     if (!world.checkCollision(playerAABB)) {
-        z = newPosition.z;  // Allow movement on Z axis if no collision
+        position.z = newPosition.z;  // Allow movement on Z axis if no collision
     }
 
 
@@ -196,7 +196,7 @@ void Player::handleInput(float deltaTime, World& world) {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
         if (!previousLeftMousePressed) {
             // Left button was just pressed (single press)
-            world.breakBlock(*this);
+            breakBlock(world);
         }
         previousLeftMousePressed = true;  // Update state to "pressed"
     } else {
@@ -207,7 +207,7 @@ void Player::handleInput(float deltaTime, World& world) {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
         if (!previousRightMousePressed) {
             // Right button was just pressed (single press)
-            world.placeBlock(*this, currentBlock);
+            placeBlock(world, currentBlock);
         }
         previousRightMousePressed = true;  // Update state to "pressed"
     } else {
@@ -223,7 +223,7 @@ void Player::handleInput(float deltaTime, World& world) {
             moveY = -moveSpeed;  // Move down
         }
 
-        newPosition = { x, y + moveY, z };  // New position considering Y movement
+        newPosition = { position.x, position.y + moveY, position.z };  // New position considering Y movement
 
         // Handle collision detection for Y axis (vertical movement)
         playerAABB = getAABB();
@@ -231,7 +231,7 @@ void Player::handleInput(float deltaTime, World& world) {
         playerAABB.max.y += moveY;
 
         if (!world.checkCollision(playerAABB)) {
-            y = newPosition.y;  // Apply movement on Y axis if no collision
+            position.y = newPosition.y;  // Apply movement on Y axis if no collision
         }
     } else {
         // Jumping (only when grounded and not flying)
@@ -266,7 +266,7 @@ void Player::handleBlockChange(float deltaTime) {
     }
 }
 
-void Player::handleMouseInput(float deltaTime, sf::RenderWindow& window, World& world) {
+void Player::handleMouseInput(float deltaTime, sf::RenderWindow& window) {
     if (!isMouseLocked) return;
 
     // Get the center of the window
@@ -317,13 +317,11 @@ void Player::handleEscape(sf::RenderWindow& window) {
 }
 
 sf::Vector3f Player::getPosition() const {
-    return { x, y, z };
+    return position;
 }
 
 void Player::setPosition(const sf::Vector3f& position) {
-    x = position.x;
-    y = position.y;
-    z = position.z;
+    this->position = position;
 }
 
 void Player::updateVerticalMovement(float deltaTime, World& world) {
@@ -331,14 +329,14 @@ void Player::updateVerticalMovement(float deltaTime, World& world) {
 
     if (!isGrounded || verticalVelocity != 0) {
         verticalVelocity -= gravity * deltaTime;
-        sf::Vector3f newPosition = { x, y + verticalVelocity * deltaTime, z };
+        sf::Vector3f newPosition = { position.x, position.y + verticalVelocity * deltaTime, position.z };
 
         Math::AABB playerAABB = getAABB();
         playerAABB.min.y += verticalVelocity * deltaTime;
         playerAABB.max.y += verticalVelocity * deltaTime;
 
         if (!world.checkCollision(playerAABB)) {
-            y = newPosition.y;
+            position.y = newPosition.y;
             isGrounded = false;
         } else {
             if (verticalVelocity > 0) {
@@ -363,9 +361,9 @@ bool Player::getIsFlying() const {
 
 Math::AABB Player::getAABB() const {
     if (isCrouching) {
-        return {{ x - 0.3f, y, z - 0.3f }, { x + 0.3f, y + crouchHeight, z + 0.3f }};
+        return {{ position.x - 0.3f, position.y, position.z - 0.3f }, { position.x + 0.3f, position.y + crouchHeight, position.z + 0.3f }};
     } else {
-        return {{ x - 0.3f, y, z - 0.3f }, { x + 0.3f, y + normalHeight, z + 0.3f }};
+        return {{ position.x - 0.3f, position.y, position.z - 0.3f }, { position.x + 0.3f, position.y + normalHeight, position.z + 0.3f }};
     }
 }
 
@@ -397,4 +395,124 @@ bool Player::getIsCrouching() const {
 
 BlockType Player::getCurrentBlock() const {
     return currentBlock;
+}
+
+void Player::breakBlock(World& world) const {
+    // Raycast to find the block the player is looking at
+    auto [blockPos, hitPoint, hitNormal] = raycast(world);  // Assume max reach distance is 5 units
+
+    if (blockPos != sf::Vector3i(-1000, -1000, -1000)) {
+        // Remove the block at the position returned by the raycast
+        world.removeBlockAt(blockPos);
+    }
+}
+
+
+void Player::placeBlock(World& world, BlockType blockType) const {
+    // Raycast to find the block the player is looking at
+    auto [blockPos, hitPoint, hitNormal] = raycast(world);  // Assume max reach distance is 5 units
+
+    if (blockPos != sf::Vector3i(-1000, -1000, -1000)) {
+        // Find the adjacent position to place the block based on hitNormal
+        sf::Vector3i newBlockPos = blockPos + sf::Vector3i(hitNormal.x, hitNormal.y, hitNormal.z);
+
+        // Create the new block's AABB (assuming block size is 1x1x1)
+        Math::AABB blockAABB = {
+                { float(newBlockPos.x), float(newBlockPos.y), float(newBlockPos.z) },
+                { float(newBlockPos.x + 1), float(newBlockPos.y + 1), float(newBlockPos.z + 1) }
+        };
+
+        // Check if the player's AABB collides with the new block's AABB
+        if (!getAABB().intersects(blockAABB)) {
+            // If no collision, place the block
+            world.setBlockAt(newBlockPos, blockType);
+        }
+    }
+}
+
+std::tuple<sf::Vector3i, sf::Vector3f, sf::Vector3f> Player::raycast(World& world) const {
+    // Get the player's current position and look direction
+    sf::Vector3f rayOrigin = position;
+    rayOrigin.y += isCrouching ? Config::Player::CROUCH_HEIGHT : Config::Player::NORMAL_HEIGHT;
+    rayOrigin.y -= 0.1f;  // Adjust the ray origin to start at eye level
+
+    sf::Vector3f rayDirection = getLookDirection();
+    rayDirection /= std::sqrt(rayDirection.x * rayDirection.x + rayDirection.y * rayDirection.y + rayDirection.z * rayDirection.z);  // Normalize the direction vector
+
+    // Initialize starting position (in block coordinates)
+    sf::Vector3i blockPos = sf::Vector3i(std::floor(rayOrigin.x), std::floor(rayOrigin.y), std::floor(rayOrigin.z));
+
+    // Variables for stepping through the blocks
+    sf::Vector3f tMax;  // Distance to the next block boundary
+    sf::Vector3f tDelta;  // How far to step in each direction
+    sf::Vector3f step;
+
+    // Calculate the step direction and tMax/tDelta for each axis (X, Y, Z)
+    if (rayDirection.x > 0) {
+        step.x = 1;
+        tMax.x = ((blockPos.x + 1) - rayOrigin.x) / rayDirection.x;
+        tDelta.x = 1.0f / std::abs(rayDirection.x);
+    } else {
+        step.x = -1;
+        tMax.x = (rayOrigin.x - blockPos.x) / -rayDirection.x;
+        tDelta.x = 1.0f / std::abs(rayDirection.x);
+    }
+
+    if (rayDirection.y > 0) {
+        step.y = 1;
+        tMax.y = ((blockPos.y + 1) - rayOrigin.y) / rayDirection.y;
+        tDelta.y = 1.0f / std::abs(rayDirection.y);
+    } else {
+        step.y = -1;
+        tMax.y = (rayOrigin.y - blockPos.y) / -rayDirection.y;
+        tDelta.y = 1.0f / std::abs(rayDirection.y);
+    }
+
+    if (rayDirection.z > 0) {
+        step.z = 1;
+        tMax.z = ((blockPos.z + 1) - rayOrigin.z) / rayDirection.z;
+        tDelta.z = 1.0f / std::abs(rayDirection.z);
+    } else {
+        step.z = -1;
+        tMax.z = (rayOrigin.z - blockPos.z) / -rayDirection.z;
+        tDelta.z = 1.0f / std::abs(rayDirection.z);
+    }
+
+    // Traverse the grid until a block is hit or max distance is exceeded
+    for (float distance = 0.0f; distance < maxReach; ) {
+        // Move to the next block along the closest axis
+        sf::Vector3f hitNormal(0.0f, 0.0f, 0.0f);
+        if (tMax.x < tMax.y && tMax.x < tMax.z) {
+            blockPos.x += step.x;
+            distance = tMax.x;
+            tMax.x += tDelta.x;
+            hitNormal = { -step.x, 0.0f, 0.0f };  // X-axis face was hit
+        } else if (tMax.y < tMax.z) {
+            blockPos.y += step.y;
+            distance = tMax.y;
+            tMax.y += tDelta.y;
+            hitNormal = { 0.0f, -step.y, 0.0f };  // Y-axis face was hit
+        } else {
+            blockPos.z += step.z;
+            distance = tMax.z;
+            tMax.z += tDelta.z;
+            hitNormal = { 0.0f, 0.0f, -step.z };  // Z-axis face was hit
+        }
+
+        // Check if the block at this position is solid (visible)
+        if (const Block* block = world.getBlockAt(blockPos)) {
+            if (block->isVisible()) {
+                sf::Vector3f hitPoint = rayOrigin + rayDirection * distance;
+                return { blockPos, hitPoint, hitNormal };  // Return block position, hit point, and hit face normal
+            }
+        }
+
+        // If distance exceeds maxDistance, break out
+        if (distance > maxReach) {
+            break;
+        }
+    }
+
+    // No block hit within the max distance
+    return { sf::Vector3i(-1000, -1000, -1000), sf::Vector3f(-1000.0f, -1000.0f, -1000.0f), sf::Vector3f(0.0f, 0.0f, 0.0f) };
 }

@@ -5,6 +5,7 @@
 #include <string>
 #include <Graphics/Font.hpp>
 #include <Windows.h>
+#include <System/Vector3.hpp>
 
 namespace Config {
     static std::string executablePath;
@@ -40,15 +41,15 @@ namespace Config {
 
         const float SENSITIVITY = 0.1f;
 
-        const float X = 0.0f;
-        const float Y = 1.2f;
-        const float Z = 0.0f;
+        const sf::Vector3f POSITION = {0.0f, 1.2f, 0.0f};
 
         const float PITCH = 0.0f;
         const float YAW = 0.0f;
 
         const float GRAVITY = 27.55f;
         const float JUMP_VELOCITY = 8.0f;
+
+        const float MAX_REACH = 5.0f;
     }
 
     class Assets {

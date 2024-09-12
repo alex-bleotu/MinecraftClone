@@ -19,20 +19,27 @@ public:
     void unlockMouse(sf::RenderWindow& window);
     void handleEscape(sf::RenderWindow& window);
 
-    [[nodiscard]] sf::Vector3f getPosition() const;
+    [[maybe_unused]] [[nodiscard]] sf::Vector3f getPosition() const;
     void setPosition(const sf::Vector3f& position);
+
     [[nodiscard]] sf::Vector3f getLookDirection() const;
 
     [[nodiscard]] bool getIsGrounded() const;
     [[nodiscard]] bool getIsSprinting() const;
     [[nodiscard]] bool getIsCrouching() const;
-    [[nodiscard]] bool getIsFlying() const;  // NEW: Check if the player is flying
+    [[nodiscard]] bool getIsFlying() const;  // Check if the player is flying
 
     [[nodiscard]] BlockType getCurrentBlock() const;
+
     [[nodiscard]] Math::AABB getAABB() const;
 
+    std::tuple<sf::Vector3i, sf::Vector3f, sf::Vector3f> raycast(World& world) const;  // Raycast from the player's position to find the first block hit
+
+    void breakBlock(World& world) const;                            // Break a block at the player's position
+    void placeBlock(World& world, BlockType blockType) const;       // Place a block at the player's position
+
 private:
-    float x, y, z;
+    sf::Vector3f position;
     float pitch, yaw;
 
     float speed;
@@ -58,17 +65,19 @@ private:
     bool previousLeftMousePressed = false;
     bool previousRightMousePressed = false;
 
+    float maxReach;
+
     BlockType currentBlock;
 
-    sf::Clock spacePressClock;  // NEW: Clock to detect double-space presses
-    bool spacePressedOnce = false;  // NEW: Track if space was pressed once
+    sf::Clock spacePressClock;      // Clock to detect double-space presses
+    bool spacePressedOnce = false;  // Track if space was pressed once
 
-    void handleInput(float deltaTime, World& world);
-    void handleMouseInput(float deltaTime, sf::RenderWindow& window, World& world);
-    void handleBlockChange(float deltaTime);
+    void handleInput(float deltaTime, World& world);                     // Handle player input
+    void handleMouseInput(float deltaTime, sf::RenderWindow& window);    // Handle mouse input
+    void handleBlockChange(float deltaTime);                             // Handle block change
 
-    void updateVerticalMovement(float deltaTime, World& world);
-    void toggleFlying();  // NEW: Toggle flying mode
+    void updateVerticalMovement(float deltaTime, World& world);          // Update vertical movement
+    void toggleFlying();                                                 // Toggle flying mode
 };
 
 #endif // MINECRAFTCLONE_PLAYER_H

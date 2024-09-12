@@ -77,7 +77,7 @@ bool Block::isVisible() const {
 }
 
 // Render the block
-void Block::render(const World& world) const {
+void Block::render() const {
     if (!m_isVisible) return; // Only render if the block is visible
 
     // Enable depth testing and texture
