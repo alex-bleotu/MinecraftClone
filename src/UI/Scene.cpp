@@ -74,12 +74,16 @@ void GameScene::update(float& deltaTime) {
 }
 
 void GameScene::render() const {
-    // Apply the player transformations
-    player.apply();
+    // Render the 3D world (with the player’s transformations applied)
+    player.apply();  // Apply player transformations (camera)
 
-    // Render the world
+    // Render the world in 3D
     world.render(window);
+
+    // Render the crosshair
+    player.render(window);
 }
+
 
 void GameScene::onResize(unsigned int width, unsigned int height) {}
 

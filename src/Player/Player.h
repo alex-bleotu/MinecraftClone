@@ -16,6 +16,9 @@ public:
     // Update the player based on user input
     void update(float deltaTime, sf::RenderWindow& window, World& world);
 
+    // Render the player (for debugging purposes)
+    void render(sf::RenderWindow& window) const;
+
     // Apply the player transformations (position and rotation)
     void apply() const;
 
@@ -36,6 +39,13 @@ public:
 
     // Check if the player is colliding with any blocks in the world
     [[nodiscard]] sf::Vector3f getLookDirection() const;
+
+    bool getIsGrounded() const;   // Get the player's grounded status
+    bool getIsSprinting() const;  // Get the player's sprinting status
+    bool getIsCrouching() const;  // Get the player's crouching status
+
+    // Get the player's current block
+    [[nodiscard]] BlockType getCurrentBlock() const;
 
 private:
     float x, y, z;      // Player position
@@ -62,8 +72,16 @@ private:
     // Whether the mouse is locked (for first person player)
     bool isMouseLocked = false;
 
+    // Previous mouse position for calculating the mouse delta
+    bool previousLeftMousePressed = false;
+    // Previous right mouse position for calculating the mouse delta
+    bool previousRightMousePressed = false;
+
+    BlockType currentBlock;  // The current block the player is holding
+
     void handleInput(float deltaTime, World& world);  // Handle keyboard input for movement and jumping
     void handleMouseInput(float deltaTime, sf::RenderWindow& window);  // Handle mouse input for looking around
+    void handleBlockChange(float deltaTime);  // Handle block change input
 
     // Update the player's vertical movement (jumping and gravity)
     void updateVerticalMovement(float deltaTime, World& world);

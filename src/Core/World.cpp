@@ -1,5 +1,6 @@
 #include <iostream>
 #include "World.h"
+#include "../Config.h"
 
 World::World() {}
 
@@ -111,6 +112,10 @@ void World::removeBlockAt(const sf::Vector3i& position) {
 sf::Vector3i World::raycast(const Player& player, float maxDistance) const {
     // Get the player's current position and look direction
     sf::Vector3f rayOrigin = player.getPosition();
+
+    rayOrigin.y += player.getIsCrouching() ? Config::Player::CROUCH_HEIGHT : Config::Player::NORMAL_HEIGHT;
+    rayOrigin.y -= 0.1f;
+
     sf::Vector3f rayDirection = player.getLookDirection();  // Assume this method exists
 
     // Normalize the direction vector
@@ -129,6 +134,7 @@ sf::Vector3i World::raycast(const Player& player, float maxDistance) const {
         // Check if a block exists at this position and is visible
         if (const Block* block = getBlockAt(blockPos)) {
             if (block->isVisible()) {
+
                 return blockPos;  // Return the position of the block hit by the ray
             }
         }
