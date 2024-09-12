@@ -172,7 +172,7 @@ void Block::render(const World& world) const {
 }
 
 // Get the bounding box of the block
-Math::AABB Block::getBoundingBox() const {
+Math::AABB Block::getAABB() const {
     sf::Vector3f minPos(m_position.x, m_position.y, m_position.z);
     sf::Vector3f maxPos = minPos + sf::Vector3f(1.0f, 1.0f, 1.0f);
     return {minPos, maxPos};

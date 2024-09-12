@@ -72,7 +72,7 @@ bool World::checkCollision(const Math::AABB& playerAABB) const {
     float epsilon = 0.001f;  // Small buffer to avoid floating-point precision issues
 
     for (const auto& [position, block] : blocks) {
-        Math::AABB blockAABB = block.getBoundingBox();
+        Math::AABB blockAABB = block.getAABB();
 
         // Check collision between playerAABB and blockAABB, with a small epsilon buffer
         if ((playerAABB.max.x > blockAABB.min.x - epsilon && playerAABB.min.x < blockAABB.max.x + epsilon) &&
@@ -109,77 +109,161 @@ void World::removeBlockAt(const sf::Vector3i& position) {
     blocks.erase(position);  // Erase the block at the given position
 }
 
-sf::Vector3i World::raycast(const Player& player, float maxDistance) const {
+std::tuple<sf::Vector3i, sf::Vector3f, sf::Vector3f> World::raycast(const Player& player, float maxDistance) const {
     // Get the player's current position and look direction
     sf::Vector3f rayOrigin = player.getPosition();
-
     rayOrigin.y += player.getIsCrouching() ? Config::Player::CROUCH_HEIGHT : Config::Player::NORMAL_HEIGHT;
-    rayOrigin.y -= 0.1f;
+    rayOrigin.y -= 0.1f;  // Adjust the ray origin to start at eye level
 
-    sf::Vector3f rayDirection = player.getLookDirection();  // Assume this method exists
+    sf::Vector3f rayDirection = player.getLookDirection();
+    rayDirection /= std::sqrt(rayDirection.x * rayDirection.x + rayDirection.y * rayDirection.y + rayDirection.z * rayDirection.z);  // Normalize the direction vector
 
-    // Normalize the direction vector
-    rayDirection /= std::sqrt(rayDirection.x * rayDirection.x + rayDirection.y * rayDirection.y + rayDirection.z * rayDirection.z);
+    // Initialize starting position (in block coordinates)
+    sf::Vector3i blockPos = sf::Vector3i(std::floor(rayOrigin.x), std::floor(rayOrigin.y), std::floor(rayOrigin.z));
 
-    // Ray step increment
-    float step = 0.1f;  // Small steps for precision
-    sf::Vector3f ray = rayOrigin;
+    // Variables for stepping through the blocks
+    sf::Vector3f tMax;  // Distance to the next block boundary
+    sf::Vector3f tDelta;  // How far to step in each direction
+    sf::Vector3f step;
 
-    // Step along the ray until a block is hit or max distance is exceeded
-    for (float distance = 0.0f; distance < maxDistance; distance += step) {
-        ray += rayDirection * step;
+    // Calculate the step direction and tMax/tDelta for each axis (X, Y, Z)
+    if (rayDirection.x > 0) {
+        step.x = 1;
+        tMax.x = ((blockPos.x + 1) - rayOrigin.x) / rayDirection.x;
+        tDelta.x = 1.0f / std::abs(rayDirection.x);
+    } else {
+        step.x = -1;
+        tMax.x = (rayOrigin.x - blockPos.x) / -rayDirection.x;
+        tDelta.x = 1.0f / std::abs(rayDirection.x);
+    }
 
-        sf::Vector3i blockPos = sf::Vector3i(std::floor(ray.x), std::floor(ray.y), std::floor(ray.z));
+    if (rayDirection.y > 0) {
+        step.y = 1;
+        tMax.y = ((blockPos.y + 1) - rayOrigin.y) / rayDirection.y;
+        tDelta.y = 1.0f / std::abs(rayDirection.y);
+    } else {
+        step.y = -1;
+        tMax.y = (rayOrigin.y - blockPos.y) / -rayDirection.y;
+        tDelta.y = 1.0f / std::abs(rayDirection.y);
+    }
 
-        // Check if a block exists at this position and is visible
+    if (rayDirection.z > 0) {
+        step.z = 1;
+        tMax.z = ((blockPos.z + 1) - rayOrigin.z) / rayDirection.z;
+        tDelta.z = 1.0f / std::abs(rayDirection.z);
+    } else {
+        step.z = -1;
+        tMax.z = (rayOrigin.z - blockPos.z) / -rayDirection.z;
+        tDelta.z = 1.0f / std::abs(rayDirection.z);
+    }
+
+    // Traverse the grid until a block is hit or max distance is exceeded
+    for (float distance = 0.0f; distance < maxDistance; ) {
+        // Move to the next block along the closest axis
+        sf::Vector3f hitNormal(0.0f, 0.0f, 0.0f);
+        if (tMax.x < tMax.y && tMax.x < tMax.z) {
+            blockPos.x += step.x;
+            distance = tMax.x;
+            tMax.x += tDelta.x;
+            hitNormal = { -step.x, 0.0f, 0.0f };  // X-axis face was hit
+        } else if (tMax.y < tMax.z) {
+            blockPos.y += step.y;
+            distance = tMax.y;
+            tMax.y += tDelta.y;
+            hitNormal = { 0.0f, -step.y, 0.0f };  // Y-axis face was hit
+        } else {
+            blockPos.z += step.z;
+            distance = tMax.z;
+            tMax.z += tDelta.z;
+            hitNormal = { 0.0f, 0.0f, -step.z };  // Z-axis face was hit
+        }
+
+        // Check if the block at this position is solid (visible)
         if (const Block* block = getBlockAt(blockPos)) {
             if (block->isVisible()) {
-
-                return blockPos;  // Return the position of the block hit by the ray
+                sf::Vector3f hitPoint = rayOrigin + rayDirection * distance;
+                return { blockPos, hitPoint, hitNormal };  // Return block position, hit point, and hit face normal
             }
+        }
+
+        // If distance exceeds maxDistance, break out
+        if (distance > maxDistance) {
+            break;
         }
     }
 
-    return sf::Vector3i(-1000, -1000, -1000);  // Return invalid position if no block was found
+    // No block hit within the max distance
+    return { sf::Vector3i(-1000, -1000, -1000), sf::Vector3f(-1000.0f, -1000.0f, -1000.0f), sf::Vector3f(0.0f, 0.0f, 0.0f) };
 }
 
 void World::breakBlock(const Player& player) {
     // Raycast to find the block the player is looking at
-    sf::Vector3i blockPos = raycast(player, 5.0f);  // Assume max reach distance is 5 units
+    auto [blockPos, hitPoint, hitNormal] = raycast(player, 5.0f);  // Assume max reach distance is 5 units
 
     if (blockPos != sf::Vector3i(-1000, -1000, -1000)) {
-        // Remove the block from the map
+        // Remove the block at the position returned by the raycast
         removeBlockAt(blockPos);
     }
 }
 
 void World::placeBlock(const Player& player, BlockType blockType) {
     // Raycast to find the block the player is looking at
-    sf::Vector3i blockPos = raycast(player, 5.0f);  // Assume max reach distance is 5 units
+    auto [blockPos, hitPoint, hitNormal] = raycast(player, 5.0f);  // Assume max reach distance is 5 units
 
     if (blockPos != sf::Vector3i(-1000, -1000, -1000)) {
-        // Find the adjacent position to place the block
-        sf::Vector3f normal = getBlockFaceNormal(player, blockPos);  // Assume this method exists
-        sf::Vector3i newBlockPos = blockPos + sf::Vector3i(normal.x, normal.y, normal.z);
+        // Find the adjacent position to place the block based on hitNormal
+        sf::Vector3i newBlockPos = blockPos + sf::Vector3i(hitNormal.x, hitNormal.y, hitNormal.z);
 
-        // Place the block in the world
-        setBlockAt(newBlockPos, blockType);
+        // Get the player's bounding box (AABB)
+        Math::AABB playerAABB = player.getAABB();
+
+        // Create the new block's AABB (assuming block size is 1x1x1)
+        Math::AABB blockAABB = {
+                { float(newBlockPos.x), float(newBlockPos.y), float(newBlockPos.z) },
+                { float(newBlockPos.x + 1), float(newBlockPos.y + 1), float(newBlockPos.z + 1) }
+        };
+
+        // Check if the player's AABB collides with the new block's AABB
+        if (!checkCollision(blockAABB, playerAABB)) {
+            // If no collision, place the block
+            setBlockAt(newBlockPos, blockType);
+        }
     }
 }
 
-sf::Vector3f World::getBlockFaceNormal(const Player& player, const sf::Vector3i& blockPos) const {
-    sf::Vector3f playerPos = player.getPosition();
-    sf::Vector3f blockCenter = sf::Vector3f(blockPos.x + 0.5f, blockPos.y + 0.5f, blockPos.z + 0.5f);
+sf::Vector3f World::getBlockFaceNormal(const sf::Vector3f& hitPoint, const sf::Vector3i& blockPos) const {
+    // Calculate the hit point relative to the block's position
+    sf::Vector3f relativeHitPoint = hitPoint - sf::Vector3f(blockPos.x, blockPos.y, blockPos.z);
 
-    // Calculate the direction from the block center to the player
-    sf::Vector3f direction = playerPos - blockCenter;
+    // Add a small bias to avoid issues with floating point precision
+    float bias = 0.01f;
 
-    // Find the largest component of the direction vector
-    if (std::abs(direction.x) > std::abs(direction.y) && std::abs(direction.x) > std::abs(direction.z)) {
-        return {(direction.x > 0) ? 1.0f : -1.0f, 0.0f, 0.0f};  // Left or right face
-    } else if (std::abs(direction.y) > std::abs(direction.x) && std::abs(direction.y) > std::abs(direction.z)) {
-        return {0.0f, (direction.y > 0) ? 1.0f : -1.0f, 0.0f};  // Top or bottom face
-    } else {
-        return {0.0f, 0.0f, (direction.z > 0) ? 1.0f : -1.0f};  // Front or back face
+    // Determine which face the hit point is closest to
+    if (std::abs(relativeHitPoint.x - 0.5f) + bias > std::abs(relativeHitPoint.y - 0.5f) &&
+        std::abs(relativeHitPoint.x - 0.5f) + bias > std::abs(relativeHitPoint.z - 0.5f)) {
+        // Closest to X-axis face (left or right)
+        return { (relativeHitPoint.x > 0.5f) ? 1.0f : -1.0f, 0.0f, 0.0f };
     }
+    else if (std::abs(relativeHitPoint.y - 0.5f) + bias > std::abs(relativeHitPoint.x - 0.5f) &&
+             std::abs(relativeHitPoint.y - 0.5f) + bias > std::abs(relativeHitPoint.z - 0.5f)) {
+        // Closest to Y-axis face (top or bottom)
+        return { 0.0f, (relativeHitPoint.y > 0.5f) ? 1.0f : -1.0f, 0.0f };
+    }
+    else {
+        // Closest to Z-axis face (front or back)
+        return { 0.0f, 0.0f, (relativeHitPoint.z > 0.5f) ? 1.0f : -1.0f };
+    }
+}
+
+bool World::checkCollision(const Math::AABB& blockAABB, const Math::AABB& playerAABB) const {
+    float epsilon = 0.001f;  // Small buffer to avoid floating-point precision issues
+
+    // Check collision between playerAABB and blockAABB, with a small epsilon buffer
+    if ((playerAABB.max.x > blockAABB.min.x - epsilon && playerAABB.min.x < blockAABB.max.x + epsilon) &&
+        (playerAABB.max.y > blockAABB.min.y - epsilon && playerAABB.min.y < blockAABB.max.y + epsilon) &&
+        (playerAABB.max.z > blockAABB.min.z - epsilon && playerAABB.min.z < blockAABB.max.z + epsilon)) {
+        return true;
+    }
+
+    return false;
 }

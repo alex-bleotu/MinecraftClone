@@ -47,7 +47,7 @@ public:
     void render(const World& world) const;
 
     // Get the bounding box of the block
-    Math::AABB getBoundingBox() const;
+    Math::AABB getAABB() const;
 
 private:
     BlockType m_type;            // Type of block (AIR, DIRT, etc.)

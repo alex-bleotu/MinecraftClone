@@ -47,6 +47,9 @@ public:
     // Get the player's current block
     [[nodiscard]] BlockType getCurrentBlock() const;
 
+    // Check if the player is colliding with any blocks in the world
+    [[nodiscard]] Math::AABB getAABB() const;
+
 private:
     float x, y, z;      // Player position
     float pitch, yaw;   // Player rotation (look up/down and left/right)
@@ -85,9 +88,6 @@ private:
 
     // Update the player's vertical movement (jumping and gravity)
     void updateVerticalMovement(float deltaTime, World& world);
-
-    // Check if the player is colliding with any blocks in the world
-    [[nodiscard]] Math::AABB getPlayerAABB() const;
 };
 
 #endif //MINECRAFTCLONE_PLAYER_H

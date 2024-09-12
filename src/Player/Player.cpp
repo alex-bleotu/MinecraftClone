@@ -151,7 +151,7 @@ void Player::handleInput(float deltaTime, World& world) {
     sf::Vector3f newPosition = { x + moveX * moveSpeed, y, z + moveZ * moveSpeed };
 
     // Handle collisions (same as before)
-    Math::AABB playerAABB = getPlayerAABB();
+    Math::AABB playerAABB = getAABB();
     playerAABB.min.x += moveX * moveSpeed;
     playerAABB.max.x += moveX * moveSpeed;
 
@@ -159,7 +159,7 @@ void Player::handleInput(float deltaTime, World& world) {
         x = newPosition.x;  // Apply movement on X axis if no collision
     }
 
-    playerAABB = getPlayerAABB();  // Reset AABB
+    playerAABB = getAABB();  // Reset AABB
     playerAABB.min.z += moveZ * moveSpeed;
     playerAABB.max.z += moveZ * moveSpeed;
 
@@ -278,7 +278,7 @@ void Player::updateVerticalMovement(float deltaTime, World& world) {
         sf::Vector3f newPosition = { x, y + verticalVelocity * deltaTime, z };
 
         // Check for collision in the vertical direction
-        Math::AABB playerAABB = getPlayerAABB();
+        Math::AABB playerAABB = getAABB();
         playerAABB.min.y += verticalVelocity * deltaTime;
         playerAABB.max.y += verticalVelocity * deltaTime;
 
@@ -297,14 +297,14 @@ void Player::updateVerticalMovement(float deltaTime, World& world) {
     }
 
     // Re-check if the player is still grounded after horizontal movement
-    Math::AABB playerAABB = getPlayerAABB();
+    Math::AABB playerAABB = getAABB();
     playerAABB.min.y -= 0.1f;  // Check slightly below the player's feet
     if (!world.checkCollision(playerAABB)) {
         isGrounded = false;  // If there is no block below the player, set grounded to false
     }
 }
 
-Math::AABB Player::getPlayerAABB() const {
+Math::AABB Player::getAABB() const {
     if (isCrouching) {
         return {{ x - 0.3f, y, z - 0.3f }, { x + 0.3f, y + crouchHeight, z + 0.3f }};
     } else {
