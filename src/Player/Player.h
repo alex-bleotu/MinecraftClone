@@ -1,7 +1,6 @@
 #ifndef MINECRAFTCLONE_PLAYER_H
 #define MINECRAFTCLONE_PLAYER_H
 
-
 #include <SFML/OpenGL.hpp>
 #include <cmath>
 #include <Window.hpp>
@@ -13,81 +12,63 @@ class Player {
 public:
     Player();
 
-    // Update the player based on user input
     void update(float deltaTime, sf::RenderWindow& window, World& world);
-
-    // Render the player (for debugging purposes)
     void render(sf::RenderWindow& window) const;
-
-    // Apply the player transformations (position and rotation)
     void apply() const;
-
-    // Lock the mouse to the center of the window
     void lockMouse(sf::RenderWindow& window);
-
-    // Unlock the mouse
     void unlockMouse(sf::RenderWindow& window);
-
-    // Handle the escape key to unlock the mouse
     void handleEscape(sf::RenderWindow& window);
 
-    // Get the player position
     [[nodiscard]] sf::Vector3f getPosition() const;
-
-    // Set the player position
     void setPosition(const sf::Vector3f& position);
-
-    // Check if the player is colliding with any blocks in the world
     [[nodiscard]] sf::Vector3f getLookDirection() const;
 
-    bool getIsGrounded() const;   // Get the player's grounded status
-    bool getIsSprinting() const;  // Get the player's sprinting status
-    bool getIsCrouching() const;  // Get the player's crouching status
+    [[nodiscard]] bool getIsGrounded() const;
+    [[nodiscard]] bool getIsSprinting() const;
+    [[nodiscard]] bool getIsCrouching() const;
+    [[nodiscard]] bool getIsFlying() const;  // NEW: Check if the player is flying
 
-    // Get the player's current block
     [[nodiscard]] BlockType getCurrentBlock() const;
-
-    // Check if the player is colliding with any blocks in the world
     [[nodiscard]] Math::AABB getAABB() const;
 
 private:
-    float x, y, z;      // Player position
-    float pitch, yaw;   // Player rotation (look up/down and left/right)
+    float x, y, z;
+    float pitch, yaw;
 
-    float speed;        // Movement speed
-    float sprintSpeed;  // Sprinting speed (increased movement speed when sprinting)
-    float crouchSpeed;  // Crouching speed (reduced movement speed when crouching)
+    float speed;
+    float sprintSpeed;
+    float crouchSpeed;
 
-    float normalHeight; // Normal height of the player
-    float crouchHeight; // Crouching height of the player
+    float normalHeight;
+    float crouchHeight;
 
-    float jumpVelocity;     // Velocity during jump
-    float gravity;          // Gravity strength
-    float verticalVelocity; // Current velocity in the y-axis
+    float jumpVelocity;
+    float gravity;
+    float verticalVelocity;
 
-    bool isGrounded;    // Is the player on the ground?
-    bool isSprinting;   // Is the player sprinting?
-    bool isCrouching;   // Is the player crouching?
+    bool isGrounded;   //Track if the player is grounded
+    bool isSprinting;  // Track if the player is sprinting
+    bool isCrouching;  // Track if the player is crouching
+    bool isFlying;     // Track if the player is flying
 
-    // Sensitivity for the mouse input
+    bool spaceHeld;    // Track if the space key is held down
+
     float sensitivity;
-
-    // Whether the mouse is locked (for first person player)
     bool isMouseLocked = false;
-
-    // Previous mouse position for calculating the mouse delta
     bool previousLeftMousePressed = false;
-    // Previous right mouse position for calculating the mouse delta
     bool previousRightMousePressed = false;
 
-    BlockType currentBlock;  // The current block the player is holding
+    BlockType currentBlock;
 
-    void handleInput(float deltaTime, World& world);  // Handle keyboard input for movement and jumping
-    void handleMouseInput(float deltaTime, sf::RenderWindow& window);  // Handle mouse input for looking around
-    void handleBlockChange(float deltaTime);  // Handle block change input
+    sf::Clock spacePressClock;  // NEW: Clock to detect double-space presses
+    bool spacePressedOnce = false;  // NEW: Track if space was pressed once
 
-    // Update the player's vertical movement (jumping and gravity)
+    void handleInput(float deltaTime, World& world);
+    void handleMouseInput(float deltaTime, sf::RenderWindow& window, World& world);
+    void handleBlockChange(float deltaTime);
+
     void updateVerticalMovement(float deltaTime, World& world);
+    void toggleFlying();  // NEW: Toggle flying mode
 };
 
-#endif //MINECRAFTCLONE_PLAYER_H
+#endif // MINECRAFTCLONE_PLAYER_H

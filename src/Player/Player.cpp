@@ -8,19 +8,20 @@ Player::Player() : x(Config::Player::X), y(Config::Player::Y), z(Config::Player:
                    normalHeight(Config::Player::NORMAL_HEIGHT), crouchHeight(Config::Player::CROUCH_HEIGHT),
                    sensitivity(Config::Player::SENSITIVITY), gravity(Config::Player::GRAVITY),
                    jumpVelocity(Config::Player::JUMP_VELOCITY), verticalVelocity(0.0f),
-                   isGrounded(false), isSprinting(false), isCrouching(false), currentBlock(BlockType::PLANKS) {}
+                   isGrounded(false), isSprinting(false), isCrouching(false), currentBlock(BlockType::PLANKS),
+                   spaceHeld(false) {}
 
 void Player::update(float deltaTime, sf::RenderWindow& window, World& world) {
     // Handle keyboard input for movement and jumping
-    handleInput(deltaTime, world);  // Pass the world for collision checks
+    handleInput(deltaTime, world);
 
     // Handle mouse input for looking around
-    handleMouseInput(deltaTime, window);
+    handleMouseInput(deltaTime, window, world);
 
     // Handle the escape key to unlock the mouse
     handleEscape(window);
 
-    // Update vertical movement (gravity and jumping)
+    // Update vertical movement (gravity and jumping or flying)
     updateVerticalMovement(deltaTime, world);
 
     // Handle block change input
@@ -96,26 +97,29 @@ void Player::apply() const {
 }
 
 void Player::handleInput(float deltaTime, World& world) {
-    float moveSpeed = speed * deltaTime;
-    float moveX = 0.0f, moveZ = 0.0f;  // Initialize movement on the X and Z axes
+    float moveSpeed = isFlying ? speed * deltaTime * 2 : speed * deltaTime;  // Double speed when flying
+    float moveX = 0.0f, moveZ = 0.0f;
 
-    // Sprinting increases movement speed
+    // Handle sprinting
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)) {
         isSprinting = true;
-        moveSpeed = sprintSpeed * deltaTime;  // Increase movement speed while sprinting
+        moveSpeed = sprintSpeed * deltaTime;
     } else {
         isSprinting = false;
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
-        if (!isCrouching) {
-            isCrouching = true;
-            speed = crouchSpeed;  // Reduce movement speed when crouching
-        }
-    } else {
-        if (isCrouching) {
-            isCrouching = false;
-            speed = Config::Player::MOVE_SPEED;  // Reset to normal speed
+    // Handle crouching, but only if the player is not flying
+    if (!isFlying) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
+            if (!isCrouching) {
+                isCrouching = true;
+                speed = crouchSpeed;
+            }
+        } else {
+            if (isCrouching) {
+                isCrouching = false;
+                speed = Config::Player::MOVE_SPEED;  // Reset speed when not crouching
+            }
         }
     }
 
@@ -147,16 +151,36 @@ void Player::handleInput(float deltaTime, World& world) {
         moveZ /= length;
     }
 
-    // New potential position based on input
+    // Handle double-space for flying toggle
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+        if (!spacePressedOnce) {
+            // First space press detected
+            spacePressedOnce = true;
+            spacePressClock.restart();
+        } else if (spacePressClock.getElapsedTime().asMilliseconds() < 200 && !spaceHeld) {
+            // Second space press within 200ms, toggle flying
+            toggleFlying();
+            spacePressedOnce = false;  // Reset the detection
+        }
+        spaceHeld = true;
+    } else {
+        // Reset single press if the time limit has passed without a second press
+        if (spacePressedOnce && spacePressClock.getElapsedTime().asMilliseconds() >= 200) {
+            spacePressedOnce = false;
+        }
+        spaceHeld = false;
+    }
+
+    // Movement when flying or walking
     sf::Vector3f newPosition = { x + moveX * moveSpeed, y, z + moveZ * moveSpeed };
 
-    // Handle collisions (same as before)
+    // Handle collision detection for X and Z axes (horizontal movement)
     Math::AABB playerAABB = getAABB();
     playerAABB.min.x += moveX * moveSpeed;
     playerAABB.max.x += moveX * moveSpeed;
 
     if (!world.checkCollision(playerAABB)) {
-        x = newPosition.x;  // Apply movement on X axis if no collision
+        x = newPosition.x;  // Allow movement on X axis if no collision
     }
 
     playerAABB = getAABB();  // Reset AABB
@@ -164,16 +188,9 @@ void Player::handleInput(float deltaTime, World& world) {
     playerAABB.max.z += moveZ * moveSpeed;
 
     if (!world.checkCollision(playerAABB)) {
-        z = newPosition.z;  // Apply movement on Z axis if no collision
+        z = newPosition.z;  // Allow movement on Z axis if no collision
     }
 
-    // Jumping (only when grounded)
-    if (isGrounded && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-        verticalVelocity = jumpVelocity;
-        isGrounded = false;
-    }
-
-    // **Mouse click detection for block breaking/placing**
 
     // Check for left mouse button press (for block breaking)
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
@@ -196,6 +213,43 @@ void Player::handleInput(float deltaTime, World& world) {
     } else {
         previousRightMousePressed = false;  // Update state to "not pressed"
     }
+
+    if (isFlying) {
+        // Handle vertical movement when flying
+        float moveY = 0.0f;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+            moveY = moveSpeed;  // Move up
+        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
+            moveY = -moveSpeed;  // Move down
+        }
+
+        newPosition = { x, y + moveY, z };  // New position considering Y movement
+
+        // Handle collision detection for Y axis (vertical movement)
+        playerAABB = getAABB();
+        playerAABB.min.y += moveY;
+        playerAABB.max.y += moveY;
+
+        if (!world.checkCollision(playerAABB)) {
+            y = newPosition.y;  // Apply movement on Y axis if no collision
+        }
+    } else {
+        // Jumping (only when grounded and not flying)
+        if (isGrounded && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+            verticalVelocity = jumpVelocity;
+            isGrounded = false;
+        }
+    }
+}
+
+
+void Player::toggleFlying() {
+    isFlying = !isFlying;
+    if (isFlying) {
+        verticalVelocity = 0.0f;  // Reset vertical velocity when flying
+    } else {
+        isGrounded = false;  // Ensure grounded is false when exiting flying mode
+    }
 }
 
 void Player::handleBlockChange(float deltaTime) {
@@ -212,7 +266,7 @@ void Player::handleBlockChange(float deltaTime) {
     }
 }
 
-void Player::handleMouseInput(float deltaTime, sf::RenderWindow& window) {
+void Player::handleMouseInput(float deltaTime, sf::RenderWindow& window, World& world) {
     if (!isMouseLocked) return;
 
     // Get the center of the window
@@ -236,6 +290,7 @@ void Player::handleMouseInput(float deltaTime, sf::RenderWindow& window) {
 
     // Reset the mouse position to the center of the window
     sf::Mouse::setPosition(center, window);
+
 }
 
 void Player::lockMouse(sf::RenderWindow& window) {
@@ -272,36 +327,38 @@ void Player::setPosition(const sf::Vector3f& position) {
 }
 
 void Player::updateVerticalMovement(float deltaTime, World& world) {
-    if (!isGrounded || verticalVelocity != 0) {  // Handle movement when jumping or falling
-        // Apply gravity if the player is not grounded
+    if (isFlying) return;  // Skip gravity/jumping logic when flying
+
+    if (!isGrounded || verticalVelocity != 0) {
         verticalVelocity -= gravity * deltaTime;
         sf::Vector3f newPosition = { x, y + verticalVelocity * deltaTime, z };
 
-        // Check for collision in the vertical direction
         Math::AABB playerAABB = getAABB();
         playerAABB.min.y += verticalVelocity * deltaTime;
         playerAABB.max.y += verticalVelocity * deltaTime;
 
         if (!world.checkCollision(playerAABB)) {
-            // No collision, update Y position
             y = newPosition.y;
-            isGrounded = false;  // Player is not grounded if there is no collision
+            isGrounded = false;
         } else {
-            if (verticalVelocity > 0) {  // Collided with ceiling while moving up
-                verticalVelocity = 0.0f;  // Stop upward movement
-            } else {  // Collided with ground while falling
-                verticalVelocity = 0.0f;  // Stop falling
-                isGrounded = true;  // Player is now grounded
+            if (verticalVelocity > 0) {
+                verticalVelocity = 0.0f;
+            } else {
+                verticalVelocity = 0.0f;
+                isGrounded = true;
             }
         }
     }
 
-    // Re-check if the player is still grounded after horizontal movement
     Math::AABB playerAABB = getAABB();
-    playerAABB.min.y -= 0.1f;  // Check slightly below the player's feet
+    playerAABB.min.y -= 0.1f;
     if (!world.checkCollision(playerAABB)) {
-        isGrounded = false;  // If there is no block below the player, set grounded to false
+        isGrounded = false;
     }
+}
+
+bool Player::getIsFlying() const {
+    return isFlying;
 }
 
 Math::AABB Player::getAABB() const {
