@@ -6,6 +6,7 @@
 #include <System/Vector3.hpp>
 #include <functional>
 #include <cmath>
+#include <System/Vector2.hpp>
 
 namespace Math {
     // Custom gluPerspective function
@@ -39,6 +40,15 @@ namespace std {
         std::size_t operator()(const sf::Vector3i &v) const {
             // Combine the x, y, and z coordinates into a single hash value
             return ((std::hash<int>()(v.x) ^ (std::hash<int>()(v.y) << 1)) >> 1) ^ (std::hash<int>()(v.z) << 1);
+        }
+    };
+
+    template <>
+    struct hash<sf::Vector2i> {
+        std::size_t operator()(const sf::Vector2i& v) const noexcept {
+            std::size_t h1 = std::hash<int>()(v.x);
+            std::size_t h2 = std::hash<int>()(v.y);
+            return h1 ^ (h2 << 1);  // Combine the two hashes
         }
     };
 }

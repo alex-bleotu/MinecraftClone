@@ -431,7 +431,6 @@ void Player::placeBlock(World& world, BlockType blockType) const {
 }
 
 std::tuple<sf::Vector3i, sf::Vector3f, sf::Vector3f> Player::raycast(World& world) const {
-    // Get the player's current position and look direction
     sf::Vector3f rayOrigin = position;
     rayOrigin.y += isCrouching ? Config::Player::CROUCH_HEIGHT : Config::Player::NORMAL_HEIGHT;
     rayOrigin.y -= 0.1f;  // Adjust the ray origin to start at eye level
@@ -439,77 +438,72 @@ std::tuple<sf::Vector3i, sf::Vector3f, sf::Vector3f> Player::raycast(World& worl
     sf::Vector3f rayDirection = getLookDirection();
     rayDirection /= std::sqrt(rayDirection.x * rayDirection.x + rayDirection.y * rayDirection.y + rayDirection.z * rayDirection.z);  // Normalize the direction vector
 
-    // Initialize starting position (in block coordinates)
-    sf::Vector3i blockPos = sf::Vector3i(std::floor(rayOrigin.x), std::floor(rayOrigin.y), std::floor(rayOrigin.z));
+    // Initialize the block position (in global block coordinates)
+    sf::Vector3i blockPos(std::floor(rayOrigin.x), std::floor(rayOrigin.y), std::floor(rayOrigin.z));
 
-    // Variables for stepping through the blocks
-    sf::Vector3f tMax;  // Distance to the next block boundary
-    sf::Vector3f tDelta;  // How far to step in each direction
-    sf::Vector3f step;
+    // Step values for stepping through the grid in the x, y, and z directions
+    sf::Vector3f tMax, tDelta, step;
 
-    // Calculate the step direction and tMax/tDelta for each axis (X, Y, Z)
+    // X-axis stepping
     if (rayDirection.x > 0) {
         step.x = 1;
-        tMax.x = ((blockPos.x + 1) - rayOrigin.x) / rayDirection.x;
-        tDelta.x = 1.0f / std::abs(rayDirection.x);
+        tMax.x = (blockPos.x + 1 - rayOrigin.x) / rayDirection.x;
+        tDelta.x = 1.0f / rayDirection.x;
     } else {
         step.x = -1;
         tMax.x = (rayOrigin.x - blockPos.x) / -rayDirection.x;
-        tDelta.x = 1.0f / std::abs(rayDirection.x);
+        tDelta.x = 1.0f / -rayDirection.x;
     }
 
+    // Y-axis stepping
     if (rayDirection.y > 0) {
         step.y = 1;
-        tMax.y = ((blockPos.y + 1) - rayOrigin.y) / rayDirection.y;
-        tDelta.y = 1.0f / std::abs(rayDirection.y);
+        tMax.y = (blockPos.y + 1 - rayOrigin.y) / rayDirection.y;
+        tDelta.y = 1.0f / rayDirection.y;
     } else {
         step.y = -1;
         tMax.y = (rayOrigin.y - blockPos.y) / -rayDirection.y;
-        tDelta.y = 1.0f / std::abs(rayDirection.y);
+        tDelta.y = 1.0f / -rayDirection.y;
     }
 
+    // Z-axis stepping
     if (rayDirection.z > 0) {
         step.z = 1;
-        tMax.z = ((blockPos.z + 1) - rayOrigin.z) / rayDirection.z;
-        tDelta.z = 1.0f / std::abs(rayDirection.z);
+        tMax.z = (blockPos.z + 1 - rayOrigin.z) / rayDirection.z;
+        tDelta.z = 1.0f / rayDirection.z;
     } else {
         step.z = -1;
         tMax.z = (rayOrigin.z - blockPos.z) / -rayDirection.z;
-        tDelta.z = 1.0f / std::abs(rayDirection.z);
+        tDelta.z = 1.0f / -rayDirection.z;
     }
 
-    // Traverse the grid until a block is hit or max distance is exceeded
+    // Traverse the grid to find the first block hit or exceed max distance
     for (float distance = 0.0f; distance < maxReach; ) {
-        // Move to the next block along the closest axis
         sf::Vector3f hitNormal(0.0f, 0.0f, 0.0f);
+
         if (tMax.x < tMax.y && tMax.x < tMax.z) {
             blockPos.x += step.x;
             distance = tMax.x;
             tMax.x += tDelta.x;
-            hitNormal = { -step.x, 0.0f, 0.0f };  // X-axis face was hit
+            hitNormal = { -step.x, 0.0f, 0.0f };
         } else if (tMax.y < tMax.z) {
             blockPos.y += step.y;
             distance = tMax.y;
             tMax.y += tDelta.y;
-            hitNormal = { 0.0f, -step.y, 0.0f };  // Y-axis face was hit
+            hitNormal = { 0.0f, -step.y, 0.0f };
         } else {
             blockPos.z += step.z;
             distance = tMax.z;
             tMax.z += tDelta.z;
-            hitNormal = { 0.0f, 0.0f, -step.z };  // Z-axis face was hit
+            hitNormal = { 0.0f, 0.0f, -step.z };
         }
 
-        // Check if the block at this position is solid (visible)
+        // Check if the block at the current block position is solid (or visible)
         if (const Block* block = world.getBlockAt(blockPos)) {
             if (block->isVisible()) {
                 sf::Vector3f hitPoint = rayOrigin + rayDirection * distance;
-                return { blockPos, hitPoint, hitNormal };  // Return block position, hit point, and hit face normal
+                return { blockPos, hitPoint, hitNormal };  // Return the block hit and hit details
             }
-        }
-
-        // If distance exceeds maxDistance, break out
-        if (distance > maxReach) {
-            break;
         }
     }
 

@@ -78,7 +78,7 @@ void GameScene::render() const {
     player.apply();  // Apply player transformations (camera)
 
     // Render the world in 3D
-    world.render(window);
+    world.render();
 
     // Render the crosshair
     player.render(window);

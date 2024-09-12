@@ -41,7 +41,7 @@ namespace Config {
 
         const float SENSITIVITY = 0.1f;
 
-        const sf::Vector3f POSITION = {0.0f, 1.2f, 0.0f};
+        const sf::Vector3f POSITION = {0.0f, 25.0f, 0.0f};
 
         const float PITCH = 0.0f;
         const float YAW = 0.0f;
@@ -50,6 +50,13 @@ namespace Config {
         const float JUMP_VELOCITY = 8.0f;
 
         const float MAX_REACH = 5.0f;
+    }
+
+    namespace World {
+        const int CHUNK_SIZE = 16;
+        const int RENDER_DISTANCE = 1;
+
+        const sf::Vector3f SKY_COLOR = {0.431f, 0.694f, 1.0f};
     }
 
     class Assets {

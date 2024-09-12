@@ -6,8 +6,6 @@
 #include "../Utils/Math.h"
 #include <SFML/System/Vector3.hpp>
 
-const int CHUNK_SIZE = 16;
-
 class Chunk {
 public:
     Chunk();
@@ -24,11 +22,16 @@ public:
     // Remove a block at a specific position within the chunk
     void removeBlockAt(const sf::Vector3i& position);
 
+    // Check if a player AABB collides with any blocks in the chunk
+    bool checkCollision(const Math::AABB& playerAABB) const;
+
     // Render the chunk
     void render() const;
 
 private:
     std::unordered_map<sf::Vector3i, Block> blocks;  // List of blocks in the chunk
+
+    int chunkSize; // Size of the chunk
 };
 
 #endif

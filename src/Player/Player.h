@@ -43,14 +43,14 @@ private:
     float pitch, yaw;
 
     float speed;
-    float sprintSpeed;
-    float crouchSpeed;
+    const float sprintSpeed;
+    const float crouchSpeed;
 
-    float normalHeight;
-    float crouchHeight;
+    const float normalHeight;
+    const float crouchHeight;
 
-    float jumpVelocity;
-    float gravity;
+    const float jumpVelocity;
+    const float gravity;
     float verticalVelocity;
 
     bool isGrounded;   //Track if the player is grounded
@@ -60,7 +60,8 @@ private:
 
     bool spaceHeld;    // Track if the space key is held down
 
-    float sensitivity;
+    const float sensitivity;
+
     bool isMouseLocked = false;
     bool previousLeftMousePressed = false;
     bool previousRightMousePressed = false;
