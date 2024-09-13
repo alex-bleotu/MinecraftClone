@@ -1,19 +1,10 @@
 #include "PerlinNoise.h"
 
 // Initialize the permutation vector with the reference values
-PerlinNoise::PerlinNoise() {
-    p.resize(256);
-    std::iota(p.begin(), p.end(), 0);  // Fill with values 0 to 255
-    std::random_device rd;
-    std::mt19937 generator(rd());
-    std::shuffle(p.begin(), p.end(), generator);
-    p.insert(p.end(), p.begin(), p.end());  // Duplicate the vector
-}
-
-// Custom seed constructor
 PerlinNoise::PerlinNoise(unsigned int seed) {
     p.resize(256);
     std::iota(p.begin(), p.end(), 0);  // Fill with values 0 to 255
+    std::random_device rd;
     std::mt19937 generator(seed);
     std::shuffle(p.begin(), p.end(), generator);
     p.insert(p.end(), p.begin(), p.end());  // Duplicate the vector
@@ -73,4 +64,11 @@ double PerlinNoise::grad(int hash, double x, double y, double z) const {
     double u = h < 8 ? x : y;
     double v = h < 4 ? y : (h == 12 || h == 14 ? x : z);
     return ((h & 1) ? -u : u) + ((h & 2) ? -v : v);
+}
+
+// Reseed the permutation vector
+void PerlinNoise::reseed(unsigned int newSeed) {
+    std::mt19937 generator(newSeed);
+    std::shuffle(p.begin(), p.end(), generator);
+    p.insert(p.end(), p.begin(), p.end());  // Duplicate the vector
 }

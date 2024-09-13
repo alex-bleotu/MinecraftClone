@@ -3,7 +3,7 @@
 #include "../Config.h"
 
 World::World(): renderDistance(Config::World::RENDER_DISTANCE), skyColor(Config::World::SKY_COLOR),
-                chunkSize(Config::World::CHUNK_SIZE) {}
+                chunkSize(Config::World::CHUNK_SIZE), seed(Config::World::SEED), noiseGenerator(Config::World::SEED) {}
 
 // Initialize the world by generating chunks
 void World::init() {
@@ -51,16 +51,8 @@ bool World::checkCollision(const Math::AABB& playerAABB) const {
 void World::setBlockAt(const sf::Vector3i& position, BlockType type) {
     Chunk* chunk = getChunkAt(position);  // Get the chunk for the specified position
     if (chunk) {
-        // Calculate local chunk coordinates from the global position
-        int localX = position.x % chunkSize;
-        int localZ = position.z % chunkSize;
-
-        // Handle negative modulus by adding chunkSize
-        if (localX < 0) localX += chunkSize;
-        if (localZ < 0) localZ += chunkSize;
-
         // Set the block in the chunk
-        chunk->setBlockAt({localX, position.y, localZ}, type);
+        chunk->setBlockAt({position.x, position.y, position.z}, type);
     }
 }
 
@@ -71,17 +63,10 @@ const Block* World::getBlockAt(const sf::Vector3i& position) const {
 
     sf::Vector2i chunkPos(chunkX, chunkZ);  // Calculate chunk coordinates
     auto it = chunks.find(chunkPos);
+
     if (it != chunks.end()) {
-        // Calculate local chunk coordinates
-        int localX = position.x % chunkSize;
-        int localZ = position.z % chunkSize;
-
-        // Handle negative modulus by adding chunkSize
-        if (localX < 0) localX += chunkSize;
-        if (localZ < 0) localZ += chunkSize;
-
         // Return the block from the chunk
-        return it->second.getBlockAt({localX, position.y, localZ});
+        return it->second.getBlockAt({position.x, position.y, position.z});
     }
     return nullptr;
 }
@@ -90,16 +75,8 @@ const Block* World::getBlockAt(const sf::Vector3i& position) const {
 void World::removeBlockAt(const sf::Vector3i& position) {
     Chunk* chunk = getChunkAt(position);  // Get the chunk for the specified position
     if (chunk) {
-        // Calculate local chunk coordinates from the global position
-        int localX = position.x % chunkSize;
-        int localZ = position.z % chunkSize;
-
-        // Handle negative modulus by adding chunkSize
-        if (localX < 0) localX += chunkSize;
-        if (localZ < 0) localZ += chunkSize;
-
         // Remove the block from the chunk
-        chunk->removeBlockAt({localX, position.y, localZ});
+        chunk->removeBlockAt({position.x, position.y, position.z});
     }
 }
 
@@ -118,10 +95,9 @@ Chunk* World::getChunkAt(const sf::Vector3i& position) {
 
 // Generate a chunk at the specified world coordinates (x, z)
 void World::generateChunkAt(int x, int z) {
-    // Calculate the chunk's world coordinates based on its grid position
     sf::Vector2i chunkPos(x / chunkSize, z / chunkSize);  // Calculate chunk grid coordinates
 
     Chunk chunk;
-    chunk.generate(chunkPos.x * chunkSize, chunkPos.y * chunkSize);  // Pass absolute world coordinates
+    chunk.generate(x, z, noiseGenerator);  // Use the global noise generator for consistent terrain
     chunks[chunkPos] = std::move(chunk);  // Move the generated chunk into the map
 }

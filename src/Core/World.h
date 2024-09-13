@@ -55,6 +55,12 @@ private:
 
     // Define the size of each chunk
     const int chunkSize;
+
+    // Perlin noise generator for terrain generation
+    PerlinNoise noiseGenerator;
+
+    // Seed for the Perlin noise generator
+    const unsigned int seed;
 };
 
 

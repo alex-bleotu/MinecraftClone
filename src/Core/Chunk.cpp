@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Chunk.h"
 #include "../Utils/PerlinNoise.h"
 #include "../Config.h"
@@ -6,8 +7,11 @@
 Chunk::Chunk(): chunkSize(Config::World::CHUNK_SIZE) {}
 
 // Generate the chunk using Perlin noise for terrain generation
-void Chunk::generate(int xOffset, int zOffset) {
-    PerlinNoise noise;
+void Chunk::generate(int xOffset, int zOffset, const PerlinNoise& noiseGenerator) {
+    // Parameters for multi-octave noise
+    const float frequency = 0.05f;
+    const int octaves = 4;
+    const float persistence = 0.5f;
 
     // Iterate through the chunk's x and z coordinates
     for (int x = 0; x < chunkSize; x++) {
@@ -16,26 +20,38 @@ void Chunk::generate(int xOffset, int zOffset) {
             int worldX = xOffset + x;
             int worldZ = zOffset + z;
 
-            // Generate height using Perlin noise with global world coordinates
-            float height = noise.noise(worldX * 0.1f, worldZ * 0.1f, 0.5f) * 10.0f;
+            // Sample from the larger Perlin noise map
+            float noiseValue = 0.0f;
+            float amplitude = 1.0f;
+            float maxValue = 0.0f;
+
+            // Loop through each octave
+            for (int octave = 0; octave < octaves; octave++) {
+                float freq = frequency * std::pow(2.0f, octave);
+
+                // Use the same worldX and worldZ for all chunks, ensuring the seed-based noise
+                noiseValue += noiseGenerator.noise(worldX * freq, worldZ * freq, 0.5f) * amplitude;
+                maxValue += amplitude;
+                amplitude *= persistence;
+            }
+
+            // Normalize the noise value
+            noiseValue /= maxValue;
+
+            // Adjust the height scale
+            float height = noiseValue * 20.0f;  // Adjust this value for terrain height
             int groundHeight = static_cast<int>(height);
 
             // Fill the chunk with blocks up to the calculated height
-            for (int y = 0; y < groundHeight; ++y) {
-                // Adjust block position to the correct world coordinates
+            for (int y = 0; y < groundHeight; y++) {
                 sf::Vector3i blockPos(worldX, y, worldZ);
 
-                // Top layer: Grass
                 if (y == groundHeight - 1) {
                     blocks[blockPos] = Block(BlockType::GRASS, blockPos);  // Topmost block is grass
-                }
-                    // Next few layers: Dirt
-                else if (y >= groundHeight - 4) {  // Adjust the dirt layer thickness (e.g., 3 layers of dirt)
-                    blocks[blockPos] = Block(BlockType::DIRT, blockPos);
-                }
-                    // Below that: Stone
-                else {
-                    blocks[blockPos] = Block(BlockType::STONE, blockPos);
+                } else if (y >= groundHeight - 4) {
+                    blocks[blockPos] = Block(BlockType::DIRT, blockPos);  // Next few layers are dirt
+                } else {
+                    blocks[blockPos] = Block(BlockType::STONE, blockPos);  // Below that is stone
                 }
             }
         }
@@ -45,6 +61,7 @@ void Chunk::generate(int xOffset, int zOffset) {
 // Retrieve the block at a specific position within the chunk
 const Block* Chunk::getBlockAt(const sf::Vector3i& position) const {
     auto it = blocks.find(position);
+
     if (it != blocks.end()) {
         return &it->second;
     }

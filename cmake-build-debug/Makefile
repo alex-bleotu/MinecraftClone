@@ -224,6 +224,30 @@ src/Core/Block.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Core/Block.cpp.s
 .PHONY : src/Core/Block.cpp.s
 
+src/Core/Chunk.obj: src/Core/Chunk.cpp.obj
+.PHONY : src/Core/Chunk.obj
+
+# target to build an object file
+src/Core/Chunk.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Core/Chunk.cpp.obj
+.PHONY : src/Core/Chunk.cpp.obj
+
+src/Core/Chunk.i: src/Core/Chunk.cpp.i
+.PHONY : src/Core/Chunk.i
+
+# target to preprocess a source file
+src/Core/Chunk.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Core/Chunk.cpp.i
+.PHONY : src/Core/Chunk.cpp.i
+
+src/Core/Chunk.s: src/Core/Chunk.cpp.s
+.PHONY : src/Core/Chunk.s
+
+# target to generate assembly for a file
+src/Core/Chunk.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Core/Chunk.cpp.s
+.PHONY : src/Core/Chunk.cpp.s
+
 src/Core/World.obj: src/Core/World.cpp.obj
 .PHONY : src/Core/World.obj
 
@@ -344,6 +368,30 @@ src/Utils/Math.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Utils/Math.cpp.s
 .PHONY : src/Utils/Math.cpp.s
 
+src/Utils/PerlinNoise.obj: src/Utils/PerlinNoise.cpp.obj
+.PHONY : src/Utils/PerlinNoise.obj
+
+# target to build an object file
+src/Utils/PerlinNoise.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Utils/PerlinNoise.cpp.obj
+.PHONY : src/Utils/PerlinNoise.cpp.obj
+
+src/Utils/PerlinNoise.i: src/Utils/PerlinNoise.cpp.i
+.PHONY : src/Utils/PerlinNoise.i
+
+# target to preprocess a source file
+src/Utils/PerlinNoise.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Utils/PerlinNoise.cpp.i
+.PHONY : src/Utils/PerlinNoise.cpp.i
+
+src/Utils/PerlinNoise.s: src/Utils/PerlinNoise.cpp.s
+.PHONY : src/Utils/PerlinNoise.s
+
+# target to generate assembly for a file
+src/Utils/PerlinNoise.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Utils/PerlinNoise.cpp.s
+.PHONY : src/Utils/PerlinNoise.cpp.s
+
 src/Utils/Texture.obj: src/Utils/Texture.cpp.obj
 .PHONY : src/Utils/Texture.obj
 
@@ -389,6 +437,9 @@ help:
 	@echo ... src/Core/Block.obj
 	@echo ... src/Core/Block.i
 	@echo ... src/Core/Block.s
+	@echo ... src/Core/Chunk.obj
+	@echo ... src/Core/Chunk.i
+	@echo ... src/Core/Chunk.s
 	@echo ... src/Core/World.obj
 	@echo ... src/Core/World.i
 	@echo ... src/Core/World.s
@@ -404,6 +455,9 @@ help:
 	@echo ... src/Utils/Math.obj
 	@echo ... src/Utils/Math.i
 	@echo ... src/Utils/Math.s
+	@echo ... src/Utils/PerlinNoise.obj
+	@echo ... src/Utils/PerlinNoise.i
+	@echo ... src/Utils/PerlinNoise.s
 	@echo ... src/Utils/Texture.obj
 	@echo ... src/Utils/Texture.i
 	@echo ... src/Utils/Texture.s

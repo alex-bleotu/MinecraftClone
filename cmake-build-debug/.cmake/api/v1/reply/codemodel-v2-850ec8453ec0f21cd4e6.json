@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "D:/Projects/GitHub/MinecraftClone/cmake-build-debug",
-		"source" : "D:/Projects/GitHub/MinecraftClone"
+		"build" : "C:/Users/alexb/Projects/MinecraftClone/cmake-build-debug",
+		"source" : "C:/Users/alexb/Projects/MinecraftClone"
 	},
 	"version" : 
 	{

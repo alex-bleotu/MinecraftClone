@@ -4,14 +4,15 @@
 #include <unordered_map>
 #include "Block.h"
 #include "../Utils/Math.h"
+#include "../Utils/PerlinNoise.h"
 #include <SFML/System/Vector3.hpp>
 
 class Chunk {
 public:
     Chunk();
 
-    // Generate the chunk based on Perlin noise
-    void generate(int xOffset, int zOffset);
+    // Generate the chunk using Perlin noise for terrain generation
+    void generate(int xOffset, int zOffset, const PerlinNoise& noiseGenerator);
 
     // Get the block at a specific position within the chunk
     const Block* getBlockAt(const sf::Vector3i& position) const;
