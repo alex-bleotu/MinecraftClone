@@ -57,8 +57,6 @@ namespace Config {
         const int RENDER_DISTANCE = 1;
 
         const sf::Vector3f SKY_COLOR = {0.431f, 0.694f, 1.0f};
-
-        const unsigned int SEED = 12345;
     }
 
     class Assets {

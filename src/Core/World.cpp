@@ -1,9 +1,10 @@
 #include <iostream>
+#include <random>
 #include "World.h"
 #include "../Config.h"
 
 World::World(): renderDistance(Config::World::RENDER_DISTANCE), skyColor(Config::World::SKY_COLOR),
-                chunkSize(Config::World::CHUNK_SIZE), seed(Config::World::SEED), noiseGenerator(Config::World::SEED) {}
+                chunkSize(Config::World::CHUNK_SIZE), seed(std::random_device{}()), noiseGenerator(seed) {}
 
 // Initialize the world by generating chunks
 void World::init() {
