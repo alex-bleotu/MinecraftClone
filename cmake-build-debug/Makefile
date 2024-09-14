@@ -248,30 +248,6 @@ src/Core/Chunk.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Core/Chunk.cpp.s
 .PHONY : src/Core/Chunk.cpp.s
 
-src/Core/Data.obj: src/Core/Data.cpp.obj
-.PHONY : src/Core/Data.obj
-
-# target to build an object file
-src/Core/Data.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Core/Data.cpp.obj
-.PHONY : src/Core/Data.cpp.obj
-
-src/Core/Data.i: src/Core/Data.cpp.i
-.PHONY : src/Core/Data.i
-
-# target to preprocess a source file
-src/Core/Data.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Core/Data.cpp.i
-.PHONY : src/Core/Data.cpp.i
-
-src/Core/Data.s: src/Core/Data.cpp.s
-.PHONY : src/Core/Data.s
-
-# target to generate assembly for a file
-src/Core/Data.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/src/Core/Data.cpp.s
-.PHONY : src/Core/Data.cpp.s
-
 src/Core/World.obj: src/Core/World.cpp.obj
 .PHONY : src/Core/World.obj
 
@@ -464,9 +440,6 @@ help:
 	@echo ... src/Core/Chunk.obj
 	@echo ... src/Core/Chunk.i
 	@echo ... src/Core/Chunk.s
-	@echo ... src/Core/Data.obj
-	@echo ... src/Core/Data.i
-	@echo ... src/Core/Data.s
 	@echo ... src/Core/World.obj
 	@echo ... src/Core/World.i
 	@echo ... src/Core/World.s

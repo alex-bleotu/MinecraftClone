@@ -523,4 +523,5 @@ CMakeFiles/MinecraftClone.dir/src/Core/Block.cpp.obj: \
  C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/tr1/poly_laguerre.tcc \
  C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/tr1/riemann_zeta.tcc \
  C:/PROGRA~1/SFML-2~1.1/include/SFML/System/Vector2.hpp \
- C:/Users/alexb/Projects/MinecraftClone/src/Utils/Texture.h
+ C:/Users/alexb/Projects/MinecraftClone/src/Utils/Texture.h \
+ C:/Users/alexb/Projects/MinecraftClone/src/Core/Block.h

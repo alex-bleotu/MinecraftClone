@@ -13,7 +13,6 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "C:/Users/alexb/Projects/MinecraftClone/src/Config.cpp" "CMakeFiles/MinecraftClone.dir/src/Config.cpp.obj" "gcc" "CMakeFiles/MinecraftClone.dir/src/Config.cpp.obj.d"
   "C:/Users/alexb/Projects/MinecraftClone/src/Core/Block.cpp" "CMakeFiles/MinecraftClone.dir/src/Core/Block.cpp.obj" "gcc" "CMakeFiles/MinecraftClone.dir/src/Core/Block.cpp.obj.d"
   "C:/Users/alexb/Projects/MinecraftClone/src/Core/Chunk.cpp" "CMakeFiles/MinecraftClone.dir/src/Core/Chunk.cpp.obj" "gcc" "CMakeFiles/MinecraftClone.dir/src/Core/Chunk.cpp.obj.d"
-  "C:/Users/alexb/Projects/MinecraftClone/src/Core/Data.cpp" "CMakeFiles/MinecraftClone.dir/src/Core/Data.cpp.obj" "gcc" "CMakeFiles/MinecraftClone.dir/src/Core/Data.cpp.obj.d"
   "C:/Users/alexb/Projects/MinecraftClone/src/Core/World.cpp" "CMakeFiles/MinecraftClone.dir/src/Core/World.cpp.obj" "gcc" "CMakeFiles/MinecraftClone.dir/src/Core/World.cpp.obj.d"
   "C:/Users/alexb/Projects/MinecraftClone/src/Player/Player.cpp" "CMakeFiles/MinecraftClone.dir/src/Player/Player.cpp.obj" "gcc" "CMakeFiles/MinecraftClone.dir/src/Player/Player.cpp.obj.d"
   "C:/Users/alexb/Projects/MinecraftClone/src/UI/Scene.cpp" "CMakeFiles/MinecraftClone.dir/src/UI/Scene.cpp.obj" "gcc" "CMakeFiles/MinecraftClone.dir/src/UI/Scene.cpp.obj.d"

@@ -1,19 +1,6 @@
 #include "Block.h"
 #include "../Utils/Texture.h"
 
-// Function to convert enum to string
-static std::string blockTypeToString(BlockType type) {
-    switch (type) {
-        case BlockType::AIR:                return "air";
-        case BlockType::DIRT:               return "dirt";
-        case BlockType::GRASS:              return "grass";
-        case BlockType::STONE:              return "stone";
-        case BlockType::WATER:              return "water";
-        case BlockType::PLANKS:             return "planks";
-        default:                            return "unknown";
-    }
-}
-
 // Define static vertices for the cube
 const GLfloat Block::vertices[24] = {
         0.0f, 0.0f, 0.0f,  // Vertex 0 (Front bottom left)
@@ -38,18 +25,18 @@ const GLuint Block::indices[36] = {
 
 // Define static texture coordinates for the cube
 const GLfloat Block::textureCoords[48] = {
-        // Front face (vertices: 0, 1, 2, 3) - Rotated 180 degrees
-        0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,
-        // Back face (vertices: 4, 5, 6, 7) - Rotated 180 degrees
-        0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,
+        // Front face (vertices: 0, 1, 2, 3) - Rotated 270 degrees
+        1.0f, 1.0f,  0.0f, 1.0f,  0.0f, 0.0f,  1.0f, 0.0f,
+        // Back face (vertices: 4, 5, 6, 7) - Rotated 270 degrees
+        1.0f, 1.0f,  0.0f, 1.0f,  0.0f, 0.0f,  1.0f, 0.0f,
         // Bottom face (vertices: 0, 1, 5, 4) - No change
         0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,
         // Top face (vertices: 2, 3, 7, 6) - No change
         0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,
-        // Left face (vertices: 0, 3, 7, 4) - Rotated 180 degrees
-        1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,  0.0f, 0.0f,
-        // Right face (vertices: 1, 2, 6, 5) - Rotated 180 degrees
-        1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,  0.0f, 0.0f
+        // Left face (vertices: 0, 3, 7, 4) - Rotated 360 degrees (flipped)
+        0.0f, 1.0f,  0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,
+        // Right face (vertices: 1, 2, 6, 5) - Rotated 360 degrees (flipped)
+        0.0f, 1.0f,  0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f
 };
 
 Block::Block() : m_type(BlockType::AIR), m_position(0, 0, 0), m_isVisible(false), m_textures() {}
@@ -62,7 +49,7 @@ Block::Block(BlockType type, const sf::Vector3i& position)
     m_isVisible = (type != BlockType::AIR);
 
     if (m_isVisible)
-        m_textures = Texture::readTextures(blockTypeToString(m_type));
+        m_textures = Texture::initTextures(m_type);
 }
 
 // Getter for the block type
@@ -108,9 +95,10 @@ void Block::render() const {
 
     // Loop through each face
     for (int faceIndex = 0; faceIndex < 6; faceIndex++) {
+        GLuint textureID = m_textures[faceIndex].getNativeHandle();
         // Bind the appropriate texture for this face before glBegin
-        if (faceIndex < m_textures.size() && m_textures[faceIndex].getNativeHandle() != 0) {
-            glBindTexture(GL_TEXTURE_2D, m_textures[faceIndex].getNativeHandle());
+        if (faceIndex < m_textures.size() && textureID != 0) {
+            glBindTexture(GL_TEXTURE_2D, textureID);
         } else {
             glBindTexture(GL_TEXTURE_2D, Texture::none.getNativeHandle()); // Fallback if no texture is set for the face
         }

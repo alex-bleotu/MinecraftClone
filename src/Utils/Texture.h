@@ -3,6 +3,7 @@
 
 
 #include <SFML/Graphics.hpp>
+#include "../Core/Block.h"
 
 class Texture {
 public:
@@ -16,7 +17,7 @@ public:
 
     static void loadTextures();
 
-    static std::vector<sf::Texture> readTextures(const std::string& name);
+    static std::vector<sf::Texture> initTextures(BlockType type);
 
     static sf::Texture& getTexture(const std::string& name);
 };

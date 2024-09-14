@@ -64,9 +64,6 @@ private:
 
     // Cube texture coordinates
     static const GLfloat textureCoords[48];
-
-    // Add textures to the block
-    void addTextures() const;
 };
 
 

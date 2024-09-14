@@ -1,8 +1,7 @@
 #include <iostream>
 #include <filesystem>
 #include "Texture.h"
-#include <nlohmann/json.hpp>
-#include <fstream>
+#include "../Core/Block.h"
 
 // Define the static variables
 sf::Texture Texture::grass;
@@ -25,57 +24,20 @@ void Texture::loadTextures() {
     Texture::none.loadFromFile(path + "none.png");
 }
 
-std::vector<sf::Texture> Texture::readTextures(const std::string& name) {
-    std::string path = "assets/states/";
-
-    std::ifstream file(path + name + ".json");
-    nlohmann::json jsonData;
-
-    file >> jsonData;
-
-    // Default texture order: front, back, bottom, top, left, right
-    std::vector<sf::Texture> blockTextures(6, Texture::none);
-
-    if (jsonData.contains("variants")) {
-        auto variants = jsonData["variants"];
-
-        if (variants.contains("front") && !variants["front"]["model"].is_null()) {
-            sf::Texture& texture = getTexture(variants["front"]["model"].get<std::string>());
-            blockTextures[0] = texture; // front
-        }
-
-        if (variants.contains("back") && !variants["back"]["model"].is_null()) {
-            sf::Texture& texture = getTexture(variants["back"]["model"].get<std::string>());
-            blockTextures[1] = texture; // back
-        }
-
-        if (variants.contains("bottom") && !variants["bottom"]["model"].is_null()) {
-            sf::Texture& texture = getTexture(variants["bottom"]["model"].get<std::string>());
-            blockTextures[2] = texture; // bottom
-        }
-
-        if (variants.contains("top") && !variants["top"]["model"].is_null()) {
-            sf::Texture& texture = getTexture(variants["top"]["model"].get<std::string>());
-            blockTextures[3] = texture; // top
-        }
-
-        if (variants.contains("left") && !variants["left"]["model"].is_null()) {
-            sf::Texture& texture = getTexture(variants["left"]["model"].get<std::string>());
-            blockTextures[4] = texture; // left
-        }
-
-        if (variants.contains("right") && !variants["right"]["model"].is_null()) {
-            sf::Texture& texture = getTexture(variants["right"]["model"].get<std::string>());
-            blockTextures[5] = texture; // right
-        }
-
-        if (variants.contains("all")) {
-            sf::Texture& texture = getTexture(variants["all"]["model"].get<std::string>());
-            std::fill(blockTextures.begin(), blockTextures.end(), texture); // Apply the same texture for all faces
-        }
+std::vector<sf::Texture> Texture::initTextures(BlockType type) {
+    if (type == BlockType::GRASS) {
+        return {Texture::grassSide, Texture::grassSide, Texture::dirt, Texture::grass, Texture::grassSide, Texture::grassSide};
+    } else if (type == BlockType::DIRT) {
+        return {Texture::dirt, Texture::dirt, Texture::dirt, Texture::dirt, Texture::dirt, Texture::dirt};
+    } else if (type == BlockType::STONE) {
+        return {Texture::stone, Texture::stone, Texture::stone, Texture::stone, Texture::stone, Texture::stone};
+    } else if (type == BlockType::WATER) {
+        return {Texture::water, Texture::water, Texture::water, Texture::water, Texture::water, Texture::water};
+    } else if (type == BlockType::PLANKS) {
+        return {Texture::planks, Texture::planks, Texture::planks, Texture::planks, Texture::planks, Texture::planks};
+    } else {
+        return {Texture::none, Texture::none, Texture::none, Texture::none, Texture::none, Texture::none};
     }
-
-    return blockTextures;
 }
 
 sf::Texture& Texture::getTexture(const std::string& name) {

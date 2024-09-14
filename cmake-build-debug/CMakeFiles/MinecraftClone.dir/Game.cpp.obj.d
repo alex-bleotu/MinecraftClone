@@ -548,4 +548,5 @@ CMakeFiles/MinecraftClone.dir/Game.cpp.obj: \
  C:/PROGRA~1/SFML-2~1.1/include/SFML/Graphics/Font.hpp \
  C:/Users/alexb/AppData/Local/Programs/CLion/bin/mingw/x86_64-w64-mingw32/include/windows.h \
  C:\Users\alexb\Projects\MinecraftClone\src/Utils/Math.h \
- C:\Users\alexb\Projects\MinecraftClone\src/Utils/Texture.h
+ C:\Users\alexb\Projects\MinecraftClone\src/Utils/Texture.h \
+ C:/Users/alexb/Projects/MinecraftClone/src/Core/Block.h

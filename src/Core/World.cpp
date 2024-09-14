@@ -8,12 +8,14 @@ World::World(): renderDistance(Config::World::RENDER_DISTANCE), skyColor(Config:
 
 // Initialize the world by generating chunks
 void World::init() {
-//    for (int x = -renderDistance; x < renderDistance; x++) {
-//        for (int z = -renderDistance; z < renderDistance; z++) {
-//            generateChunkAt(x * chunkSize, z * chunkSize);  // Generate chunk at world coordinates
-//        }
-//    }
-    generateChunkAt(0, 0);
+    generateChunkAt(0, 0);  // Generate the initial chunk at the origin
+    return;
+
+    for (int x = -renderDistance; x < renderDistance; x++) {
+        for (int z = -renderDistance; z < renderDistance; z++) {
+            generateChunkAt(x * chunkSize, z * chunkSize);  // Generate chunk at world coordinates
+        }
+    }
 }
 
 void World::update(float deltaTime) {
