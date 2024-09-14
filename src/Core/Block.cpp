@@ -1,6 +1,19 @@
 #include "Block.h"
 #include "../Utils/Texture.h"
 
+// Function to convert enum to string
+static std::string blockTypeToString(BlockType type) {
+    switch (type) {
+        case BlockType::AIR:                return "air";
+        case BlockType::DIRT:               return "dirt";
+        case BlockType::GRASS:              return "grass";
+        case BlockType::STONE:              return "stone";
+        case BlockType::WATER:              return "water";
+        case BlockType::PLANKS:             return "planks";
+        default:                            return "unknown";
+    }
+}
+
 // Define static vertices for the cube
 const GLfloat Block::vertices[24] = {
         0.0f, 0.0f, 0.0f,  // Vertex 0 (Front bottom left)
@@ -39,7 +52,7 @@ const GLfloat Block::textureCoords[48] = {
         1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f,  0.0f, 0.0f
 };
 
-Block::Block() : m_type(BlockType::AIR), m_position(0, 0, 0), m_isVisible(false) {}
+Block::Block() : m_type(BlockType::AIR), m_position(0, 0, 0), m_isVisible(false), m_textures() {}
 
 
 // Constructor to initialize block with type and position
@@ -47,6 +60,9 @@ Block::Block(BlockType type, const sf::Vector3i& position)
         : m_type(type), m_position(position) {
     // If the block is AIR, it's not visible
     m_isVisible = (type != BlockType::AIR);
+
+    if (m_isVisible)
+        m_textures = Texture::readTextures(blockTypeToString(m_type));
 }
 
 // Getter for the block type
@@ -84,87 +100,43 @@ void Block::render() const {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
 
-    // Check water boolean
-    bool isWater = false;
-
-    // Bind the texture based on block type
-    switch (m_type) {
-        case BlockType::DIRT:
-            glBindTexture(GL_TEXTURE_2D, Texture::dirt.getNativeHandle());
-            break;
-        case BlockType::GRASS:
-            glBindTexture(GL_TEXTURE_2D, Texture::grass.getNativeHandle());
-            break;
-        case BlockType::STONE:
-            glBindTexture(GL_TEXTURE_2D, Texture::stone.getNativeHandle());
-            break;
-        case BlockType::WATER:
-            glBindTexture(GL_TEXTURE_2D, Texture::water.getNativeHandle());
-            isWater = true;
-            break;
-        case BlockType::PLANKS:
-            glBindTexture(GL_TEXTURE_2D, Texture::planks.getNativeHandle());
-            break;
-        default:
-            glBindTexture(GL_TEXTURE_2D, Texture::none.getNativeHandle());
-            break;
-    }
-
-    // If rendering water, enable blending for transparency
-    if (isWater) {
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    }
-
     // Save the current matrix state
     glPushMatrix();
 
     // Translate to the block's position
     glTranslatef(static_cast<float>(m_position.x), static_cast<float>(m_position.y), static_cast<float>(m_position.z));
 
-    // Render the cube using triangles
-    glBegin(GL_TRIANGLES);
-    for (int i = 0; i < 36; i++) {
-        int vertexIndex = indices[i];
-
-        // Calculate face and triangle indices
-        int faceIndex = i / 6;       // Determines which face we're rendering (6 vertices per face)
-        int triangleIndex = i % 6;   // Determines which triangle of the face (0-2 for first triangle, 3-5 for second)
-
-        // Texture coordinate assignment logic
-        // Each face has four texture coordinates (4 vertices)
-        int texCoordOffset = faceIndex * 8;
-
-        // First triangle: Use the first three texture coordinates
-        if (triangleIndex < 3) {
-            // First triangle of the face (uses texture coords for vertices 0, 1, 2)
-            glTexCoord2f(textureCoords[texCoordOffset + triangleIndex * 2], textureCoords[texCoordOffset + triangleIndex * 2 + 1]);
-        }
-            // Second triangle: Use the correct texture coordinates for vertices 2, 3, 0
-        else {
-            // Second triangle of the face (uses texture coords for vertices 2, 3, 0)
-            int correctedIndex = (triangleIndex == 3) ? 2 : (triangleIndex == 4) ? 3 : 0;
-            glTexCoord2f(textureCoords[texCoordOffset + correctedIndex * 2], textureCoords[texCoordOffset + correctedIndex * 2 + 1]);
+    // Loop through each face
+    for (int faceIndex = 0; faceIndex < 6; faceIndex++) {
+        // Bind the appropriate texture for this face before glBegin
+        if (faceIndex < m_textures.size() && m_textures[faceIndex].getNativeHandle() != 0) {
+            glBindTexture(GL_TEXTURE_2D, m_textures[faceIndex].getNativeHandle());
+        } else {
+            glBindTexture(GL_TEXTURE_2D, Texture::none.getNativeHandle()); // Fallback if no texture is set for the face
         }
 
+        // Begin rendering triangles for this face
+        glBegin(GL_TRIANGLES);
 
-        // Set semi-transparent alpha for water, full opacity otherwise
-        if (isWater) {
-            glColor4f(1.0f, 1.0f, 1.0f, 0.5f); // Water with 50% transparency
+        int texCoordOffset = faceIndex * 8; // Each face has four texture coordinates (4 vertices)
+
+        // Render the two triangles for each face
+        for (int triangleIndex = 0; triangleIndex < 6; triangleIndex++) {
+            int vertexIndex = indices[faceIndex * 6 + triangleIndex];
+
+            // Apply the correct texture coordinates
+            int texCoordIndex = triangleIndex < 3 ? triangleIndex : (triangleIndex == 3) ? 2 : (triangleIndex == 4) ? 3 : 0;
+            glTexCoord2f(textureCoords[texCoordOffset + texCoordIndex * 2], textureCoords[texCoordOffset + texCoordIndex * 2 + 1]);
+
+            // Apply the vertex positions
+            glVertex3f(vertices[3 * vertexIndex], vertices[3 * vertexIndex + 1], vertices[3 * vertexIndex + 2]);
         }
 
-        // Apply the vertex positions
-        glVertex3f(vertices[3 * vertexIndex], vertices[3 * vertexIndex + 1], vertices[3 * vertexIndex + 2]);
+        glEnd();
     }
-    glEnd();
 
     // Restore the previous matrix state
     glPopMatrix();
-
-    // Disable blending if it was enabled
-    if (isWater) {
-        glDisable(GL_BLEND);
-    }
 
     // Disable depth testing and texture
     glDisable(GL_TEXTURE_2D);

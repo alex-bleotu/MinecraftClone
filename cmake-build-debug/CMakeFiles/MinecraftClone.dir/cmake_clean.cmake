@@ -9,6 +9,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/MinecraftClone.dir/src/Core/Block.cpp.obj.d"
   "CMakeFiles/MinecraftClone.dir/src/Core/Chunk.cpp.obj"
   "CMakeFiles/MinecraftClone.dir/src/Core/Chunk.cpp.obj.d"
+  "CMakeFiles/MinecraftClone.dir/src/Core/Data.cpp.obj"
+  "CMakeFiles/MinecraftClone.dir/src/Core/Data.cpp.obj.d"
   "CMakeFiles/MinecraftClone.dir/src/Core/World.cpp.obj"
   "CMakeFiles/MinecraftClone.dir/src/Core/World.cpp.obj.d"
   "CMakeFiles/MinecraftClone.dir/src/Player/Player.cpp.obj"

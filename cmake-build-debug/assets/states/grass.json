@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "front": {
+      "model": "grass_side"
+    },
+    "back": {
+      "model": "grass_side"
+    },
+    "left": {
+      "model": "grass_side"
+    },
+    "right": {
+      "model": "grass_side"
+    },
+    "top": {
+      "model": "grass"
+    },
+    "bottom": {
+      "model": "dirt"
+    }
+  }
+}

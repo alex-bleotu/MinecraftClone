@@ -7,6 +7,7 @@
 class Texture {
 public:
     static sf::Texture grass;
+    static sf::Texture grassSide;
     static sf::Texture dirt;
     static sf::Texture stone;
     static sf::Texture water;
@@ -14,6 +15,10 @@ public:
     static sf::Texture none;
 
     static void loadTextures();
+
+    static std::vector<sf::Texture> readTextures(const std::string& name);
+
+    static sf::Texture& getTexture(const std::string& name);
 };
 
 

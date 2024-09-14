@@ -32,5 +32,7 @@ set(SFML_STATIC_LIBRARIES TRUE)
 set(SFML_DIR "C:/Program Files/SFML-2.6.1/include/SFML")
 find_package(SFML COMPONENTS system window graphics audio network REQUIRED)
 
+include_directories(${CMAKE_SOURCE_DIR}/include)
+
 include_directories("C:/Program Files/SFML-2.6.1/include/SFML")
 target_link_libraries(MinecraftClone sfml-system sfml-window sfml-graphics sfml-audio)

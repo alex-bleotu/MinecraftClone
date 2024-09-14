@@ -47,12 +47,14 @@ public:
     void render() const;
 
     // Get the bounding box of the block
-    Math::AABB getAABB() const;
+    [[nodiscard]] Math::AABB getAABB() const;
 
 private:
-    BlockType m_type;            // Type of block (AIR, DIRT, etc.)
-    sf::Vector3i m_position;     // Position in the 3D world
-    bool m_isVisible;            // Whether the block is visible or not (AIR blocks are invisible)
+    BlockType m_type;                       // Type of block (AIR, DIRT, etc.)
+    sf::Vector3i m_position;                // Position in the 3D world
+    bool m_isVisible;                       // Whether the block is visible or not (AIR blocks are invisible)
+
+    std::vector<sf::Texture> m_textures;    // Textures for the block faces
 
     // Cube vertices
     static const GLfloat vertices[24];
@@ -62,6 +64,9 @@ private:
 
     // Cube texture coordinates
     static const GLfloat textureCoords[48];
+
+    // Add textures to the block
+    void addTextures() const;
 };
 
 
