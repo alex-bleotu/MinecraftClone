@@ -41,7 +41,7 @@ public:
     void setPosition(const sf::Vector3i& position);
 
     // Check if block is visible (i.e., not air)
-    bool isVisible() const;
+    bool checkIfVisible() const;
 
     // Render the block (for simplicity, could use SFML's RectangleShape or custom logic)
     void render() const;
@@ -50,20 +50,18 @@ public:
     [[nodiscard]] Math::AABB getAABB() const;
 
 private:
-    BlockType m_type;                       // Type of block (AIR, DIRT, etc.)
-    sf::Vector3i m_position;                // Position in the 3D world
-    bool m_isVisible;                       // Whether the block is visible or not (AIR blocks are invisible)
+    BlockType type;                       // Type of block (AIR, DIRT, etc.)
+    sf::Vector3i position;                // Position in the 3D world
+    bool isVisible;                       // Whether the block is visible or not (AIR blocks are invisible)
 
-    std::vector<sf::Texture> m_textures;    // Textures for the block faces
+    std::vector<sf::IntRect> textures;    // Textures for the block faces
+    std::vector<int> textureRotation;     // Texture rotation for each face
 
     // Cube vertices
     static const GLfloat vertices[24];
 
     // Cube indices for drawing faces
     static const GLuint indices[36];
-
-    // Cube texture coordinates
-    static const GLfloat textureCoords[48];
 };
 
 

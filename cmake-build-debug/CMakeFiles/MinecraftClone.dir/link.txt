@@ -1,3 +1,0 @@
-C:\Users\alexb\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -E rm -f CMakeFiles\MinecraftClone.dir/objects.a
-C:\Users\alexb\AppData\Local\Programs\CLion\bin\mingw\bin\ar.exe qc CMakeFiles\MinecraftClone.dir/objects.a @CMakeFiles\MinecraftClone.dir\objects1.rsp
-C:\Users\alexb\AppData\Local\Programs\CLion\bin\mingw\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\MinecraftClone.dir/objects.a -Wl,--no-whole-archive -o MinecraftClone.exe -Wl,--out-implib,libMinecraftClone.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\MinecraftClone.dir\linkLibs.rsp

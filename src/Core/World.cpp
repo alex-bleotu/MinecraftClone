@@ -2,15 +2,13 @@
 #include <random>
 #include "World.h"
 #include "../Config.h"
+#include "../Utils/Texture.h"
 
 World::World(): renderDistance(Config::World::RENDER_DISTANCE), skyColor(Config::World::SKY_COLOR),
                 chunkSize(Config::World::CHUNK_SIZE), seed(std::random_device{}()), noiseGenerator(seed) {}
 
 // Initialize the world by generating chunks
 void World::init() {
-    generateChunkAt(0, 0);  // Generate the initial chunk at the origin
-    return;
-
     for (int x = -renderDistance; x < renderDistance; x++) {
         for (int z = -renderDistance; z < renderDistance; z++) {
             generateChunkAt(x * chunkSize, z * chunkSize);  // Generate chunk at world coordinates
@@ -28,15 +26,19 @@ void World::render() const {
     // Clear buffers
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // Enable depth testing
+    // Enable depth testing and texture
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_TEXTURE_2D);
+
+    glBindTexture(GL_TEXTURE_2D, Texture::atlas.getNativeHandle());
 
     // Iterate through all the chunks and render them
     for (const auto& [chunkPos, chunk] : chunks) {
         chunk.render();  // Render each chunk
     }
 
-    // Disable depth testing
+    // Disable depth testing and texture
+    glDisable(GL_TEXTURE_2D);
     glDisable(GL_DEPTH_TEST);
 }
 

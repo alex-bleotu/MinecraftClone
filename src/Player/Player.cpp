@@ -288,9 +288,12 @@ void Player::handleMouseInput(float deltaTime, sf::RenderWindow& window) {
     if (pitch > 89.0f) pitch = 89.0f;
     if (pitch < -89.0f) pitch = -89.0f;
 
+    // Wrap the yaw value to keep it between 0 and 360 degrees
+    if (yaw > 360.0f) yaw -= 360.0f;
+    if (yaw < 0.0f) yaw += 360.0f;
+
     // Reset the mouse position to the center of the window
     sf::Mouse::setPosition(center, window);
-
 }
 
 void Player::lockMouse(sf::RenderWindow& window) {
@@ -500,7 +503,7 @@ std::tuple<sf::Vector3i, sf::Vector3f, sf::Vector3f> Player::raycast(World& worl
 
         // Check if the block at the current block position is solid (or visible)
         if (const Block* block = world.getBlockAt(blockPos)) {
-            if (block->isVisible()) {
+            if (block->checkIfVisible()) {
                 sf::Vector3f hitPoint = rayOrigin + rayDirection * distance;
                 return { blockPos, hitPoint, hitNormal };  // Return the block hit and hit details
             }

@@ -3,49 +3,120 @@
 #include "Texture.h"
 #include "../Core/Block.h"
 
-// Define the static variables
-sf::Texture Texture::grass;
-sf::Texture Texture::grassSide;
-sf::Texture Texture::dirt;
-sf::Texture Texture::stone;
-sf::Texture Texture::water;
-sf::Texture Texture::planks;
-sf::Texture Texture::none;
+sf::Texture Texture::atlas;
 
 void Texture::loadTextures() {
     std::string path = "assets/textures/";
 
-    Texture::grass.loadFromFile(path + "grass.png");
-    Texture::grassSide.loadFromFile(path + "grass_side.png");
-    Texture::dirt.loadFromFile(path + "dirt.png");
-    Texture::stone.loadFromFile(path + "stone.png");
-    Texture::water.loadFromFile(path + "water.png");
-    Texture::planks.loadFromFile(path + "planks.png");
-    Texture::none.loadFromFile(path + "none.png");
+    // Load the atlas texture
+    Texture::atlas.loadFromFile(path + "blocks.png");
 }
 
-std::vector<sf::Texture> Texture::initTextures(BlockType type) {
+std::pair<std::vector<sf::IntRect>, std::vector<int>> Texture::initTextures(BlockType type) {
     if (type == BlockType::GRASS) {
-        return {Texture::grassSide, Texture::grassSide, Texture::dirt, Texture::grass, Texture::grassSide, Texture::grassSide};
+        return {
+                // Texture coordinates
+                {
+                        getTextureCoords("grass_side"),    // front
+                        getTextureCoords("grass_side"),    // back
+                        getTextureCoords("dirt"),          // bottom
+                        getTextureCoords("grass"),         // top
+                        getTextureCoords("grass_side"),    // left
+                        getTextureCoords("grass_side")     // right
+                },
+                // Rotation angles for each face (in degrees)
+                {
+                        0,    // front
+                        0,    // back
+                        0,    // bottom
+                        0,    // top
+                        90,   // left
+                        90,   // right
+                }
+        };
     } else if (type == BlockType::DIRT) {
-        return {Texture::dirt, Texture::dirt, Texture::dirt, Texture::dirt, Texture::dirt, Texture::dirt};
+        return {
+                {
+                    getTextureCoords("dirt"),
+                    getTextureCoords("dirt"),
+                    getTextureCoords("dirt"),
+                    getTextureCoords("dirt"),
+                    getTextureCoords("dirt"),
+                    getTextureCoords("dirt")
+                },
+                {
+                    180, 180, 0, 0, -90, -90
+                }
+        };
     } else if (type == BlockType::STONE) {
-        return {Texture::stone, Texture::stone, Texture::stone, Texture::stone, Texture::stone, Texture::stone};
+        return {
+                {
+                    getTextureCoords("stone"),
+                    getTextureCoords("stone"),
+                    getTextureCoords("stone"),
+                    getTextureCoords("stone"),
+                    getTextureCoords("stone"),
+                    getTextureCoords("stone")
+                },
+                {
+                    180, 180, 0, 0, -90, -90
+                }
+        };
     } else if (type == BlockType::WATER) {
-        return {Texture::water, Texture::water, Texture::water, Texture::water, Texture::water, Texture::water};
+        return {
+                {
+                    getTextureCoords("water"),
+                    getTextureCoords("water"),
+                    getTextureCoords("water"),
+                    getTextureCoords("water"),
+                    getTextureCoords("water"),
+                    getTextureCoords("water")
+                },
+                {
+                    180, 180, 0, 0, -90, -90
+                }
+        };
     } else if (type == BlockType::PLANKS) {
-        return {Texture::planks, Texture::planks, Texture::planks, Texture::planks, Texture::planks, Texture::planks};
+        return {
+                {
+                    getTextureCoords("planks"),
+                    getTextureCoords("planks"),
+                    getTextureCoords("planks"),
+                    getTextureCoords("planks"),
+                    getTextureCoords("planks"),
+                    getTextureCoords("planks")
+                },
+                {
+                    180, 180, 0, 0, -90, -90
+                }
+        };
     } else {
-        return {Texture::none, Texture::none, Texture::none, Texture::none, Texture::none, Texture::none};
+        return {
+                {
+                    getTextureCoords("none"),
+                    getTextureCoords("none"),
+                    getTextureCoords("none"),
+                    getTextureCoords("none"),
+                    getTextureCoords("none"),
+                    getTextureCoords("none")
+                },
+                {
+                    180, 180, 0, 0, -90, -90
+                }
+        };
     }
 }
 
-sf::Texture& Texture::getTexture(const std::string& name) {
-    if (name == "grass") return Texture::grass;
-    else if (name == "grass_side") return Texture::grassSide;
-    else if (name == "dirt") return Texture::dirt;
-    else if (name == "stone") return Texture::stone;
-    else if (name == "water") return Texture::water;
-    else if (name == "planks") return Texture::planks;
-    else return Texture::none;
+// Function to return the texture coordinates from the atlas
+sf::IntRect Texture::getTextureCoords(const std::string& name) {
+    // Atlas is assumed to be 256x256, each tile is 16x16
+    const int tileSize = 16;
+
+    if (name == "dirt") return {0, 0, tileSize, tileSize};
+    else if (name == "grass_side") return {16, 0, tileSize, tileSize};
+    else if (name == "grass") return {32, 0, tileSize, tileSize};
+    else if (name == "stone") return {48, 0, tileSize, tileSize};
+    else if (name == "planks") return {0, 16, tileSize, tileSize};
+    else if (name == "water") return {16, 16, tileSize, tileSize};
+    else return {48, 48, tileSize, tileSize};  // Default to 'none'
 }

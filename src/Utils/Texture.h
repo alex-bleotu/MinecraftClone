@@ -7,19 +7,13 @@
 
 class Texture {
 public:
-    static sf::Texture grass;
-    static sf::Texture grassSide;
-    static sf::Texture dirt;
-    static sf::Texture stone;
-    static sf::Texture water;
-    static sf::Texture planks;
-    static sf::Texture none;
+    static sf::Texture atlas;
 
     static void loadTextures();
 
-    static std::vector<sf::Texture> initTextures(BlockType type);
+    static std::pair<std::vector<sf::IntRect>, std::vector<int>> initTextures(BlockType type);
 
-    static sf::Texture& getTexture(const std::string& name);
+    static sf::IntRect getTextureCoords(const std::string& name);
 };
 
 
