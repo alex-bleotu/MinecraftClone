@@ -14,6 +14,18 @@ void World::init() {
             generateChunkAt(x * chunkSize, z * chunkSize);  // Generate chunk at world coordinates
         }
     }
+
+    setBlockAt({-12, 20, 0}, BlockType::DIRT);
+    setBlockAt({-10, 20, 0}, BlockType::GRASS);
+    setBlockAt({-8, 20, 0}, BlockType::STONE);
+    setBlockAt({-6, 20, 0}, BlockType::WATER);
+    setBlockAt({-4, 20, 0}, BlockType::PLANKS);
+    setBlockAt({-2, 20, 0}, BlockType::LOG);
+    setBlockAt({0, 20, 0}, BlockType::COBBLESTONE);
+    setBlockAt({2, 20, 0}, BlockType::LEAVES);
+    setBlockAt({4, 20, 0}, BlockType::CRAFTING_TABLE);
+    setBlockAt({6, 20, 0}, BlockType::FURNACE);
+    setBlockAt({8, 20, 0}, BlockType::IRON_ORE);
 }
 
 void World::update(float deltaTime) {
@@ -32,9 +44,14 @@ void World::render() const {
 
     glBindTexture(GL_TEXTURE_2D, Texture::atlas.getNativeHandle());
 
-    // Iterate through all the chunks and render them
+    // Iterate through all the chunks and render opaque blocks
     for (const auto& [chunkPos, chunk] : chunks) {
         chunk.render();  // Render each chunk
+    }
+
+    // Iterate through all the chunks and render non-opaque blocks
+    for (const auto& [chunkPos, chunk] : chunks) {
+        chunk.renderNotOpaque();  // Render each chunk
     }
 
     // Disable depth testing and texture

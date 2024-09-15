@@ -29,6 +29,9 @@ public:
     // Render the chunk
     void render() const;
 
+    // Render the chunk
+    void renderNotOpaque() const;
+
 private:
     std::unordered_map<sf::Vector3i, Block> blocks;  // List of blocks in the chunk
 

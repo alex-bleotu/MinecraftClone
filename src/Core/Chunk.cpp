@@ -87,13 +87,26 @@ void Chunk::render() const {
     }
 }
 
-// Check if a player AABB collides with any blocks in the chunk
+// Render the chunk
+void Chunk::renderNotOpaque() const {
+    // Iterate through all the blocks in the chunk and render them
+    for (const auto& [position, block] : blocks) {
+        // Use the block's render function
+        block.renderNotOpaque();
+    }
+}
+
+
+// Check if a player AABB collides with any solid blocks in the chunk
 bool Chunk::checkCollision(const Math::AABB& playerAABB) const {
     // Iterate through all the blocks in the chunk
     for (const auto& [position, block] : blocks) {
-        // Check if the player AABB collides with the block's AABB
-        if (block.getAABB().intersects(playerAABB)) {
-            return true;  // Collision detected
+        // Only check for collision if the block is solid
+        if (block.checkIfSolid()) {
+            // Check if the player's AABB collides with the block's AABB
+            if (block.getAABB().intersects(playerAABB)) {
+                return true;  // Collision detected with a solid block
+            }
         }
     }
     return false;  // No collision detected

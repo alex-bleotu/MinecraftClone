@@ -11,18 +11,22 @@ class World;
 
 // Enum to define different block types
 enum class BlockType {
-    AIR,    // Empty block
-    DIRT,   // Dirt block
-    GRASS,  // Grass block
-    STONE,  // Stone block
-    WATER,  // Water block
-    PLANKS,   // Wood block
-    // Add more types as needed
+    DIRT,
+    GRASS,
+    STONE,
+    WATER,
+    PLANKS,
+    LOG,
+    COBBLESTONE,
+    LEAVES,
+    CRAFTING_TABLE,
+    FURNACE,
+    IRON_ORE,
 };
 
 class Block {
 public:
-    // Constructor to initialize block with type and position
+    // Default constructor
     Block();
 
     // Constructor to initialize block with type and position
@@ -43,16 +47,27 @@ public:
     // Check if block is visible (i.e., not air)
     bool checkIfVisible() const;
 
+    // Check if block is opaque
+    bool checkIfOpaque() const;
+
+    // Check if block is solid
+    bool checkIfSolid() const;
+
     // Render the block (for simplicity, could use SFML's RectangleShape or custom logic)
     void render() const;
+
+    // Render the blocks that are not opaque
+    void renderNotOpaque() const;
 
     // Get the bounding box of the block
     [[nodiscard]] Math::AABB getAABB() const;
 
 private:
-    BlockType type;                       // Type of block (AIR, DIRT, etc.)
+    BlockType type;                       // Type of block
     sf::Vector3i position;                // Position in the 3D world
     bool isVisible;                       // Whether the block is visible or not (AIR blocks are invisible)
+    bool isOpaque;                        // Whether the block is opaque or not
+    bool isSolid;                         // Whether the block is solid or not
 
     std::vector<sf::IntRect> textures;    // Textures for the block faces
     std::vector<int> textureRotation;     // Texture rotation for each face

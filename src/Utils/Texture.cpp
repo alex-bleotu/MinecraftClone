@@ -90,6 +90,90 @@ std::pair<std::vector<sf::IntRect>, std::vector<int>> Texture::initTextures(Bloc
                     180, 180, 0, 0, -90, -90
                 }
         };
+    } else if (type == BlockType::COBBLESTONE) {
+        return {
+                {
+                    getTextureCoords("cobblestone"),
+                    getTextureCoords("cobblestone"),
+                    getTextureCoords("cobblestone"),
+                    getTextureCoords("cobblestone"),
+                    getTextureCoords("cobblestone"),
+                    getTextureCoords("cobblestone")
+                },
+                {
+                    180, 180, 0, 0, -90, -90
+                }
+        };
+    } else if (type == BlockType::LEAVES) {
+        return {
+                {
+                    getTextureCoords("leaves"),
+                    getTextureCoords("leaves"),
+                    getTextureCoords("leaves"),
+                    getTextureCoords("leaves"),
+                    getTextureCoords("leaves"),
+                    getTextureCoords("leaves")
+                },
+                {
+                    180, 180, 0, 0, -90, -90
+                }
+        };
+    } else if (type == BlockType::LOG) {
+        return {
+                {
+                    getTextureCoords("log"),
+                    getTextureCoords("log"),
+                    getTextureCoords("log_top"),
+                    getTextureCoords("log_top"),
+                    getTextureCoords("log"),
+                    getTextureCoords("log")
+                },
+                {
+                    0, 0, 0, 0, 90, 90
+                }
+        };
+    } else if (type == BlockType::CRAFTING_TABLE) {
+        return {
+                {
+                    getTextureCoords("crafting_table_front"),
+                    getTextureCoords("crafting_table_side"),
+                    getTextureCoords("planks"),
+                    getTextureCoords("crafting_table_top"),
+                    getTextureCoords("crafting_table_side"),
+                    getTextureCoords("crafting_table_side")
+                },
+                {
+                    0, 0, 0, 0, 90, 90
+                }
+        };
+    } else if (type == BlockType::FURNACE) {
+        return {
+                {
+                    getTextureCoords("furnace_front"),
+                    getTextureCoords("furnace_side"),
+                    getTextureCoords("furnace_top"),
+                    getTextureCoords("furnace_top"),
+                    getTextureCoords("furnace_side"),
+                    getTextureCoords("furnace_side")
+                },
+                {
+                    0, 0, 0, 0, 90, 90
+                }
+        };
+    } else if (type == BlockType::IRON_ORE) {
+        return {
+                {
+                    getTextureCoords("iron_ore"),
+                    getTextureCoords("iron_ore"),
+                    getTextureCoords("iron_ore"),
+                    getTextureCoords("iron_ore"),
+                    getTextureCoords("iron_ore"),
+                    getTextureCoords("iron_ore")
+                },
+                {
+                        180, 180, 0, 0, -90, -90
+                }
+        };
     } else {
         return {
                 {
@@ -116,7 +200,20 @@ sf::IntRect Texture::getTextureCoords(const std::string& name) {
     else if (name == "grass_side") return {16, 0, tileSize, tileSize};
     else if (name == "grass") return {32, 0, tileSize, tileSize};
     else if (name == "stone") return {48, 0, tileSize, tileSize};
-    else if (name == "planks") return {0, 16, tileSize, tileSize};
-    else if (name == "water") return {16, 16, tileSize, tileSize};
-    else return {48, 48, tileSize, tileSize};  // Default to 'none'
+    else if (name == "cobblestone") return { 64, 0, tileSize, tileSize };
+    else if (name == "planks") return {80, 0, tileSize, tileSize};
+    else if (name == "log") return {96, 0, tileSize, tileSize};
+    else if (name == "log_top") return {112, 0, tileSize, tileSize};
+    else if (name == "leaves") return {0, 16, tileSize, tileSize};
+    else if (name == "crafting_table_front") return {16, 16, tileSize, tileSize};
+    else if (name == "crafting_table_side") return {32, 16, tileSize, tileSize};
+    else if (name == "crafting_table_top") return {48, 16, tileSize, tileSize};
+    else if (name == "furnace_front") return { 64, 16, tileSize, tileSize };
+    else if (name == "furnace_side") return {80, 16, tileSize, tileSize};
+    else if (name == "furnace_top") return {96, 16, tileSize, tileSize};
+    else if (name == "furnace_front_lit") return {112, 16, tileSize, tileSize};
+    else if (name == "water") return {0, 32, tileSize, tileSize};
+    else if (name == "iron_ore") return {16, 32, tileSize, tileSize};
+
+    else return {112, 112, tileSize, tileSize};  // Default to 'none'
 }

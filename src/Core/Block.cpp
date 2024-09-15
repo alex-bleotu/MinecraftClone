@@ -23,20 +23,22 @@ const GLuint Block::indices[36] = {
         1, 2, 6, 6, 5, 1   // Right face
 };
 
-Block::Block() : type(BlockType::AIR), position(0, 0, 0), isVisible(false), textures() {}
-
+Block::Block(): isVisible(false), isOpaque(false), isSolid(false) {}
 
 // Constructor to initialize block with type and position
 Block::Block(BlockType type, const sf::Vector3i& position)
-        : type(type), position(position) {
-    // If the block is AIR, it's not visible
-    isVisible = (type != BlockType::AIR);
+        : type(type), position(position), isVisible(true) {
+    if (type == BlockType::WATER || type == BlockType::LEAVES)
+        isOpaque = false;
+    else isOpaque = true;
 
-    if (isVisible) {
-        auto var = Texture::initTextures(type);
-        textures = var.first;
-        textureRotation = var.second;
-    }
+    if (type != BlockType::WATER)
+        isSolid = true;
+    else isSolid = false;
+
+    auto var = Texture::initTextures(type);
+    textures = var.first;
+    textureRotation = var.second;
 }
 
 // Getter for the block type
@@ -47,8 +49,6 @@ BlockType Block::getType() const {
 // Setter for the block type
 void Block::setType(BlockType type) {
     type = type;
-    // Recalculate visibility
-    isVisible = (type != BlockType::AIR);
 }
 
 // Getter for the block position
@@ -66,9 +66,9 @@ bool Block::checkIfVisible() const {
     return isVisible;
 }
 
-// Render the block
+// Render the block (opaque blocks)
 void Block::render() const {
-    if (!isVisible) return; // Only render if the block is visible
+    if (!isVisible || !isOpaque) return; // Only render if the block is visible and opaque
 
     // Save the current matrix state
     glPushMatrix();
@@ -148,9 +148,117 @@ void Block::render() const {
     glPopMatrix();
 }
 
+// Render the block (non-opaque blocks)
+void Block::renderNotOpaque() const {
+    if (!isVisible || isOpaque) return; // Only render if the block is visible and not opaque
+
+    // Save the current matrix state
+    glPushMatrix();
+
+    // Translate to the block's position
+    glTranslatef(static_cast<float>(position.x), static_cast<float>(position.y), static_cast<float>(position.z));
+
+    // Enable blending for transparency
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  // Standard alpha blending
+
+    // Enable depth testing but disable depth writing
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_FALSE);  // Disable writing to the depth buffer to prevent transparency issues
+
+    // Get the size of the texture atlas (assuming it's square)
+    const float atlasSize = static_cast<float>(Texture::atlas.getSize().x); // assuming width == height
+
+    // Loop through each face (6 faces total)
+    for (int faceIndex = 0; faceIndex < 6; faceIndex++) {
+        // Get the texture coordinates for the current face
+        const sf::IntRect& texRect = textures[faceIndex]; // Assuming textures contains texture coords for each face
+
+        // Normalize the texture coordinates (between 0 and 1)
+        float texLeft = static_cast<float>(texRect.left) / atlasSize;
+        float texRight = static_cast<float>(texRect.left + texRect.width) / atlasSize;
+        float texTop = static_cast<float>(texRect.top) / atlasSize;
+        float texBottom = static_cast<float>(texRect.top + texRect.height) / atlasSize;
+
+        // Define a 2D array to represent the 4 corners of the texture coordinates
+        float texCoords[4][2] = {
+                {texLeft, texBottom},  // Bottom-left
+                {texRight, texBottom}, // Bottom-right
+                {texRight, texTop},    // Top-right
+                {texLeft, texTop}      // Top-left
+        };
+
+        // Apply rotation based on the rotation value for this face
+        int rotation = textureRotation[faceIndex]; // Get the rotation angle for this face
+
+        // Rotate texture coordinates by rotating the order in which the coordinates are used
+        switch (rotation) {
+            case 90:
+                std::swap(texCoords[0], texCoords[1]);
+                std::swap(texCoords[1], texCoords[2]);
+                std::swap(texCoords[2], texCoords[3]);
+                break;
+            case 180:
+                std::swap(texCoords[0], texCoords[2]);
+                std::swap(texCoords[1], texCoords[3]);
+                break;
+            case 270:
+            case -90:
+                std::swap(texCoords[0], texCoords[3]);
+                std::swap(texCoords[3], texCoords[2]);
+                std::swap(texCoords[2], texCoords[1]);
+                break;
+        }
+
+        // Begin rendering triangles for this face
+        glBegin(GL_TRIANGLES);
+
+        // First triangle of the face (using rotated texture coordinates)
+        glTexCoord2f(texCoords[0][0], texCoords[0][1]); // Bottom-left
+        glVertex3f(vertices[indices[faceIndex * 6 + 0] * 3 + 0], vertices[indices[faceIndex * 6 + 0] * 3 + 1], vertices[indices[faceIndex * 6 + 0] * 3 + 2]);
+
+        glTexCoord2f(texCoords[1][0], texCoords[1][1]); // Bottom-right
+        glVertex3f(vertices[indices[faceIndex * 6 + 1] * 3 + 0], vertices[indices[faceIndex * 6 + 1] * 3 + 1], vertices[indices[faceIndex * 6 + 1] * 3 + 2]);
+
+        glTexCoord2f(texCoords[2][0], texCoords[2][1]); // Top-right
+        glVertex3f(vertices[indices[faceIndex * 6 + 2] * 3 + 0], vertices[indices[faceIndex * 6 + 2] * 3 + 1], vertices[indices[faceIndex * 6 + 2] * 3 + 2]);
+
+        // Second triangle of the face
+        glTexCoord2f(texCoords[2][0], texCoords[2][1]); // Top-right
+        glVertex3f(vertices[indices[faceIndex * 6 + 3] * 3 + 0], vertices[indices[faceIndex * 6 + 3] * 3 + 1], vertices[indices[faceIndex * 6 + 3] * 3 + 2]);
+
+        glTexCoord2f(texCoords[3][0], texCoords[3][1]); // Top-left
+        glVertex3f(vertices[indices[faceIndex * 6 + 4] * 3 + 0], vertices[indices[faceIndex * 6 + 4] * 3 + 1], vertices[indices[faceIndex * 6 + 4] * 3 + 2]);
+
+        glTexCoord2f(texCoords[0][0], texCoords[0][1]); // Bottom-left
+        glVertex3f(vertices[indices[faceIndex * 6 + 5] * 3 + 0], vertices[indices[faceIndex * 6 + 5] * 3 + 1], vertices[indices[faceIndex * 6 + 5] * 3 + 2]);
+
+        glEnd();
+    }
+
+    // Restore depth writing after rendering transparent block
+    glDepthMask(GL_TRUE);  // Re-enable writing to the depth buffer
+
+    // Disable blending after rendering
+    glDisable(GL_BLEND);
+
+    // Restore the previous matrix state
+    glPopMatrix();
+}
+
 // Get the bounding box of the block
 Math::AABB Block::getAABB() const {
     sf::Vector3f minPos(position.x, position.y, position.z);
     sf::Vector3f maxPos = minPos + sf::Vector3f(1.0f, 1.0f, 1.0f);
     return {minPos, maxPos};
+}
+
+// Check if block is opaque
+bool Block::checkIfOpaque() const {
+    return isOpaque;
+}
+
+// Check if block is solid
+bool Block::checkIfSolid() const {
+    return isSolid;
 }
