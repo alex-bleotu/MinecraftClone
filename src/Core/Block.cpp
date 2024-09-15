@@ -76,7 +76,7 @@ void Block::render() const {
     // Translate to the block's position
     glTranslatef(static_cast<float>(position.x), static_cast<float>(position.y), static_cast<float>(position.z));
 
-    // Get the size of the texture atlas (assuming it's square)
+    // Get the size of the texture atlas
     const float atlasSize = static_cast<float>(Texture::atlas.getSize().x); // assuming width == height
 
     // Loop through each face (6 faces total)
@@ -152,22 +152,25 @@ void Block::render() const {
 void Block::renderNotOpaque() const {
     if (!isVisible || isOpaque) return; // Only render if the block is visible and not opaque
 
-    // Save the current matrix state
     glPushMatrix();
-
-    // Translate to the block's position
     glTranslatef(static_cast<float>(position.x), static_cast<float>(position.y), static_cast<float>(position.z));
 
     // Enable blending for transparency
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  // Standard alpha blending
 
-    // Enable depth testing but disable depth writing
+    // Enable depth testing but disable depth writing for transparency handling
     glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_FALSE);  // Disable writing to the depth buffer to prevent transparency issues
 
-    // Get the size of the texture atlas (assuming it's square)
-    const float atlasSize = static_cast<float>(Texture::atlas.getSize().x); // assuming width == height
+    // Check if the block is of type WATER and apply a transparency effect
+    if (type == BlockType::WATER) {
+        // Apply transparency for water blocks (you can adjust the alpha value to your liking)
+        glColor4f(1.0f, 1.0f, 1.0f, 0.65f); // Set RGBA color with alpha = 0.5 for semi-transparency
+    }
+
+    // Get the size of the texture atlas
+    const float atlasSize = static_cast<float>(Texture::atlas.getSize().x);
 
     // Loop through each face (6 faces total)
     for (int faceIndex = 0; faceIndex < 6; faceIndex++) {
@@ -180,6 +183,9 @@ void Block::renderNotOpaque() const {
         float texTop = static_cast<float>(texRect.top) / atlasSize;
         float texBottom = static_cast<float>(texRect.top + texRect.height) / atlasSize;
 
+        // Apply rotation based on the rotation value for this face
+        int rotation = textureRotation[faceIndex]; // Get the rotation angle for this face
+
         // Define a 2D array to represent the 4 corners of the texture coordinates
         float texCoords[4][2] = {
                 {texLeft, texBottom},  // Bottom-left
@@ -188,26 +194,21 @@ void Block::renderNotOpaque() const {
                 {texLeft, texTop}      // Top-left
         };
 
-        // Apply rotation based on the rotation value for this face
-        int rotation = textureRotation[faceIndex]; // Get the rotation angle for this face
-
         // Rotate texture coordinates by rotating the order in which the coordinates are used
-        switch (rotation) {
-            case 90:
-                std::swap(texCoords[0], texCoords[1]);
-                std::swap(texCoords[1], texCoords[2]);
-                std::swap(texCoords[2], texCoords[3]);
-                break;
-            case 180:
-                std::swap(texCoords[0], texCoords[2]);
-                std::swap(texCoords[1], texCoords[3]);
-                break;
-            case 270:
-            case -90:
-                std::swap(texCoords[0], texCoords[3]);
-                std::swap(texCoords[3], texCoords[2]);
-                std::swap(texCoords[2], texCoords[1]);
-                break;
+        if (rotation == 90) {
+            // Rotate 90 degrees (clockwise): Swap positions
+            std::swap(texCoords[0], texCoords[1]);
+            std::swap(texCoords[1], texCoords[2]);
+            std::swap(texCoords[2], texCoords[3]);
+        } else if (rotation == 180) {
+            // Rotate 180 degrees: Flip both horizontally and vertically
+            std::swap(texCoords[0], texCoords[2]);
+            std::swap(texCoords[1], texCoords[3]);
+        } else if (rotation == 270 || rotation == -90) {
+            // Rotate 270 degrees (counterclockwise): Swap in the reverse order
+            std::swap(texCoords[0], texCoords[3]);
+            std::swap(texCoords[3], texCoords[2]);
+            std::swap(texCoords[2], texCoords[1]);
         }
 
         // Begin rendering triangles for this face
@@ -238,12 +239,9 @@ void Block::renderNotOpaque() const {
 
     // Restore depth writing after rendering transparent block
     glDepthMask(GL_TRUE);  // Re-enable writing to the depth buffer
+    glDisable(GL_BLEND);   // Disable blending
 
-    // Disable blending after rendering
-    glDisable(GL_BLEND);
-
-    // Restore the previous matrix state
-    glPopMatrix();
+    glPopMatrix();         // Restore matrix state
 }
 
 // Get the bounding box of the block
