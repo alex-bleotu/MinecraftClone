@@ -27,11 +27,11 @@ std::pair<std::vector<sf::IntRect>, std::vector<int>> Texture::initTextures(Bloc
                 // Rotation angles for each face (in degrees)
                 {
                         0,    // front
-                        0,    // back
+                        90,   // back
                         0,    // bottom
                         0,    // top
                         90,   // left
-                        90,   // right
+                        0,    // right
                 }
         };
     } else if (type == BlockType::DIRT) {
@@ -45,7 +45,7 @@ std::pair<std::vector<sf::IntRect>, std::vector<int>> Texture::initTextures(Bloc
                     getTextureCoords("dirt")
                 },
                 {
-                    180, 180, 0, 0, -90, -90
+                    180, -90, 0, 0, -90, 180
                 }
         };
     } else if (type == BlockType::STONE) {
@@ -59,7 +59,7 @@ std::pair<std::vector<sf::IntRect>, std::vector<int>> Texture::initTextures(Bloc
                     getTextureCoords("stone")
                 },
                 {
-                    180, 180, 0, 0, -90, -90
+                    180, -90, 0, 0, -90, 180
                 }
         };
     } else if (type == BlockType::WATER) {
@@ -73,7 +73,7 @@ std::pair<std::vector<sf::IntRect>, std::vector<int>> Texture::initTextures(Bloc
                     getTextureCoords("water")
                 },
                 {
-                    180, 180, 0, 0, -90, -90
+                    180, -90, 0, 0, -90, 180
                 }
         };
     } else if (type == BlockType::PLANKS) {
@@ -87,7 +87,7 @@ std::pair<std::vector<sf::IntRect>, std::vector<int>> Texture::initTextures(Bloc
                     getTextureCoords("planks")
                 },
                 {
-                    180, 180, 0, 0, -90, -90
+                    180, -90, 0, 0, -90, 180
                 }
         };
     } else if (type == BlockType::COBBLESTONE) {
@@ -101,7 +101,7 @@ std::pair<std::vector<sf::IntRect>, std::vector<int>> Texture::initTextures(Bloc
                     getTextureCoords("cobblestone")
                 },
                 {
-                    180, 180, 0, 0, -90, -90
+                    180, -90, 0, 0, -90, 180
                 }
         };
     } else if (type == BlockType::LEAVES) {
@@ -115,7 +115,7 @@ std::pair<std::vector<sf::IntRect>, std::vector<int>> Texture::initTextures(Bloc
                     getTextureCoords("leaves")
                 },
                 {
-                    180, 180, 0, 0, -90, -90
+                    180, -90, 0, 0, -90, 180
                 }
         };
     } else if (type == BlockType::LOG) {
@@ -129,21 +129,21 @@ std::pair<std::vector<sf::IntRect>, std::vector<int>> Texture::initTextures(Bloc
                     getTextureCoords("log")
                 },
                 {
-                    0, 0, 0, 0, 90, 90
+                    0, 90, 0, 0, 90, 0
                 }
         };
     } else if (type == BlockType::CRAFTING_TABLE) {
         return {
                 {
                     getTextureCoords("crafting_table_front"),
-                    getTextureCoords("crafting_table_side"),
+                    getTextureCoords("crafting_table_front"),
                     getTextureCoords("planks"),
                     getTextureCoords("crafting_table_top"),
                     getTextureCoords("crafting_table_side"),
                     getTextureCoords("crafting_table_side")
                 },
                 {
-                    0, 0, 0, 0, 90, 90
+                    0, 90, 0, 0, 90, 0
                 }
         };
     } else if (type == BlockType::FURNACE) {
@@ -157,7 +157,7 @@ std::pair<std::vector<sf::IntRect>, std::vector<int>> Texture::initTextures(Bloc
                     getTextureCoords("furnace_side")
                 },
                 {
-                    0, 0, 0, 0, 90, 90
+                    0, 90, 0, 0, 90, 0
                 }
         };
     } else if (type == BlockType::IRON_ORE) {
@@ -171,7 +171,7 @@ std::pair<std::vector<sf::IntRect>, std::vector<int>> Texture::initTextures(Bloc
                     getTextureCoords("iron_ore")
                 },
                 {
-                        180, 180, 0, 0, -90, -90
+                    180, -90, 0, 0, -90, 180
                 }
         };
     } else {
@@ -185,7 +185,7 @@ std::pair<std::vector<sf::IntRect>, std::vector<int>> Texture::initTextures(Bloc
                     getTextureCoords("none")
                 },
                 {
-                    180, 180, 0, 0, -90, -90
+                    180, -90, 0, 0, -90, 180
                 }
         };
     }

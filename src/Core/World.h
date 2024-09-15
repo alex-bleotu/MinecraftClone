@@ -23,7 +23,7 @@ public:
     void update(float deltaTime);
 
     // Render all blocks in the world
-    void render() const;
+    void render(const sf::Vector3f& playerPosition) const;
 
     // Check if a player AABB collides with any blocks in the world
     bool checkCollision(const Math::AABB& playerAABB) const;

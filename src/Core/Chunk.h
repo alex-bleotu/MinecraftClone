@@ -32,10 +32,15 @@ public:
     // Render the chunk
     void renderNotOpaque() const;
 
+    // Get the chunk's AABB
+    Math::AABB getAABB() const;
+
 private:
     std::unordered_map<sf::Vector3i, Block> blocks;  // List of blocks in the chunk
 
     int chunkSize; // Size of the chunk
+
+    sf::Vector2i position;  // Position of the chunk in the world
 };
 
 #endif

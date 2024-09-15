@@ -8,6 +8,9 @@ Chunk::Chunk(): chunkSize(Config::World::CHUNK_SIZE) {}
 
 // Generate the chunk using Perlin noise for terrain generation
 void Chunk::generate(int xOffset, int zOffset, const PerlinNoise& noiseGenerator) {
+    // Set the chunk's position in the world
+    position = {xOffset, zOffset};
+
     // Parameters for multi-octave noise
     const float frequency = 0.05f;
     const int octaves = 4;
@@ -110,4 +113,20 @@ bool Chunk::checkCollision(const Math::AABB& playerAABB) const {
         }
     }
     return false;  // No collision detected
+}
+
+// Get the chunk's AABB
+Math::AABB Chunk::getAABB() const {
+    // Calculate the chunk's world position
+    int x = position.x;
+    int y = 0;
+    int z = position.y;
+
+    // Calculate the chunk's size
+    int width = chunkSize;
+    int height = 256;  // Set the height to the maximum world height
+    int depth = chunkSize;
+
+    // Return the chunk's AABB
+    return {x, y, z, width, height, depth};
 }

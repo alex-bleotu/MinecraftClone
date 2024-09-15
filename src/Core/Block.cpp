@@ -15,12 +15,23 @@ const GLfloat Block::vertices[24] = {
 
 // Define static indices for the cube
 const GLuint Block::indices[36] = {
-        0, 1, 2, 2, 3, 0,  // Front face
-        4, 5, 6, 6, 7, 4,  // Back face
-        0, 1, 5, 5, 4, 0,  // Bottom face
-        2, 3, 7, 7, 6, 2,  // Top face
-        0, 3, 7, 7, 4, 0,  // Left face
-        1, 2, 6, 6, 5, 1   // Right face
+        // Front face (counter-clockwise when viewed from the front)
+        0, 1, 2, 2, 3, 0,
+
+        // Back face (counter-clockwise when viewed from the back)
+        4, 7, 6, 6, 5, 4,
+
+        // Bottom face (counter-clockwise when viewed from below)
+        0, 4, 5, 5, 1, 0,
+
+        // Top face (counter-clockwise when viewed from above)
+        2, 6, 7, 7, 3, 2,
+
+        // Left face (counter-clockwise when viewed from the left)
+        0, 3, 7, 7, 4, 0,
+
+        // Right face (counter-clockwise when viewed from the right)
+        1, 5, 6, 6, 2, 1
 };
 
 Block::Block(): isVisible(false), isOpaque(false), isSolid(false) {}
@@ -167,6 +178,9 @@ void Block::renderNotOpaque() const {
     if (type == BlockType::WATER) {
         // Apply transparency for water blocks (you can adjust the alpha value to your liking)
         glColor4f(1.0f, 1.0f, 1.0f, 0.65f); // Set RGBA color with alpha = 0.5 for semi-transparency
+    } else {
+        // Apply transparency for other non-opaque blocks
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f); // Set RGBA color with alpha
     }
 
     // Get the size of the texture atlas

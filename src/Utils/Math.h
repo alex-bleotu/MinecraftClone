@@ -30,6 +30,10 @@ namespace Math {
 
         AABB(const sf::Vector3f &min, const sf::Vector3f &max);
 
+        AABB(float x, float y, float z, float width, float height, float depth);
+
+        AABB(int x, int y, int z, int width, int height, int depth);
+
         [[nodiscard]] bool intersects(const AABB &other) const;
     };
 }

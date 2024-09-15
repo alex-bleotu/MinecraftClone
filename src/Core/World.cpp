@@ -9,8 +9,8 @@ World::World(): renderDistance(Config::World::RENDER_DISTANCE), skyColor(Config:
 
 // Initialize the world by generating chunks
 void World::init() {
-    for (int x = -renderDistance; x < renderDistance; x++) {
-        for (int z = -renderDistance; z < renderDistance; z++) {
+    for (int x = -Config::World::CHUNKS_GENERATION; x < Config::World::CHUNKS_GENERATION; x++) {
+        for (int z = -Config::World::CHUNKS_GENERATION; z < Config::World::CHUNKS_GENERATION; z++) {
             generateChunkAt(x * chunkSize, z * chunkSize);  // Generate chunk at world coordinates
         }
     }
@@ -32,7 +32,8 @@ void World::update(float deltaTime) {
     // Currently empty, could update blocks in the future
 }
 
-void World::render() const {
+// Render the world using the player's position
+void World::render(const sf::Vector3f& playerPosition) const {
     glClearColor(skyColor.x, skyColor.y, skyColor.z, 1.0f);
 
     // Clear buffers
@@ -42,16 +43,45 @@ void World::render() const {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
 
+    // Enable face culling (cull back faces)
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);  // Cull the back faces
+    glFrontFace(GL_CW);  // Ensure counter-clockwise (CCW) is the front face
+
+    // Bind the texture atlas
     glBindTexture(GL_TEXTURE_2D, Texture::atlas.getNativeHandle());
 
-    // Iterate through all the chunks and render opaque blocks
-    for (const auto& [chunkPos, chunk] : chunks) {
-        chunk.render();  // Render each chunk
+    // Calculate the chunk coordinates of the player
+    int playerChunkX = static_cast<int>(playerPosition.x) / chunkSize;
+    int playerChunkZ = static_cast<int>(playerPosition.z) / chunkSize;
+
+    // Iterate through chunks within render distance and render opaque blocks
+    for (int chunkX = playerChunkX - renderDistance; chunkX <= playerChunkX + renderDistance; chunkX++) {
+        for (int chunkZ = playerChunkZ - renderDistance; chunkZ <= playerChunkZ + renderDistance; chunkZ++) {
+            sf::Vector2i chunkPos(chunkX, chunkZ);
+
+            // Check if the chunk exists in the world
+            auto it = chunks.find(chunkPos);
+            if (it != chunks.end()) {
+                it->second.render();  // Render opaque blocks
+            }
+        }
     }
 
-    // Iterate through all the chunks and render non-opaque blocks
-    for (const auto& [chunkPos, chunk] : chunks) {
-        chunk.renderNotOpaque();  // Render each chunk
+    // Render non-opaque blocks without culling
+    glDisable(GL_CULL_FACE);  // Disable culling for transparent/non-opaque blocks
+
+    // Iterate through chunks within render distance and render non-opaque blocks
+    for (int chunkX = playerChunkX - renderDistance; chunkX <= playerChunkX + renderDistance; chunkX++) {
+        for (int chunkZ = playerChunkZ - renderDistance; chunkZ <= playerChunkZ + renderDistance; chunkZ++) {
+            sf::Vector2i chunkPos(chunkX, chunkZ);
+
+            // Check if the chunk exists in the world
+            auto it = chunks.find(chunkPos);
+            if (it != chunks.end()) {
+                it->second.renderNotOpaque();  // Render non-opaque blocks
+            }
+        }
     }
 
     // Disable depth testing and texture

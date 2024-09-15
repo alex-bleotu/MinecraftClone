@@ -54,6 +54,7 @@ namespace Config {
 
     namespace World {
         const int CHUNK_SIZE = 16;
+        const int CHUNKS_GENERATION = 1;
         const int RENDER_DISTANCE = 1;
 
         const sf::Vector3f SKY_COLOR = {0.431f, 0.694f, 1.0f};
