@@ -3,10 +3,10 @@
 
 
 #include <SFML/OpenGL.hpp>
-#include <System/Vector3.hpp>
+#include <SFML/System/Vector3.hpp>
 #include <functional>
 #include <cmath>
-#include <System/Vector2.hpp>
+#include <SFML/System/Vector2.hpp>
 
 namespace Math {
     // Custom gluPerspective function

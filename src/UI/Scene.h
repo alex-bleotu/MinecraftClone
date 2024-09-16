@@ -3,7 +3,7 @@
 
 
 #include <functional>
-#include <Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 #include "UserInterface.h"
 #include "../Core/Block.h"
 #include "../Core/World.h"

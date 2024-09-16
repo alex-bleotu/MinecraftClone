@@ -52,6 +52,6 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/MinecraftClone.dir/DependInfo.cmake"
   "CMakeFiles/glad.dir/DependInfo.cmake"
+  "CMakeFiles/MinecraftClone.dir/DependInfo.cmake"
   )

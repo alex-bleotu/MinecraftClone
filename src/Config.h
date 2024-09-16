@@ -3,9 +3,9 @@
 
 
 #include <string>
-#include <Graphics/Font.hpp>
+#include <SFML/Graphics/Font.hpp>
 #include <Windows.h>
-#include <System/Vector3.hpp>
+#include <SFML/System/Vector3.hpp>
 
 namespace Config {
     static std::string executablePath;

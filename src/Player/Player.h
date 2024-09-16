@@ -3,8 +3,8 @@
 
 #include <SFML/OpenGL.hpp>
 #include <cmath>
-#include <Window.hpp>
-#include <Graphics/RenderWindow.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 #include "../Core/World.h"
 #include "../Utils/Math.h"
 

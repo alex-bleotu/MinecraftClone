@@ -1,1 +1,1 @@
--IC:/Users/alexb/Projects/MinecraftClone/lib/glfw/include -IC:/Users/alexb/Projects/MinecraftClone/lib/glad/include
+-IC:/Users/alexb/Projects/MinecraftClone/lib/glfw/include -IC:/Users/alexb/Projects/MinecraftClone/lib/glad/include -IC:/Users/alexb/Projects/MinecraftClone/lib/sfml/include
