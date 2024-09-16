@@ -1,45 +1,12 @@
-# Specify the minimum version of CMake required
 cmake_minimum_required(VERSION 3.28)
 
-# Declare the project name
 project(MinecraftClone)
 
-# Set C++ standard
 set(CMAKE_CXX_STANDARD 17)
 
-# Define the paths to the GLFW, GLAD, and SFML directories
-set(GLFW_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/lib/glfw/include")
-set(GLFW_LIB_DIR "${CMAKE_SOURCE_DIR}/lib/glfw/lib")
-set(GLAD_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/lib/glad/include")
-set(GLAD_SRC "${CMAKE_SOURCE_DIR}/lib/glad/src/glad.c")
-set(SFML_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/lib/sfml/include")
-set(SFML_LIB_DIR "${CMAKE_SOURCE_DIR}/lib/sfml/lib")
-
-# Include GLFW, GLAD, and SFML directories
-include_directories(${GLFW_INCLUDE_DIR} ${GLAD_INCLUDE_DIR} ${SFML_INCLUDE_DIR})
-
-# Add GLAD as a static library
-add_library(glad STATIC ${GLAD_SRC})
-
-# Add GLFW as a static library
-add_library(glfw STATIC IMPORTED)
-
-# Specify the location of the GLFW static library for MinGW
-set_target_properties(glfw PROPERTIES
-        IMPORTED_LOCATION "${GLFW_LIB_DIR}/libglfw3.a"
-)
-
-# Add SFML static libraries (make sure paths are correct)
-find_library(SFML_SYSTEM sfml-system-s PATHS ${SFML_LIB_DIR})
-find_library(SFML_WINDOW sfml-window-s PATHS ${SFML_LIB_DIR})
-find_library(SFML_GRAPHICS sfml-graphics-s PATHS ${SFML_LIB_DIR})
-find_library(SFML_AUDIO sfml-audio-s PATHS ${SFML_LIB_DIR})
-find_library(SFML_NETWORK sfml-network-s PATHS ${SFML_LIB_DIR})
-find_library(FREETYPE freetype PATHS ${SFML_LIB_DIR})
-find_library(OPENAL openal32 PATHS ${SFML_LIB_DIR})
-
-# Add the executable for your project
-add_executable(MinecraftClone main.cpp
+# Add executable
+add_executable(MinecraftClone
+        main.cpp
         Game.h
         Game.cpp
         src/UI/Scene.h
@@ -61,18 +28,36 @@ add_executable(MinecraftClone main.cpp
         src/Core/Chunk.h
         src/Utils/PerlinNoise.h
         src/Utils/PerlinNoise.cpp
-        src/Core/Chunk.cpp)
-
-# Link the necessary libraries (GLAD, GLFW, OpenGL, and SFML)
-find_package(OpenGL REQUIRED)
-
-# Link OpenGL, GLAD, GLFW, and SFML
-target_link_libraries(MinecraftClone glad glfw OpenGL::GL
-        ${SFML_SYSTEM} ${SFML_WINDOW} ${SFML_GRAPHICS} ${SFML_AUDIO} ${SFML_NETWORK}
-        ${FREETYPE} ${OPENAL}
+        src/Core/Chunk.cpp
 )
 
-# Additional libraries for Windows
-if (WIN32)
-    target_link_libraries(MinecraftClone gdi32 user32 shell32)
-endif()
+# Find and include OpenGL
+find_package(OpenGL REQUIRED)
+
+# Set SFML for static linking
+set(SFML_STATIC_LIBRARIES TRUE)
+set(SFML_DIR "C:/Program Files/SFML-2.6.1/include/SFML")
+find_package(SFML COMPONENTS system window graphics audio network REQUIRED)
+
+# Include directories for SFML
+include_directories(${CMAKE_SOURCE_DIR}/include)
+include_directories("C:/Program Files/SFML-2.6.1/include/SFML")
+
+# Link libraries: OpenGL, SFML, and system libraries
+target_link_libraries(MinecraftClone
+        OpenGL::GL     # OpenGL library
+        sfml-system    # SFML core system module
+        sfml-window    # SFML window module
+        sfml-graphics  # SFML graphics module
+        sfml-audio     # SFML audio module
+        kernel32       # Windows core libraries
+        advapi32
+        ole32
+        oleaut32
+        uuid
+        gdi32
+        user32
+        shell32
+        winmm
+        ws2_32
+)

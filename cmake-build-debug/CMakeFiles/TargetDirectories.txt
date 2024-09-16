@@ -1,4 +1,3 @@
-C:/Users/alexb/Projects/MinecraftClone/cmake-build-debug/CMakeFiles/glad.dir
-C:/Users/alexb/Projects/MinecraftClone/cmake-build-debug/CMakeFiles/MinecraftClone.dir
-C:/Users/alexb/Projects/MinecraftClone/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/alexb/Projects/MinecraftClone/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+D:/Projects/GitHub/MinecraftClone/cmake-build-debug/CMakeFiles/MinecraftClone.dir
+D:/Projects/GitHub/MinecraftClone/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/Projects/GitHub/MinecraftClone/cmake-build-debug/CMakeFiles/rebuild_cache.dir
