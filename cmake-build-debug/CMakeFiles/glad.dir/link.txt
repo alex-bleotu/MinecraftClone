@@ -1,0 +1,2 @@
+C:\Users\alexb\AppData\Local\Programs\CLion\bin\mingw\bin\ar.exe qc libglad.a CMakeFiles/glad.dir/lib/glad/src/glad.c.obj
+C:\Users\alexb\AppData\Local\Programs\CLion\bin\mingw\bin\ranlib.exe libglad.a
