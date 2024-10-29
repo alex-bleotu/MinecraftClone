@@ -24,10 +24,11 @@ public:
 
     [[nodiscard]] sf::Vector3f getLookDirection() const;
 
-    [[nodiscard]] bool getIsGrounded() const;
-    [[nodiscard]] bool getIsSprinting() const;
-    [[nodiscard]] bool getIsCrouching() const;
+    [[nodiscard]] bool getIsGrounded() const;   // Check if the player is grounded
+    [[nodiscard]] bool getIsSprinting() const;  // Check if the player is sprinting
+    [[nodiscard]] bool getIsCrouching() const;  // Check if the player is crouching
     [[nodiscard]] bool getIsFlying() const;  // Check if the player is flying
+
 
     [[nodiscard]] BlockType getCurrentBlock() const;
 
@@ -37,6 +38,7 @@ public:
 
     void breakBlock(World& world) const;                            // Break a block at the player's position
     void placeBlock(World& world, BlockType blockType) const;       // Place a block at the player's position
+    BlockType getLookingBlock(World& world) const;                       // Get the block the player is looking at
 
 private:
     sf::Vector3f position;
@@ -75,10 +77,10 @@ private:
 
     void handleInput(float deltaTime, World& world);                     // Handle player input
     void handleMouseInput(float deltaTime, sf::RenderWindow& window);    // Handle mouse input
-    void handleBlockChange(float deltaTime);                             // Handle block change
+    void handleBlockChange(float deltaTime, World& world);                             // Handle block change
 
     void updateVerticalMovement(float deltaTime, World& world);          // Update vertical movement
     void toggleFlying();                                                 // Toggle flying mode
 };
 
-#endif // MINECRAFTCLONE_PLAYER_H
+#endif

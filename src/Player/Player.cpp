@@ -25,7 +25,7 @@ void Player::update(float deltaTime, sf::RenderWindow& window, World& world) {
     updateVerticalMovement(deltaTime, world);
 
     // Handle block change input
-    handleBlockChange(deltaTime);
+    handleBlockChange(deltaTime, world);
 }
 
 void Player::render(sf::RenderWindow& window) const {
@@ -252,7 +252,7 @@ void Player::toggleFlying() {
     }
 }
 
-void Player::handleBlockChange(float deltaTime) {
+void Player::handleBlockChange(float deltaTime, World& world) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) {
         currentBlock = BlockType::GRASS;
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
@@ -263,6 +263,8 @@ void Player::handleBlockChange(float deltaTime) {
         currentBlock = BlockType::PLANKS;
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5)) {
         currentBlock = BlockType::WATER;
+    } else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
+        currentBlock = getLookingBlock(world);
     }
 }
 
@@ -512,4 +514,17 @@ std::tuple<sf::Vector3i, sf::Vector3f, sf::Vector3f> Player::raycast(World& worl
 
     // No block hit within the max distance
     return { sf::Vector3i(-1000, -1000, -1000), sf::Vector3f(-1000.0f, -1000.0f, -1000.0f), sf::Vector3f(0.0f, 0.0f, 0.0f) };
+}
+
+BlockType Player::getLookingBlock(World& world) const {
+    // Raycast to find the block the player is looking at
+    auto [blockPos, hitPoint, hitNormal] = raycast(world);  // Assume max reach distance is 5 units
+
+    if (blockPos != sf::Vector3i(-1000, -1000, -1000)) {
+        // Get the block at the position returned by the raycast
+        if (const Block* block = world.getBlockAt(blockPos)) {
+            return block->getType();
+        }
+    }
+    return BlockType::DIRT;
 }

@@ -116,19 +116,6 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named glad
-
-# Build rule for target.
-glad: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 glad
-.PHONY : glad
-
-# fast build rule for target.
-glad/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\glad.dir\build.make CMakeFiles/glad.dir/build
-.PHONY : glad/fast
-
-#=============================================================================
 # Target rules for targets named MinecraftClone
 
 # Build rule for target.
@@ -164,30 +151,6 @@ Game.s: Game.cpp.s
 Game.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\MinecraftClone.dir\build.make CMakeFiles/MinecraftClone.dir/Game.cpp.s
 .PHONY : Game.cpp.s
-
-lib/glad/src/glad.obj: lib/glad/src/glad.c.obj
-.PHONY : lib/glad/src/glad.obj
-
-# target to build an object file
-lib/glad/src/glad.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\glad.dir\build.make CMakeFiles/glad.dir/lib/glad/src/glad.c.obj
-.PHONY : lib/glad/src/glad.c.obj
-
-lib/glad/src/glad.i: lib/glad/src/glad.c.i
-.PHONY : lib/glad/src/glad.i
-
-# target to preprocess a source file
-lib/glad/src/glad.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\glad.dir\build.make CMakeFiles/glad.dir/lib/glad/src/glad.c.i
-.PHONY : lib/glad/src/glad.c.i
-
-lib/glad/src/glad.s: lib/glad/src/glad.c.s
-.PHONY : lib/glad/src/glad.s
-
-# target to generate assembly for a file
-lib/glad/src/glad.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\glad.dir\build.make CMakeFiles/glad.dir/lib/glad/src/glad.c.s
-.PHONY : lib/glad/src/glad.c.s
 
 main.obj: main.cpp.obj
 .PHONY : main.obj
@@ -462,13 +425,9 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... MinecraftClone
-	@echo ... glad
 	@echo ... Game.obj
 	@echo ... Game.i
 	@echo ... Game.s
-	@echo ... lib/glad/src/glad.obj
-	@echo ... lib/glad/src/glad.i
-	@echo ... lib/glad/src/glad.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
